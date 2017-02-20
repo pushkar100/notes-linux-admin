@@ -402,282 +402,234 @@ The default Graphical Text Editor on linux is `gedit`.
 
 There are many: Vi, Vim, Emacs, Nano .. etc
 
-`nano` editor:
---------------
-`nano filePath` = Opens the text file mentioned in the terminal.
-[Commands to be used on the editor are displayed inside the editor itself. Ex: ^X => CTRL+X => Exits Editor]
-(If file exists => nano opens it for you)
-(If file does NOT exist => nano creates on and opens it for you)
+### `nano` editor:
 
---------------------------------------------------------------------------------------------------------------------
+`nano filePath` = Opens the text file mentioned in the terminal. Commands to be used on the editor are displayed inside the editor itself. Ex: ^X => CTRL+X => Exits Editor
 
-HISTORY OF COMMANDS:
-====================
+- If file exists => nano opens it for you
+- If file does NOT exist => nano creates on and opens it for you
 
-Typing Up-Arrow will give us the previously type commands (Newest first). Linux could store ~500 commands by default.
+## History of Commands:
 
-`history` = This command will list out all the recently used commands by you in a table format:
-serial number followed by the command.
+Typing <Up-Arrow> will give us the previously type commands (Newest first). Linux could store ~500 commands by default.
 
-`history xx` = Shows you the last xx number of commands.
+- `history` = This command will list out all the recently used commands by you in a table format: serial number followed by the command.
 
-Therefore, to reuse a command that you see in the history table, use:
-`!xxx` = (Exclamation mark(!) followed by the command's serial number) The corresponding command gets executed.
+- `history xx` = Shows you the last xx number of commands.
 
-The entire history is stored in a file called '.bash_history' (hidden file) in your Home Folder.
-It contains all the previous commands, one command per line.
-We can edit this file in order to modify/delete/add to the command history(so that other users don't see it).
+- `!xxx` = Reuse a command that you see in the history table, use: (Exclamation mark(!) followed by the command's serial number). Then the corresponding command gets executed.
 
-`history -c` = Clears up your entire history. ('.bash_history' is emptied of its contents)
+The entire history is stored in a file called `.bash_history` (hidden file) in your Home(`~`) Folder. It contains all the previous commands, one command per line. We can edit this file in order to modify/delete/add to the command history(so that other users don't see it).
 
---------------------------------------------------------------------------------------------------------------------
+- `history -c` = Clears up your entire history. That is, `.bash_history` is emptied of its contents.
 
-VIEWING TEXT FILES: (READ ONLY MODE)
-------------------------------------
-`less filePath` = less is a command that brings up the less text file viewer for the specified file. 
-(less command takes you to a separate/dedicated screen)
-['less' is a read only mode file viewer. We cannot edit files like we did in nano/gedit.]
-	Inside less viewer: 
-	Press `q` to exit less, 
-	Press `h` to get help on less commands, 
-	`/searchkey` to search for text, etc..
+## Viewing Text Files (Read-only mode):
 
-`cat` command:
---------------
-`cat filePath` = cat command is used to display(print) the contents of a text file on the terminal.
-(cat does not take you to a separate screen like with less command but shows contents on the terminal itself)
+### `less` command:
+- `less filePath` = less is a command that brings up the less text file viewer for the specified file. (less command takes you to a separate/dedicated screen)
+
+'less' is a read only mode file viewer. We cannot edit files like we did in nano/gedit.
+	
+Inside less viewer: 
+- Press `q` to exit less, 
+- Press `h` to get help on less commands, 
+- `/searchkey` to search for text, etc..
+
+###  `cat` command:
+- `cat filePath` = cat command is used to display(print) the contents of a text file on the terminal. (cat does not take you to a separate screen like with less command but shows contents on the terminal itself)
 
 `cat` stands for 'catenating'
 
-`cat filePath1 filePath2 ...` = To view(print on terminal) two or more files by concatenating their contents.
-(Order of the files matter)
+- `cat filePath1 filePath2 ...` = To view(print on terminal) two or more files by concatenating their contents. (Order of the files matter)
 
-`tac` command:
---------------
-`tac filePath` = Used exactly like `cat` but it reverses the file contents while printing (last line is first)
-`tac filePath1 filePath2 ...` = Used exactly like `cat` but it reverses each of the file contents (last line is first) and then concatenates them and prints content.
+### `tac` command:
 
---------------------------------------------------------------------------------------------------------------------
+- `tac filePath` = Used exactly like `cat` but it reverses the file contents while printing (last line is first)
+- `tac filePath1 filePath2 ...` = Used exactly like `cat` but it reverses each of the file contents (last line is first) and then concatenates them and prints content.
 
-`head` and `tail` commands:
-===========================
+### `head` and `tail` commands:
 
-`head filePath` = Prints/Display the FIRST 10 lines of a file
-`head -n xx filePath` = Prints/Display the FIRST xx lines of a file
+- `head filePath` = Prints/Display the FIRST 10 lines of a file
+- `head -n xx filePath` = Prints/Display the FIRST xx lines of a file
 
-`tail filePath` = Prints/Display the LAST 10 lines of a file
-`tail -n xx filePath` = Prints/Display the LAST xx lines of a file
+- `tail filePath` = Prints/Display the LAST 10 lines of a file
+- `tail -n xx filePath` = Prints/Display the LAST xx lines of a file
 
---------------------------------------------------------------------------------------------------------------------
+## Counting Words in a Files:
 
-COUNTING WORDS IN A FILE:
-=========================
-`wc filePath` = Prints the 1. number of lines, 2. number of words, and 3. number of bytes or characters in the specified file.
-(Any no.of chars (>=1) appearing together and separated from other such blocks by spaces is considered as a 'word')
+- `wc filePath` = Prints the 1. number of lines, 2. number of words, and 3. number of bytes or characters in the specified file. (Any no.of chars (>=1) appearing together and separated from other such blocks by spaces is considered as a 'word')
 
-`wc -l filePath` = Prints only the number of lines.
-`wc -w filePath` = Prints only the number of words.
-`wc -c filePath` = Prints only the number of characters or bytes.
+- `wc -l filePath` = Prints only the number of lines.
+- `wc -w filePath` = Prints only the number of words.
+- `wc -c filePath` = Prints only the number of characters or bytes.
+- `wc -L filePath` = Prints the Length(number of characters/bytes) of the Longest Line in the file. (capital 'L' flag)
 
-`wc -L filePath` = Prints the Length(number of characters/bytes) of the Longest Line in the file. (capital 'L' flag)
+## Types of Linux Commands:
 
---------------------------------------------------------------------------------------------------------------------
-
-TYPES OF LINUX COMMANDS:
-========================
 All linux commands can be classified into one of the following types:
 
 1. Executable Programs:
------------------------
-These are normal applications that get executed (Liks any other application on the system).
-They are generally found in the '/bin' or '/usr/bin' folders.
-Common Executable program application exampe => `cp` command
+	- These are normal applications that get executed (Liks any other application on the system).
+	- They are generally found in the '/bin' or '/usr/bin' folders.
+	- Common Executable program application exampe => `cp` command
 
 2. Shell built-ins:
--------------------
-These commands are built into the shell.
-Ex. The bash shell(Bourne Again) Shell .
-A famous shell built-in command is the : `cd` command.
+	- These commands are built into the shell. Ex. The bash shell(Bourne Again) Shell .
+	- A famous shell built-in command is the : `cd` command.
 
 3. Shell Scripts:
------------------
-These commands exist inside files create by the user and executing this file will execute the commands in it.
-These files are also usually found /bin or /usr/bin although they can be stored anywhere.
-[Note:: script != executable program]
-[Shell Script is an 'ASCII text executable']
+	- These commands exist inside files create by the user and executing this file will execute the commands in it.
+	- These files are also usually found /bin or /usr/bin although they can be stored anywhere.
+
+Note: script != executable program (Shell Script is an 'ASCII text executable')
 
 4. Aliases:
------------
-Aliases are used to make custom commands.
-They make use of existing commands.
-Even users can make/create aliases.
+	- Aliases are used to make custom commands.
+	- They make use of existing commands.
+	- Even users can make/create aliases.
+
 Ex: `ls` command is actually an alias command.
 
-[The `shell built-in` commands are the only ones out of the three NOT regarded as executables!]
-[The other three are executables.]
+The `shell built-in` commands are the only ones out of the three NOT regarded as executables!.
+The other three are `executables`.
 
-FINDING TYPE OF A COMMAND:
---------------------------
-`type commandName` = Gives you the type of the command.
-(type can differentiate btw aliases and built-in commands but NOT btw. executable and shell scripts -> it displays absolute path of the scripts/executables)
-Ex: `type ls` => ls is aliased to `ls --color=auto'
-	`type cd` => cd is a shell builtin
+### Finding the Type of a Command:
 
-::NOTE::
-To differentiate btw. Executables and Shell scripts: We can do a `type` and then do `file` on the returned absolute path. This gives the type information of the file.
-Ex: 
-`type cp` => cp is /bin/cp
-`file /bin/cp` => /bin/cp: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=aac8232e6a5b347942f362c7a27cc3826de39073, stripped
+- `type commandName` = Gives you the type of the command. Type can differentiate btw aliases and built-in commands but NOT btween Executable and Shell Scripts -> it displays absolute path of the scripts/executables. Ex: 
+- `type ls` = ls is aliased to `ls --color=auto'
+- `type cd` = cd is a shell builtin
 
-Executable Program => 'LSB executable'
-Shell Script => 'ASCII text executable'
+NOTE: To differentiate btween Executables and Shell scripts: We can do a `type` and then do `file` on the returned absolute path. This gives the type information of the file. Ex: 
+- `type cp` = cp is /bin/cp
+- `file /bin/cp` = Gives output: /bin/cp: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=aac8232e6a5b347942f362c7a27cc3826de39073, stripped
 
-Note:: The files could be symbolic links/soft links to other files, which is what is mentioned when we run `type` and then `file` on the command and command file, respectively. So we have to run `file` on those files to gather info about the type of the command.
-(THEREFORE, COMMANDS CAN BE LINKS TO OTHER COMMANDS! - REMEMBER)
+- Executable Program = 'LSB executable'
+- Shell Script = 'ASCII text executable'
 
-FINDING THE LOCATION OF AN EXECUTABLE COMMAND:
-----------------------------------------------
-[The `shell built-in` commands are the only ones out of the three NOT regarded as executables!]
-[The other three are executables.]
+Note: The files could be symbolic links/soft links to other files, which is what is mentioned when we run `type` and then `file` on the command and command file, respectively. So we have to run `file` on those files to gather info about the type of the command.
 
-`which commandName` = Gives the location of an Executable command in the system (file path).
-Ex: `which cp` => /bin/cp
+THEREFORE, COMMANDS CAN BE LINKS TO OTHER COMMANDS! - REMEMBER.
 
-NOTE::
-(sbin -> Stands for `superuser binary` ; Some executables are stored in the `sbin` folder also) => Usually contains commands carried out by a system administrator such as networking commands, etc.
-Ex: `which reboot` => /sbin/reboot
+### Finding the Location of an Executable Command:
 
-NOTE::
-`which` does NOT display anything when used with Shell Built-ins.
-Ex: `which cd` => **nothing**
-This is because shell built ins are NOT regarded as executables but are commands that are part of the shell itself. Hence, they don't have a path.
+The `shell built-in` commands are the only ones out of the three NOT regarded as executables! The other three are executables.
 
---------------------------------------------------------------------------------------------------------------------
+- `which commandName` = Gives the location of an Executable command in the system (file path). Ex: `which cp` = /bin/cp
 
-DESCRIPTION/INFORMATION ABOUT COMMANDS:
-=======================================
+NOTE: `sbin` : Stands for `superuser binary`. Some executables are stored in the `sbin` folder also : Usually contains commands carried out by a system administrator such as networking commands, etc. Ex: `which reboot` = /sbin/reboot
 
-`help commandName` = Gives information about 'SHELL BUILT-IN' commands ONLY!.
-(Does NOT work on executables -> i.e: executable programs, shell scripts, aliases)
+NOTE: `which` does NOT display anything when used with Shell Built-ins. Ex: `which cd` = **Nothing/No output**. This is because shell built ins are NOT regarded as executables but are commands that are part of the shell itself. Hence, they don't have a path.
 
-`man commandName` = Opens a separate Screen displaying Info/Description about an executable command!
-('man' stands for manual -> Ex: how to use booklet)
-(Does not work on Shell Built-In commands)
+## Description/Information about Commands:
+
+- `help commandName` = Gives information about 'SHELL BUILT-IN' commands ONLY!. (Does NOT work on executables. i.e: executable programs, shell scripts, aliases)
+
+- `man commandName` = Opens a separate Screen displaying Info/Description about an executable command! ('man' stands for manual. Ex: how to use booklet) (Does not work on Shell Built-In commands)
 
 USE `man` and `help` to learn about new commands you come across by yourself (since learning all the commands in a tutorial at once is impossible)
 
-`whatis commandName` = Displays/prints a very short description about the command(what it is and does)
-(Works only on Executables -> Does NOT work on Shell Built-Ins)
+- `whatis commandName` = Displays/prints a very short description about the command(what it is and does) (Works only on Executables : Does NOT work on Shell Built-Ins)
 
-Shell Built-In: use 'help'
-Executables(shell scripts, executable programs, aliases): 'man', 'whatis'
+Shell Built-In: use 'help' Executables(shell scripts, executable programs, aliases): 'man', 'whatis'
 
---------------------------------------------------------------------------------------------------------------------
+## Executing Multiple Commands:
 
-EXECUTING MULTIPLE COMMANDS:
-============================
+**Method 1:**
 
-METHOD 1. We can execute multiple commands at once by separating them out with a ';':
-Ex: `ls;cal;date` => shows list of files/dirs in cwd THEN shows the calendar for current month THEN current date & time.(The order of commands matter)
+We can execute multiple commands at once by separating them out with a `;`. Ex: 
+- `ls;cal;date` = shows list of files/dirs in cwd THEN shows the calendar for current month THEN current date and time. (The order of commands matter)
 
-This method(; method) IGNORES(shows command not found) all incorrect commands/typos and executes the correct commands!
-Ex: `Cal;ls;sfd` => ignores Cal(shows not found msg), prints list of files/dirs, ignores(shows not found msg) sfd.
+This `;` method IGNORES (i.e shows command not found) all incorrect commands/typos and executes the correct commands! Ex: 
+- `cal;ls;sfd` = ignores Cal(shows not found msg), prints list of files/dirs, ignores(shows not found msg) sfd.
 
-Having an `exit` command in the '; method' will IGNORE the remaining commands on the line and Exit/End session.
+Having an `exit` command in the `;` method will IGNORE the remaining commands on the line and Exit/End session.
 
-METHOD 2. We can execute multiple commands at once by separating them out with a '&&':
-Ex: `ls && cal && date` => shows list of files/dirs in cwd THEN shows the calendar for current month THEN current date & time.(The order of commands matter)
+**METHOD 2:** 
 
-The difference btw the ; and && methods is that the && follows 'Short circuiting' and will not execute after an incorrect/invalid command has been found.(throws an error message for the incorrect command and stops)
+We can execute multiple commands at once by separating them out with a `&&`. Ex: 
+- `ls && cal && date` = shows list of files/dirs in cwd THEN shows the calendar for current month THEN current date and time (The order of commands matter)
 
---------------------------------------------------------------------------------------------------------------------
+The difference btw the `;` and `&&` methods is that the `&&` follows 'Short circuiting' and will not execute after an incorrect/invalid command has been found. (Throws an error message for the incorrect command and stops)
 
-WILDCARDS: (For matching file or directory names)
-----------
+## Wildcards: 
 
-1. '*' -> Matches Any Number of characters (Including 0 chars)
-	Ex:
-		`rm *` : Removes EVERY file in the CWD.
-		`cp todo* dir1` : Copies every file STARTING with 'todo' to 'dir1' folder.
-		`cp *.txt dir1` : Copies every file ENDING with '.txt' to 'dir1' folder.(i.e every text file)
-		`cp *app* dir1` : Copies every file CONTAINING the word 'app' to 'dir1' folder.
-		`cp n*e dir1` : Copies every file STARTING WITH 'n' and ENDING WITH 'e' to 'dir1' folder.
+Used for matching file or directory names.
 
-2. '?' -> Matches a Single Character. (One '?'' for Each Character required.)
-	Ex:
-		`rm ?` : Removes all single character files from the CWD.
-		`cp file? dir1` : Copies all files such as file1, file2, filex, etc.. to dir1.
-		`cp file??.txt dir1` : Copes all files such as file42.txt, fileab.txt, etc.. to dir1. (One ? for each Char)
+1. `*` : Matches Any Number of characters (Including 0 chars) Ex:
+	- `rm *` : Removes EVERY file in the CWD.
+	- `cp todo* dir1` : Copies every file STARTING with 'todo' to 'dir1' folder.
+	- `cp *.txt dir1` : Copies every file ENDING with '.txt' to 'dir1' folder.(i.e every text file)
+	- `cp *app* dir1` : Copies every file CONTAINING the word 'app' to 'dir1' folder.
+	- `cp n*e dir1` : Copies every file STARTING WITH 'n' and ENDING WITH 'e' to 'dir1' folder.
 
-NOTE:: We can COMBINE WILDCARDS:
-Ex: `cp f??e.* dir1` : Copies all files to dir1 that start with 'f' and end with 'e' with any 2 characters in between and then followed by a '.' and any number of characters(any extension).
+2. `?` : Matches a Single Character. (One '?'' for Each Character required.) Ex:
+	- `rm ?` : Removes all single character files from the CWD.
+	- `cp file? dir1` : Copies all files such as file1, file2, filex, etc.. to dir1.
+	- `cp file??.txt dir1` : Copes all files such as file42.txt, fileab.txt, etc.. to dir1. (One ? for each Char)
 
-3. Specifying Ranges: Use '[]':
-	Ex: 
-		`rm [abc]` : removes files named either 'a' or 'b' or 'c'.
-		`cp [abc]* dir1` : Copies all files to dir1 that begin with either 'a' or 'b' or 'c'.
+NOTE: We can COMBINE WILDCARDS: Ex: `cp f??e.* dir1` : Copies all files to dir1 that start with 'f' and end with 'e' with any 2 characters in between and then followed by a '.' and any number of characters(any extension).
 
-	NOTE: '!' inside the '[]' does the opposite of the command without the '!': [COMPLEMENT]
-		Ex:
-			`cp [!abc]* dir1` : Copies all files to dir1 that DO NOT begin with either 'a' or 'b' or 'c'.
+3. `[]` : Specifying Ranges. Ex: 
+	- `rm [abc]` : removes files named either 'a' or 'b' or 'c'.
+	- `cp [abc]* dir1` : Copies all files to dir1 that begin with either 'a' or 'b' or 'c'.
 
-	NOTE: '-' inside the '[]' represents a RANGE of characters.
-		Ex:
-			`cp [0-9]* dir1` : Copies all files to dir1 that begin with a number (0 to 9).
-			`cp [0-6]* dir1` : Copies all files to dir1 that begin with a number between 0 and 6 (0 to 6 inclusive)
+NOTE: `!` inside the `[]` does the opposite of the command without the `!`: (COMPLEMENT). Ex:
+- `cp [!abc]* dir1` : Copies all files to dir1 that DO NOT begin with either 'a' or 'b' or 'c'.
 
-	NOTE: 	'[:upper:]' inside a '[]' matches an Uppercase Character.
-			'[:lower:]' inside a '[]' matches an Lowercase Character.
-			'[:digit:]' inside a '[]' matches an Digit.
-			'[:alpha:]' inside a '[]' matches a Letter of the Alphabet.
-			'[:alnum:]' inside a '[]' matches a Letter of the Alphabet/A Digit (matches an Alphanumeric character).
-		Ex:
-			`rm [[:upper:]]*` : remove all files beginning with an uppercase character.
-			`rm [[:lower:]]*` : remove all files beginning with an lowercase character.
-			`rm *[[:digit:]]*` : remove all files containing a digit.
-			`rm [![:digit:]]*` : remove all the files that do NOT begin with a digit.
+NOTE: `-` inside the `[]` represents a RANGE of characters. Ex:
+- `cp [0-9]* dir1` : Copies all files to dir1 that begin with a number (0 to 9).
+- `cp [0-6]* dir1` : Copies all files to dir1 that begin with a number between 0 and 6 (0 to 6 inclusive)
 
+NOTE: `[:upper:]` inside a `[]` matches an Uppercase Character. Similarly:
+- `[:lower:]` inside a `[]` matches an Lowercase Character.
+- '[:digit:]' inside a `[]` matches an Digit.
+- '[:alpha:]' inside a `[]` matches a Letter of the Alphabet.
+- '[:alnum:]' inside a `[]` matches a Letter of the Alphabet/A Digit (matches an Alphanumeric character).
+		
+Ex:
+- `rm [[:upper:]]*` : remove all files beginning with an uppercase character.
+- `rm [[:lower:]]*` : remove all files beginning with an lowercase character.
+- `rm *[[:digit:]]*` : remove all files containing a digit.
+- `rm [![:digit:]]*` : remove all the files that do NOT begin with a digit.
 
---------------------------------------------------------------------------------------------------------------------
+## Aliases: 
 
-ALIAS: (CREATING NEW COMMANDS) => VERY USEFUL!!
-======
+Creating new command > Very Useful!
 
-Syntax:
-`alias newCommandName="...whatever commands you want to execute..."`
+Syntax: `alias newCommandName="<whatever commands you want to execute...>"`
 
 Ex:
-`alias invent="cd Desktop;mkdir newDir"` = The new `invent` command changes directory to Desktop and makes a new directory call newDir.
+- `alias invent="cd Desktop;mkdir newDir"` = The new `invent` command changes directory to Desktop and makes a new directory call newDir.
 
-(We can execute multiple commands on the same line by separating them with ';' therefore, we use it here in aliases)
+We can execute multiple commands on the same line by separating them with `;` therefore, we use it here in aliases.
 
 How to check if command exists before creating new one? 
-=> Use the `type` command -> error/no output => command does not exist.
+- Use the `type` command. If error/no output then command does not exist.
 
-(One use case for `aliases` would be that Windows users who work on linux can now create aliases with winodws command name that execute the corresponfing linux instructions.)
+One use case for `aliases` would be that Windows users who work on linux can now create aliases with winodws command name that execute the corresponfing linux instructions.
 
-Deleting an Alias:
-------------------
-`unalias aliasedCommandName` = running this will de-recognise the previously aliased command.
+### Deleting an Alias:
 
-=====
-NOTE: The `~/.bashrc` file (to permanently save aliases - for all sessions)
-=====
-Setting aliases via the alias command on the terminal will not save them once the terminal session is logged out of / ended. That is, they are NOT Saved for the subsequent sessions.
+- `unalias aliasedCommandName` = running this will de-recognise the previously aliased command.
 
-In order to SAVE aliases permanently(for all subsequent sessions), we must ADD the alias command as a line to the '.bashrc' file inside the Home Directory.
-(i.e: Open .bashrc with:
-`cd ~`
-`vim .bashrc` [you need not use vim, can use any text editor, including GUI ones]
-and add the alias command[Ex: `alias dir="ls"`] as a line inside the file and SAVE IT.)
+
+### The `~/.bashrc` file:
+
+Used to permanently save aliases - for all sessions.
+
+Setting aliases via the alias command on the terminal will not save them once the terminal session is logged out of/ended. That is, they are NOT Saved for the subsequent sessions.
+
+In order to SAVE aliases permanently(for all subsequent sessions), we must ADD the alias command as a line to the `.bashrc` file inside the Home Directory. That is, Open .bashrc with:
+- `cd ~`
+- `vim .bashrc` 
+
+(You need not use vim, can use any text editor, including GUI ones).
+
+Add the alias command (Ex: `alias dir="ls"`) as a line inside the file and SAVE IT.
 
 We must close the session and restart it for the alias to work. It will work for all subsequent sessions.
 
-To Delete the permanent alias => Delete that alias's line from the .bashrc file inside your home directory.
+To Delete the permanent alias : Delete that alias's line from the `.bashrc` file inside your home directory.
 
 NOTE:
------
-`alias` = Running the alias command WITHOUT ANY ARGUMENTS will print all the aliases that (have been created and) are in existence on the system.[Basically prints all the aliases that the system is using]
-
---------------------------------------------------------------------------------------------------------------------
-
+- `alias` = Running the alias command WITHOUT ANY ARGUMENTS will print all the aliases that (have been created and) are in existence on the system. (Basically prints all the aliases that the system is using)
