@@ -1,4 +1,4 @@
-# GREP:
+# `grep` Command:
 
 ## Introduction:
 
