@@ -1,4 +1,10 @@
-# GREP: (SEARCHING FOR TERMS WITHING/ACROSS FILES)
+# GREP:
+
+## Introduction:
+
+Searching for terms within a file or across multiple files? - Use `grep` command.
+
+## `grep` Command and Options:
 
 - `grep 'searchTerm' filePath` = Searches for the search term within the mentioned file.
 
