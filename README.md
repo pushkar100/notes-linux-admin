@@ -1227,12 +1227,12 @@ Ex: `0 7 * * 1 /opt/sales/bin/weekly-report` => This script runs every Monday 07
 Note:: Asterisk (*) => Matches any/every time (or date).
 
 Redirecting Output (of the cron jobs):
---------------------------------------
+
 Ex: `0 2 * * * /root/backupdb/ > /tmp/db.log 2>&1` => Backs up database at 2:00 (AM) every day.
 (Here > is used to redirect the std. output to the /tmp/db.log file along with std. error (2>&1))
 
 Using multiple values:
-----------------------
+
 Use commas(,) to represent multiple values (or)
 Use divider(/) to divide the total time frame for that column. (or)
 Use ranges(-) to specify a range for time / date.
@@ -1245,7 +1245,7 @@ Ex:
 `0-4 * * * * /opt/acme/bin/first-five-mins`
 
 Using keywords/Shortcuts in your crontabs:
-------------------------------------------
+
 `@yearly` 	=> `0 0 1 1 *` (Run once a year on the 1st day of the 1st month) (day can be any weekday)
 `@annually` => `0 0 1 1 *` (Run once a year on the 1st day of the 1st month) (day can  e any weekday)
 `@monthly` 	=> `0 0 1 * *` (Run once every month on the 1st day of the month) (day can be any weekday)
@@ -1257,7 +1257,7 @@ Using keywords/Shortcuts in your crontabs:
 Not all of these shortcuts might work on your linux distribution. (Use `man cron` to check)
 
 `crontab` command:
-------------------
+
 `crontab file` => INSTALL a new crontab from the contents of the file specified.
 `crontab -l` => LIST your cron jobs. (No cron jobs? -> Ex. o/p = 'no crontab for adminuser')
 `crontab -e` => EDIT your cron jobs. (Invokes the editor specified in the '$EDITOR' environment variable)
@@ -1273,13 +1273,13 @@ Ex:
 
 Therefore, cron service runs scheduled jobs and these jobs can be manipulated using the `crontab` command.
 
--------------------------------------------------------------------------------------------------
+
 
 Switching Users and Running commands as Others:
-===============================================
+
 
 Use `su` to switch users:
--------------------------
+
 `su` (or) `su root` => Become Superuser (The admin is usually the superuser of the system)
 `su username` => Switch to account having user name as 'username'.
 Ex:
@@ -1287,7 +1287,7 @@ Ex:
 `su oracle` : Switches to the user named oracle
 
 Options for `su`:
------------------
+
 1. `-` => A hyphen is used to provide an environment similar to what the user would expect had he/she logged in directly. 
 (For example, we end up in the HOME directory of the switched-in user.)
 Ex:
@@ -1311,7 +1311,7 @@ Ex:
 [NOTE:: Alternate way to execute commands as another user account is to use the `sudo` command (later)]
 
 User identification commands:
------------------------------
+
 `whoami` => To know the effective username. To know what user you are logged in as.
 Ex:
 `whoami` => 'jason'
@@ -1320,9 +1320,9 @@ Ex:
 
 `who` => Lists all the users currently logged onto the system.
 
--------------------
+
 The `sudo` command: (Execute commands as another user) - Important!
--------------------
+
 `sudo` stands for 'Super User do' and typically used to execute commands as another user, usually SUPERUSER.
 (That is, it allows us to execute commands with the security privileges of another user)
 
@@ -1331,7 +1331,7 @@ It is commonly used to install, start and stop applications that require the 'ro
 [Note: On running `sudo`, you might be prompted for a password(once in a session), and you have to give the USER'S PASSWORD (& NOT the `root` password) - And if the user has root permissions, the sudo command is executed.]
 
 Executing commands with `sudo`:
--------------------------------
+
 `sudo -l` => List the available commands
 `sudo <command>` => Run command a root(as the superuser)
 `sudo -u root <command>` => Same as running command as root(as superuser)
@@ -1339,7 +1339,7 @@ Executing commands with `sudo`:
 (`-u` is used to specify the user.)
 
 Switching users - again, we can use `sudo`:
--------------------------------------------
+
 `sudo su` => Switch to the superuser(root) account.
 `sudo su -` => Switch to the superuser(root) account with root's environment.
 `sudo su - username` => Switch to username's account with username's environment.
@@ -1355,7 +1355,7 @@ Examples:
 `sudo -s` => Uses `sudo` to switch to the root/superuser account.
 
 Modifying the `sudo` configuration:
------------------------------------
+
 `visudo` => Edit the '/etc/sudoers' file. (We need root access to execute `visudo`)
 [Therefore, switch to root and run `visudo` (OR) run `sudo visudo` from current account]
 The visudo file format:
@@ -1372,7 +1372,7 @@ Ex:
 `adminuser ALL=(ALL)NOPASSWD:ALL`,
 `jason linuxsvr=(root) /etc/init.d/oracle`
 
-----------------------------------------------------------
+
 					*** :::NOTE::: ***
 
 If you ever forget to run a command with `sudo`,
@@ -1387,17 +1387,17 @@ command starts with a particular string:
 in history that starts with 'u' from the root/superuser
 account.
 
-----------------------------------------------------------
+
 
 Summary:
---------
+
 To switch users => Use `su` command.
 To execute commands with superuser control => Use `sudo` command.
 
--------------------------------------------------------------------------------------------------
+
 
 Shell History:
-==============
+
 All executed commands are added to the shell history, which can be displayed and recalled.
 Shell history is stored in Memory and on Disk.
 Commands can be stored in one these files (depends on shell):
@@ -1406,23 +1406,23 @@ Commands can be stored in one these files (depends on shell):
 ~/.histfile`
 
 Viewing history:
-----------------
+
 `history` => Displays the shell history (each line contains a command along with a serial/command number).
 
 Setting the size of the history: (number of commands saved)
---------------------------------
+
 The HISTSIZE environment variable controls the number of commands in the history.(500 by default)
 `export HISTSIZE=1000` => Sets the history size to 1000.
 (Can place this line in '~/.bash_profile' to persist changes)
 
 Repeating commands from history:
---------------------------------
+
 `!N` => Repeat command on line number N (in `history`)
 `!!` => Repeat the previous command.
 `!string` => Repeat the MOST RECENT comman STARTING with 'string'. (Ex: `!gre` => maybe executes 'grep')
 
 Reuse/Pull Out the arguments from the previous command:
--------------------------------------------------------
+
 `!:N` => Pulls out Nth argument from the previous command.
 [:N - Represents a word on the command line . 0 - command, 1 - first argument, ... etc]
 Ex:
@@ -1433,7 +1433,7 @@ Another example:
 `echo !:2 !ch:2` => Pulls out 2nd argument to previous command and 2d argument to the most recently used command that started with 'ch' (Maybe chown, chgrp, chmod, .. etc).
 
 Shortcuts: 
-----------
+
 `!^` => pulls out FIRST argument to the previous command. (`!^` <=> `!:1`)
 `!$` => pulls out LAST argument to the previous command. (`!^` <=> `!:N` where N is the Nth among N args) 
 `!*` => Reuse ALL the arguments to the previous command in the current command. (Ex: `grep !*`)
@@ -1443,24 +1443,24 @@ Ex:
 
 
 Searching for commands:
------------------------
+
 `<CTRL-R>` => Reverse search the shell history. (Matches typed pattern with commands in history)
 	<ENTER> - Execute the command
 	<ARROWS> - Change the command
 	<CTRL-G> - Cancel the search
 
 Autocompletion:
----------------
+
 Use the <TAB> key to autocomplete:
 1. File and Directory paths, Other paths
 2. Environment Variables
 3. Usernames(~) [Ex: '~ja<TAB>` => '~jason']
 4. Commands
 
--------------------------------------------------------------------------------------------------
+
 
 Installing & Managing Software:
-===============================
+
 Typically, when we want to install a software we do so with a 'Package'.
 Package => 'Collection of files'.
 It contains:
@@ -1472,9 +1472,9 @@ It is used to - Install, Upgrade or Remove packages.
 It manages dependencies. (Automatically installs any required dependencies)
 Keeps track of what is installed. (What files belong to what packages, versions, etc)
 
------------------
+
 The `RPM` Format: [The Red Hat Package Manager]
------------------
+
 For installing Software on RPM Distros: RedHat, CentOS, Fedora, Oracle Linux, Scientific Linux.
 The `yum` command is a package manager utility for the distros supporting RPM format:
 `yum search string` => Search for packages (online, included in the pkg mgr) matching the 'string'.
@@ -1485,7 +1485,7 @@ The `yum` command is a package manager utility for the distros supporting RPM fo
 **[NOTE:: Installing/Removing Software requires Superuser/root privileges.]**
 
 RPM commands: (An alternative command to the `yum` utility)
--------------
+
 `rpm -qa` => List all installed packages.
 `rpm -qf /path/to/file` => List the file's packages.
 `rpm -ql package` => List all the package's files.
@@ -1499,7 +1499,7 @@ RPM commands: (An alternative command to the `yum` utility)
 ]
 
 Examples(yum):
---------------
+
 `yum search inkscape` => searches online for matching 'inkscape' packages (from mirrors)
 `yum info inkscape-docs.x84_64` => Gets info on a particular package (Ex: one of matched packages in search)
 (info gives a brief descrption and specs to help understand what the package is)
@@ -1514,7 +1514,7 @@ Installation/Removal requires superuser access: (run `su -s` and switch or `sudo
 `sudo yum remove inkscape` => Removes the 'inkscape' package (Without prompt)
 
 Installing packages not included in the package manager:
---------------------------------------------------------
+
 These are the applications/software that are not `yum search`able.
 In that case, we must:
 1. Goto the website and directly download the .rpm package file for the application(GOES TO '~/Downloads'),
@@ -1523,7 +1523,7 @@ Ex:
 `rpm -ivh nautilus-dropbox.fedora-i386.rpm` => Installs the package (Provided it exists [Downloaded])
 
 General Package Info Commands: (Any installed package)
-------------------------------
+
 `rpm -qa | sort | less` => Displays all the installed package in alphabetical order on the `less` pager.
 `rpm -qf /usr/bin/which` => Displays to what package a file belongs to(Ex.o/p: `which-2.20-7.el7.x86_64`)
 `rpm -ql which` => Lists all the files that are part of the 'which' package
@@ -1532,10 +1532,10 @@ General Package Info Commands: (Any installed package)
 1. While installing a package, it also installs All the Other Packages that this Package depends on.
 2. Use the `which package-name` command to check if the package was installed(returns location of it)]
 
--------------------------------------------------------------------------------------------------
+
 
 Installing on 'Debian' Distros: 'apt' package format:
-=====================================================
+
 The 'Debian' distros do NOT use '.rpm' packages but uses `.apt` instead.
 (Debian distros also includes 'Linux Mint' and 'Ubuntu')
 
@@ -1543,7 +1543,7 @@ Debian based systems use a package manager called `apt`:
 `apt` is composed of a few smaller utilities, two of the most famous of them being `apt-cache` and `apt-get`.
 
 Commands:
----------
+
 `apt-cache search string` => Searches for a package (online, included in the pkg mgr) matching the 'string'.
 `apt-get install [-y] package` => Installs the package. If `-y` is supplied, it does NOT prompt for a y/n.
 
@@ -1566,15 +1566,15 @@ The `dpkg` command - used in addition to the `apt` utility:
 1. While installing a package, it also installs All the Other Packages that this Package depends on.
 2. Use the `which package-name` command to check if the package was installed(returns location of it)]
 
--------------------------------------------------------------------------------------------------
+
 
 The Linux Boot Process:
-=======================
+
 
 *** [WATCH SECTION 5, LECTURE 39 FOR FULL VIDEO DEMO OF THE BOOT - VERY USEFUL] ***
 
 BIOS:
------
+
 The BIOS stands for Basic Input-Output.
 It is a special firmware - that checks the hardware connected to a system.
 It is Operating System Independent (Applies to all OSes and not just Linux)
@@ -1598,14 +1598,14 @@ Boot loaders could start the Operating System with Different Options.
 [If there are multiple OSes installed, we can tell the Boot loader which OS to load/run.]
 
 Initial RAM Disk:
------------------
+
 'initrd' or Initial RAM Disk is a temporary file system that is loaded from Disk and Stored in Memory.
 It contains helpers and kernel modules (sometimes called 'Drivers') required to load the permanent OS file system.
 
 Once the real OS filesystem has been mounted by 'initrd', its job is done and the loading process continues from the real Operating System File System. 
 
 The '/boot' directory:
-----------------------
+
 The '/boot' directory contains the files required to boot Linux:
 1. initrd
 2. kernel (The Linux Kernel)
@@ -1628,7 +1628,7 @@ You can use -F (in `ls` command) which classifies the file with different specia
 )
 
 The Kernel Ring Buffer:
------------------------
+
 Teh ring buffer is a data structure maintained by the kernel to store messages from the kernel.
 It is of fixed size and older messages get deleted when new ones are added.
 Get kernel messages by executing the command:
@@ -1642,7 +1642,7 @@ Location of the kernel messages:
 (This files contains all kernel messages from start to now, unlike the ring buffer's `dmesg` command.)
 
 Linux uses Run Levels: (To determine what processes and services to start)
----------------------
+
 Run Levels:
 0 = Shuts down the system.
 1, S, s = Single user mode. Used for maintenance.
@@ -1653,7 +1653,7 @@ Run Levels:
 6 = Reboot.
 
 Setting the Run Level:
-----------------------
+
 Traditionally run levels were controlled by the 'init' program.
 The File containing 'init' configurations is:
 `/etc/inittab`.
@@ -1669,7 +1669,7 @@ To Change run level: (`telinit`) (NOT the default run level)
 NOTE:: 'init' is slowly being phased out by other utilities like 'systemd'.
 
 `systemd`:
-----------
+
 Uses 'targets' instead of run levels. (targets are roughly equivalent to run levels)
 To get the list of available 'targets', look inside: '/lib/systemd/system'
 (Ex: `ls -l /lib/systemd/system`, 
@@ -1688,7 +1688,7 @@ To change the target/run level target: (NOT the default run level target)
 `systemctl isolate graphical.target` => Changes run level to 'graphical.target'.
 
 Rebooting:
-----------
+
 Even though we can use the:
 `telinit 6` (or)
 `systemctl isolate reboot.target` to reboot the system,
@@ -1696,7 +1696,7 @@ We can also use system command:
 `reboot` => Reboots the system.
 
 `Shutdown` command for rebooting:
----------------------------------
+
 Even though we can use:
 `telinit 0` to shutdown,
 there exists commands to shutdown the system:
@@ -1718,21 +1718,21 @@ Ex:
 `shutdown -r now`
 
 Power Off a system: (3 main ways)
--------------------
+
 1. `telinit 0`
 2. `systemctl isolate poweroff.target` (Selects the 'poweroff' target)
 3. `poweroff` (Simple command that can be executed at the CLI to power off the system)
 
--------------------------------------------------------------------------------------------------
+
 
 The System Log:
-===============
+
 Aids in the process of messages. (Each process need not have to create its own log files)
 Allows logging to be centrally controlled.
 Uses facilities and severities to categorize messages.
 
 Facilities:
------------
+
 What type of program / what place in the system the message originated from.
 0 	kern 		kernel messages
 1 	user 		user-level messages
@@ -1756,7 +1756,7 @@ What type of program / what place in the system the message originated from.
 We can use local0 to local7 for our own purposes.
 
 Severities:
------------
+
 0 	Emergency	emerg(panic)	System is unusable
 1 	Alert 		alert 			Take action immediately
 2 	Critical	crit			Critical Conditions
@@ -1767,7 +1767,7 @@ Severities:
 7 	Debug		debug			Debug-level messages
 
 `rsyslog`:
-----------
+
 `rsyslog` is one the syslog servers in use.
 
 1. Main configuration file for `rsyslog`: 
@@ -1778,7 +1778,7 @@ Severities:
 [The `IncludeConfig` directive asks the rsyslog to add any file ending with '.conf' and existing in the '/etc/rsyslog.d/' directory.]
 
 Logging rules:
---------------
+
 1. Selector field: Syntax: `FACILITY.SEVERITY`
 ('*' severity for all[Ex: 'mail.*' <=> 'mail'] (Wildcards supported for both facilities and severities),
  'none' severity for none[Ex: mail.none],
@@ -1788,7 +1788,7 @@ Logging rules:
 2. Action Field: How a message is processed.
 
 Caching vs Non-caching:
------------------------
+
 Caching is used if the path starts with a hyphen(-)
 Ex: 'mail.*' logs saved to '-/var/log/mail.info'
 
@@ -1803,7 +1803,7 @@ Ex:
 (Lower severities are cached while higher severities are not cached.)
 
 Generate 'syslog' messages:
----------------------------
+
 Use the `logger` command.
 Ex:
 `logger [options] message`.
@@ -1818,7 +1818,7 @@ Ex:
 
 [NOTE:: `logrotate` command => Did not learn (go back to videos if you wish to learn)]
 
--------------------------------------------------------------------------------------------------
+
 
 NOTE::
 Removing blank lines and comment lines from a file/stdin:
@@ -1829,10 +1829,10 @@ The $ stands for the end of the line in regular expression pattern. (^$ => Blank
 | stands for OR (this[left side] or that[right side])
 )
 
--------------------------------------------------------------------------------------------------
+
 
 Disk Management:
-================
+
 
 Disks can be divided into parts - called Partitions.
 Partitions allow you to separate data.
@@ -1842,13 +1842,13 @@ Ex: 1. OS 2. Application 3. User 4. Swap,
 (As a system administrator, you get to decide).
 
 Advantages of partitioning:
----------------------------
+
 Can protect the overall system.
 Keep users from creating outages by using a home directory partition.
 (Ex: If the system runs a web server, we can partition OS and the server on the disk, so damage/outage in one won't affect the other, esp. the OS will still keep running)
 
 (MBR) Master Boot Record:
--------------------------
+
 MBR - It's a 'boot sector' that exists at the beginning of partitioned computer mass storage devices like fixed disks or removable drives.
 
 [MBR = Boot Sector (sectors, tracks, cylinders ...) at the beginning of a storage device]
@@ -1864,7 +1864,7 @@ An Extended Partition is a special kind of primary partition that is used as a '
 Disadvantage of MBR: Can ONLY address 2TB of disk space.
 
 (GPT) GUID Partition Table:
----------------------------
+
 It is slowly replacing MBR as the boot sector of the partitioned disks.
 
 GUID = Global Unique Identifier.
@@ -1880,9 +1880,9 @@ Upto 128 Partitions.
 Upto 9.4ZB Disk Sizes. (ZB = Zeta Byte)
 (NOT supported by older OSes and May require Newer or Special Tools)
 
--------------
+
 Mount Points:
--------------
+
 A mount point is simply a DIRECTORY that is USED to ACCESS THE DATA on a Partition.
 
 '/' (slash) => It is always a Mount Point.(At least 1 Partition is mounted on the '/' directory)
@@ -1895,7 +1895,7 @@ If we, say, umounted (remove) the '/home` partition and instead allocate it to t
 (Ex: '/export/home/jason' available under the mounted partition '/export/home')
 
 Mount Partitions over Existing Data:
-------------------------------------
+
 We can mount partitions over existing data. For example, if files(or directories) were create inside '/home' before the '/home' partition was mounted/create, those files will NOT be accessible after '/home' is mounted as a partition.
 [They will exist but you not be able to access them.]
 Ex:
@@ -1908,14 +1908,14 @@ Ex:
 *You can now access '/home/sarah' once again since mount was '/' when 'sarah' directory was created*
 
 Mount Points over other Mount Points:
--------------------------------------
+
 This is possible. For Example: 
 If '/home' is a mount point, we can create another mount point '/home/jason' over the existing '/home' mount point.
 (The important thing to note is that '/home' must be mounted BEFORE mounting '/home/jason'!).
 
---------
+
 `fdisk`:
---------
+
 'fdisk' is a standard linux tool or a utility that has been traditionally used to CREATE and MODIFY PARTITONS on a Disk.
 (Alternatives: `gdisk` or `parted`)
 
@@ -1985,16 +1985,16 @@ QUITTING without Saving:
 Type `q`.
 
 CREATING a "GPT" Partition (Inside a Disk using the `fdisk` utility):
----------------------------------------------------------------------
+
 Type 'g': (Prints message that you 'building a new GPT disklabel')
 :=> Simialr commands to MBR. (n-create, p-print GPT table, d-delete partition, w-save&quit, q-quit)
 :=> Only thing to remember is that instead of '1-4' partition numbers, there are '1-128'.
 :=> No primary/extended partitions like in MBR. (All partitions are equival)
 
--------------
--------------
+
+
 File Systems:
--------------
+
 Before a partition can be used by a system, it will need a File System.
 
 'ext' : Extendeded file system was create specifically for linux and is the default
@@ -2003,7 +2003,7 @@ Before a partition can be used by a system, it will need a File System.
 Other File Systems: 'ReiserFS', 'JFS', 'XFS', 'ZFS', 'Btrfs'
 
 Create a File System:
----------------------
+
 `mkfs -t TYPE DEVICE` => Creates a file system of specified TYPE on the mentioned disk DEVICE
 (DEVICE: path to the partition where you want the file system to reside).
 (Ex: `mkfs -t ext3 /dev/sdb2`)
@@ -2014,32 +2014,32 @@ Location of the mkfs files: `ls -l /sbin/mkfs*`
 
 'mkfs' help: `man mkfs.ext2` to find more info about the ext2 file system creation commands.
 
-----------------------------
-----------------------------
+
+
 Mounting a Device Partition: [Mount Point is simply a directory which we place a device partition on]
-----------------------------
+
 (After creating and assigning a file system.)
 `mount DEVICE MOUNT_POINT` => Mounts a device partition to the directory specified.
 Ex:
 `mount /dev/sdb3 /opt`
 
 Viewing currently mounted file systems:
----------------------------------------
+
 `mount` => No Args - Therefore, mount displays all the filesystems (physical as well as virtual file systems.)
 
 Manual mounts do NOT persist!:
-------------------------------
+
 In order to makes mounts persist between reboots, add an entry in the '/etc/fstab' file.
 
 Unmount a file System: (umount command)
-----------------------
+
 `umount DEVICE_OR_MOUNT_POINT`
 eX:
 `umount /opt` (unmount using mount point)
 `umount /dev/sdb3` (unmount using device partition)
 
 Preparing a swap space:
------------------------
+
 Instead of creating a file system and mounting it, we can create a 'Swap Area' and 'Enable' it.
 
 `mkswap DEVICE` => Creates a swap space.(Ex: `mkswap /dev/sdb1`)
@@ -2047,7 +2047,7 @@ Instead of creating a file system and mounting it, we can create a 'Swap Area' a
 `swapon -s` => Displays the swap devices in use.
 
 `/etc/fstab` file - The File System Table:
-------------------------------------------
+
 Controls what devices get mounted and where on boot.
 Each entry(one line) has 6 fields:
 1. Device (label/path-to-device (or) UUID)
@@ -2071,21 +2071,21 @@ Example using UUID:
 'man fstab' => Information about the full list of options.
 
 Viewing Labels and UUIDs of file systems:
------------------------------------------
+
 `lsblk -f` => Shows label, name, fstype, and UUIDs of devices.
 `blkid` => 'Shows the path, type and UUIDs of devices'
 
 Labelling a file system(changing the name):
--------------------------------------------
+
 For 'ext' filesystems we can use the `e2label`
 `e2label DEVICE MOUN_POINT` => Changes label of device(FS) at mount point(directory).
 Ex:
 `e2label /dev/sdb3 opt`
 
--------------------------------------------------------------------------------------------------
+
 
 MANAGING USERS AND GROUPS:
-==========================
+
 
 Linux is a multi-user OS. The multi-users can also use the system at the Same Time!
 Each user account has the follwoing fields associated:
@@ -2113,7 +2113,7 @@ Other user account example:
 [!!NOTE!!: password is 'x' - Exncrypted password is actually stored in the '/etx/shadow' file]
 
 Note:
------
+
 1. Better to have Usernames less than 8 characters or else[convention] we see + sign appended at 8th character position (or UID instead).
 [Ex: Run this command for a long username: `ps -fu joehenderson`]
 
@@ -2124,7 +2124,7 @@ Note:
 4. Do Not use special characters.
 
 Passwords are stored in '/etc/shadow' file:
--------------------------------------------
+
 Encrypted passwords used to be(earlier) stored in 'etc/passwd'.
 But, '/etc/passwd' is readable by "everyone".
 Now(current linux), encrypted passwords are stored in '/etc/shadow'.
@@ -2132,13 +2132,13 @@ Now(current linux), encrypted passwords are stored in '/etc/shadow'.
 This prevents users trying to crack passwords.
 
 UIDs:
------
+
 The root/superuser account always has UID = 0.
 UIDs are unique numbers.
 System accounts typically have UIDs less than 1000 (< 1000). [Configured in '/etc/login.defs']
 
 GIDs:
------
+
 The GID listed in the '/etc/passwd' file is the default group for an account.
 New files belong to a user's Default group.
 Users can switch groups using the `newgrp` command. (This can be done before creating new files for the new group)
@@ -2146,19 +2146,19 @@ Users can switch groups using the `newgrp` command. (This can be done before cre
 [[::Note:: Systems or applications also have accounts - viewable inside the '/etc/passwd' file]]
 
 Comment Field:
---------------
+
 Typically contains the user's full name.
 In the case of system or application accounts, it often contains what the account is used for.
 It may contain additional info, like phone number.
 Also called the GECOS field.
 
 Home Directory:
----------------
+
 Upon login, the user is placed inside his HOME directory (Ex: '/home/jason' for user 'jason')
 If this directory does NOT exist then he is placed in the root directory('/').
 
 Shell:
-------
+
 The shell will be executed when a user logs in.
 List of available shells are in '/etc/shells'.
 The shell does NOT have to be a shell:
@@ -2168,16 +2168,16 @@ To prevent the interactive use of an account, use : '/usr/sbin/nologin' (or) '/b
 Shells can be command line applications.
 
 The '/etc/shadow' file:
------------------------
+
 Contains the encrypted passwords of the user accounts.
 Format:
 `username:encryptedpass:dayssincepasswordchanged:numdaysbeforewhichpasswordmustbechanged:daystochangepass(99999-neverchange):daystowarnusertochangepass:numdaysafterpasswordexpiredtodisableacct:numdayssinceacctdisabled:futureuse`
 Ex:
 `root:$@234524#242Dde#$3:16502:0:99999:7:::`
 
-------------------------
+
 CREATING A USER ACCOUNT: [Requires root account privileges - Ex> use 'sudo']
-------------------------
+
 Syntax:
 `useradd [options] username` 
 
@@ -2195,7 +2195,7 @@ Ex:
 `useradd -c "Eddie Harris" -m -s /bin/bash -g sales -G projectx harris` (Added to sales and projectX grps)
 
 Create a password for the created user:
----------------------------------------
+
 Syntax:
 `passwd username` 
 Ex:
@@ -2204,7 +2204,7 @@ Ex:
 [Note: The created user entry and his password are "Appended" to the '/etc/passwd' and '/etc/shadow' files respectively.]
 
 System or Application Accounts:
--------------------------------
+
 Not every account is meant to be for a user. 
 Some accounts exist to run applications or perform system functions.
 Examples of these accounts include those that run web server processes, database server processes, etc.
@@ -2220,13 +2220,13 @@ Ex:
 (We do Not want someone to login to this system using the application account - hence => /usr/bin/nologin)
 
 The `-m` option:
-----------------
+
 When using the `-m` option, the Home directory for the user is created.
 The contents of '/etc/skel' (stands for 'skeleton') are copied into the User's Home directory.
 This '/etc/skel' contains shell "configuration files" ('.profile', '.bashrc', etc)
 
 DELETING an account:
---------------------
+
 Syntax:
 `userdel [-r] username`
 Ex:
@@ -2235,7 +2235,7 @@ Ex:
 (The `-r` also removes the user's mailspool file if it exists.)
 
 MODIFY an existing account:
----------------------------
+
 Syntax:
 `usermod [options] username`
 
@@ -2248,9 +2248,9 @@ Similar options to `useradd`:
 Ex:
 `usermod -c "MYSQL User" mysql` => Updates comment associated with a MySQL account.
 
----------------------------
+
 GROUP DETAILS AND CREATION:
----------------------------
+
 The group details are stored in the '/etc/group' file.
 
 Format of the entries in the file:
@@ -2266,51 +2266,51 @@ Ex: `root:x:0:`
 Other group example:
 `sales:x:1001:john,mary`
 
-[IMPORTANT NOTE:: 
+(IMPORTANT NOTE:: 
 Users whose default is a certain group are NOT shown in the entry for that group in '/etc/group' file. 
 BUT, we can check the '/etc/passwd' file to find the user's default group (or) run `groups user-name`
-]
+)
 
 The '/etc/gshadow' file:
-------------------------
+
 The encrypted group passwords(x) are stored in the '/etc/gshadow' file.
 
 Groups that a member belongs to:
---------------------------------
+
 `groups [USERNAME]`
 Ex:
 `groups root` => Displays all groups that root belongs to.
 `groups` => Displays your(currently logged in user) groups (groups that you as the user belong to)
 
 Create Groups:
---------------
+
 `groupadd [-g GID] GROUP_NAME`
 Ex:
 `groupadd web` => Adds the 'web' group.
 `groupadd -g 2500 db` => Adss the 'db' group and also explicitly sets the GID to 2500.
 
 Delete a group:
----------------
+
 `groupdel GROUP_NAME`
 Ex:
 `groupdel db` => Deletes the 'db' group.
 
 MODIFY a group:
----------------
+
 `groupmod [options] group_name`
 Options are:
 `-g GID` => Change group ID to specified GID.
 `-n GROUP` => Change group name to specified name 'GROUP'.
 
--------------------------------------------------------------------------------------------------
+
 
 SPECIAL PERMISSION MODES:
-=========================
+
 When we start a process(execution), it runs using the User's UID and GID (we may have run it as others used 'su'/'sudo' etc for root, doesn't matter.)
 
------------------
+
 (A) 'setuid' bit:
------------------
+
 We can explicitly set a UID before execution of a process:
 `setuid` => Set User ID upon execution.
 `setuid` FORCES the process to run as THE OWNER of the file regardless of who executes it.
@@ -2325,13 +2325,13 @@ Examples of commands and files that run with setuid/as owner of the file:
 etc...
 
 Security measures:
-------------------
+
 It is prone to attack by hackers/malicious users since it always runs on owner(usually root) access.
 It is not honored on shell scripts - Scripts will execute as user who runs the script even if the setuid bit is set for the script. 
 (Only 'binary executable' files work with setuid bit enabled)
 
 Octal permissions:
-------------------
+
 setuid: 0, setgid: 0, sticky: 0 => Value for OFF (total 0)
 setuid: 1, setgid: 1, sticky: 1 => Binary Value for ON (total 3)
 setuid: 4, setgid: 2, sticky: 1 => Base 10 Value for ON (total 7)
@@ -2340,28 +2340,28 @@ setuid: 4, setgid: 2, sticky: 1 => Base 10 Value for ON (total 7)
 (Ex: 4775 or 4777 is what an attacker hopes to find in your system if they break in! - they can do anything they want to that file and maybe get root permissions.)
 
 Adding the setuid attribute to a file:
---------------------------------------
+
 We can use the `chmod` command.
 Ex: 
 1. `chmod u+s /path/to/file` (symbolic notation)
 2. `chmod 4755 /path/to/file` (octal notation) - the ADD to MSBit 4, the setuid bit/special bit
 
 Removing the setuid attribute from a file:
-------------------------------------------
+
 Again, we can use the `chmod` command.
 Ex: 
 1. `chmod u-s /path/to/file` (symbolic notation)
 2. `chmod 0755 /path/to/file` (octal notation) - '0' => setuid disabled
 
 Find all the files on the system that have 'setuid' set:
---------------------------------------------------------
+
 `find / -perm /4000`,
 (or, older style:)
 `fidn / -perm +4000`
 
------------------
+
 (A) 'setgid' bit:
------------------
+
 'setgid' => Set Group ID upon execution.
 (Ex: `-rwxr-sr-x ..` => The execution bit(x) of the 'group' is set to 's' - setgid enabled)
 
@@ -2369,27 +2369,27 @@ Examples of commands using this setgid bit:
 `/usr/bin/wall` : anybody who can edit this file can write whatever they want to the terminal(check).
 
 Finding 'setgid' files:
----------------------
+
 `find / -perm /2000`,
 (or, older style:)
 `find / -perm +2000`
 
 Adding 'setgid' permission:
--------------------------
+
 We can use the `chmod` command.
 Ex: 
 1. `chmod g+s /path/to/file` (symbolic notation)
 2. `chmod 2755 /path/to/file` (octal notation) - the ADD to MSBit 2, the setgid bit/special bit
 
 Removing the 'setgid' attribute from a file:
-------------------------------------------
+
 Again, we can use the `chmod` command.
 Ex: 
 1. `chmod g-s /path/to/file` (symbolic notation)
 2. `chmod 0755 /path/to/file` (octal notation) - SUBTRACT 2 from special permissons field
 
 Adding both setuid and setgid:
-------------------------------
+
 1. `chmod ug+s /path/to/file` (symbolic notation)
 2. `chmod 6755 /path/to/file` (octal notation)
 
@@ -2406,9 +2406,9 @@ So, whatever is added/deleted/modified inside the directory can be accessed by e
 ** THIRD PARTY TOOLS TO CHECK FOR SETUID AND SETGID ON FILES (alternatives to 'find'): **
 Ex: tripwire, AIDE, OSSEC, Samhain, Package managers
 
----------------------
+
 (C) The 'sticky bit':
----------------------
+
 Used on a directory to ONLY allow the OWNER of the file/directory to RENAME (or) DELETE the file.
 Without the sticky bit set, another user to delete a user's files IF the permissions(777, say) allowed for it. 
 Sticky Bit reperesented by 't' on others(o).
@@ -2417,7 +2417,7 @@ Example:
 Used on '/tmp' or '/var/tmp'
 
 Adding the 'sticky bit':
-------------------------
+
 We can use the `chmod` command.
 Ex: 
 1. `chmod o+s /path/to/file` (symbolic notation)
@@ -2426,7 +2426,7 @@ Ex:
 (You would typically set sticky bit on 777 permissions because that is where it makes sense to use the sticky bit to only allow user to rename/delete the files/directories even when everyone else has permissions for it.)
 
 Removing the 'sticky bit':
---------------------------
+
 We can use the `chmod` command.
 Ex: 
 1. `chmod o-t /path/to/file` (symbolic notation)
@@ -2434,7 +2434,7 @@ Ex:
 
 
 Reading the `ls` command output:
---------------------------------
+
 Capitalized special permission bit => Means underlying normal permissions are NOT set.
 (Ex: `-rwSr-xr-- ..`)
 (Ex: `-rwxr-xr-T ..`)
@@ -2443,27 +2443,27 @@ Lowercase special permission bit => Means underlying normal permissions are SET.
 (Ex: `-rwsr-xr-- ..`)
 (Ex: `-rwxr-xr-t ..`)
 
--------------------------------------------------------------------------------------------------
 
-===========
+
+
 NETWORKING:
-===========
+
 
 TCP/IP:
--------
+
 The defacto standard for communication.
 TCP - controls data exchange
 IP - sends data from one device to another
 Hosts - Devices on a network.
 
 IPv4 Classes:
--------------
+
 1.0- 127.0 				= Class A 	(Subnet Mask: 255.0.0.0)
 128.0 - 191.255 		= Class B 	(Subnet Mask: 255.255.0.0)
 192.0.0 - 223.255.255 	= Class C 	(Subnet Mask: 255.255.255.0)
 
 CIDR - Classless Inter-Domain Routing:
---------------------------------------
+
 Dividing networks irrespective of their classes. Division depends on subnet mask.
 ex:
 CIDR Subnet: 255.255.255.0 (given)
@@ -2471,7 +2471,7 @@ N/W Address: 121.67.198.0		[According to class A, it would have been 121.0.0.0]
 B/C Address: 121.67.198.255		[According to class A, it would have been 121.255.255.255]
 
 Reserved Private Address Space:
--------------------------------
+
 (Ranges of IP addresses reserved for use in private[Non-Routable address spaces])
 10.0.0.0 to 10.255.255.255 => Reserved private address space in class A.
 172.16.0.0 to 172.31.255.255 => Reserved private address space in class B.
@@ -2480,7 +2480,7 @@ Reserved Private Address Space:
 [Any of these IP address entries in the hosts file (/etc/hosts) is considered private and non-routable publicly]
 
 Knowing the computer's IP address: (Or, all IPs associated with your computer)
-----------------------------------
+
 Command: `ip address` (or) `ip address show`
 (Shortcuts:
 `ip addr` (or) `ip a` (or) `ip a s`
@@ -2494,13 +2494,13 @@ This command shows two addresses:
 (Also, it shows MAC addresses and Subnet Masks)
 
 `ifconfig` :
-------------
+
 Another way to determine host's IP addresses. (DEPRECATED, but still very useful-maybe around for sometime)
 Command:
 `ifconfig` => Displays all the IP addresses associated with the computer.
 
 Terms:
-------
+
 HOST : A device connected to a Network.
 HOSTNAME : A human readbale format for the IP address of a host (Ex: webprod1 <=> 10.109.215.14)
 (Ex: We can give a linux system acting as a server a hostname instead of addressing it by IP all the time.)
@@ -2510,7 +2510,7 @@ One word Host name: Short Hostname / Unqualified Hostname (Ex: webprod1)
 DNS: Maps IP address to the domain name (and vice versa)
 
 DNS Hostnames:
---------------
+
 FQDN => Fully Qualified Domain Names.
 (Ex: webprod1.mycompany.com)
 
@@ -2525,7 +2525,7 @@ An advantage of using sub-domains: Identifying where our server is located:
 (Ex: webprod1.ny.us.mycompany.com) [NOTE: Sub-Domains need not correspond to geography, can be anything]
 
 Viewing the Hostname:
----------------------
+
 `hostname` 
 (or)
 `uname -n`
@@ -2533,7 +2533,7 @@ Viewing the Hostname:
 `hostname -f`
 
 Setting the Hostname:
----------------------
+
 `hostname HOST_NAME` => sets the host name to specified argument(ex: `hostname webprod02`)
 
 To persist the change, (permanently set the hostname btw sessions):
@@ -2544,13 +2544,13 @@ To persist the change, (permanently set the hostname btw sessions):
 Save the line 'HOSTNAME=webprod02' in '/etc/sysconfig/network' file
 
 Resolving DNS Names:
---------------------
+
 Get IP from Hostname and Hostname from IP:
 `host HOSTNAME` => Displays the IP for the hostname (Ex: for the hostname 'www.mycompany.com')
 `host IPADDRESS` => Displays the Hostname for the IP (Ex: for the IP '11.2.255.143')
 
 The '/etc/hosts' file:
-----------------------
+
 Contains a list of IP addresses and Hostnames.
 We can add hosts as an entry to the file:
 Format:
@@ -2572,13 +2572,13 @@ We can change this lookup/search resolution order in the '/etc/nsswitch.conf' fi
 `hosts: files dns`	=> (If IP address is found in /etc/hosts, it is used. Search stops. Else, check DNS)
 `hosts: files nis dns` => (First check in files, then NIS, then DNS)
 
--------------------------------------------------------------------------------------------------
+
 
 NETWORKING: DHCP, STATIC AND DYNAMIC ADDRESSING:
-================================================
+
 
 PORTS:
-------
+
 Ports identify a service on a host (while IP identifies a host).
 0 - 1023 are 'Well-Known'(system) Ports.
 Ex:Port No. 22 = SSH,
@@ -2603,7 +2603,7 @@ Sometimes, when a third party service is installed, we can ADD a port number and
 (Therefore, we can also set port numbers for the custom applications/services that we write)
 
 DHCP:
------
+
 [PRIMARY USE: TO ASSIGN IP ADDRESSES TO HOSTS ON A NETWORK.]
 Dynamic Host Control Protocol. When a DHCP (host) client wants an IP address to itself, it sends out a B/C msg looking for DHCP Servers to assign it an IP address.
 'DHCP Servers' assign IP address to DHCP Clients.
@@ -2621,14 +2621,14 @@ The client must renew the Ip address if it wantsto continue using it. Otherwise,
 )
 
 Configuring a DHCP Client: For a RedHat Based System(RHEL)
---------------------------
+
 To Edit a Red Hat based system as a DHCP Client, edit the configuration file located in:
 `/etc/sysconfig/network-scripts/ifcfg-DEVICE`
 (Ex: `/etc/sysconfig/network-scripts/ifcfg-eth0`,
 	`/etc/sysconfig/network-scripts/ifcfg-enp5s2`
 )
 To get a list of Network Devices on the system, run:
-----------------------------------------------------
+
 `ifconfig -a`
 (or)
 `ip link`
@@ -2638,7 +2638,7 @@ Set the 'BOOTPROTO' variable to 'dhcp':
 `BOOTPROTO=dhcp`
 
 Configuring an Ubuntu Based System:
------------------------------------
+
 Edit the '/etc/network/interfaces' file.
 Set a network device as a DHCP Client:
 Add line `iface NETWORK_DEVICE inet dhcp`
@@ -2646,7 +2646,7 @@ Ex:
 `iface eth0 inet dhcp`
 
 Setting a STATIC IP address on REDHAT Based system(RHEL):
----------------------------------------------------------
+
 Edit file: '/etc/sysconfig/network-scripts/ifcfg-NETWORKDEVICENAME'
 Ex:
 `	DEVICE=eth0
@@ -2660,7 +2660,7 @@ Ex:
 `
 
 Setting a STATIC IP address on UBUNTU Based system(RHEL):
----------------------------------------------------------
+
 Edit file: '/etc/network/interfaces'
 Ex:
 `	iface eth0 inet static 		(static keyword is a must!!)
@@ -2672,9 +2672,9 @@ Ex:
 [OR =>]
 
 MANUALLY assign an IP to a Network Device(interface):
------------------------------------------------------
+
 1. Use the `ip` command.
-------------------------
+
 Format:
 `ip address add IP/[NETMASK] dev NETWORK_DEVICE`
 Ex:
@@ -2687,7 +2687,7 @@ Bring the interface up(enabled with the given static ip):
 ]
 
 2. Use the `ifconfig` command.
-------------------------------
+
 Format:
 `ifconfig NETWORK_DEVICE IP_ADDRESS netmask SUBNET_MASK`
 Ex:
@@ -2699,9 +2699,9 @@ Bring the interface up(enabled with the given static ip):
 (Ex: `ifonfig eth0 up`)
 ]
 
-------------------------------------
+
 Alternatives to `ip` and `ifconfig`:
-------------------------------------
+
 `ifup` and `ifdown` => Quick way to bring a NW device up or down.
 It takes the network specs(IP, mask, etc) for the NW Device from the "configuration files" and enables/disables it.
 (/etc/sysconfig/... etc)
@@ -2710,19 +2710,19 @@ Ex:
 `ifdown NW_DEVICE` => brings down the network device (Ex: `ifup enp5s02`)
 
 GUI/TUI Tools for Networking:
------------------------------
+
 RedHat => 'nmtui', 'system-config-network'
 SUSE => 'YaST'
 Ubuntu => No official tool available.
 
--------------------------------------------------------------------------------------------------
+
 
 NETWORK TROUBLESHOOTING:
-========================
+
 Some of the common tools for network diagnostics. Cannot rely on only one tool/ use many tool.
 
 1. Test connectivity to a host with `ping`:
--------------------------------------------
+
 Sends one or more ICMP packets to a host (Hostname (or) IP-ADDRESS) and waits for a reply
 `ping HOST` => Continuously pings the host until you stop program with <CTRL-C>
 (ex: `ping google.com`)
@@ -2735,7 +2735,7 @@ Ping returns the no of packets sent and Round Trip time(RTT) for each packet( '/
 Note:: Ping also resolves the Hostname to IP address (If it cant => Unknown host error displayed - In that use IP address of system that you are trying to connect to.)
 
 NOTE::
-------
+
 [If ping does NOT receive a repsonse from destination host:
 	1. Check if ping works to a local host in the network.
 	If that also does NOT work then maybe there is a problem with OUR SYSTEM(OUR HOST) itself.
@@ -2750,7 +2750,7 @@ NOTE::
 ]
 
 2. Testing connectivity over Hops(Routers):
--------------------------------------------
+
 Use the `traceroute` command. (`ping` only gives you the end to end connectivity info)
 `traceroute` will require ROOT/SUPERUSER permissions.
 
@@ -2769,14 +2769,14 @@ Too much time ? => Maybe problem is in that network.
 [`traceroute` Produces one line of output per HOP]
 
 3. Alternative to `traceroute`:
-------------------------------- 
+ 
 Use `tracepath`. Does NOT require root/superuser permissions
 Ex:
 `tracepath google.com` (or)
 `tracepath -n google.com` => Produces one line of output for Each Response it receives.(unlike traceroute)
 
 4. The `netstat` command:
--------------------------
+
 Used to collect a wide variety of network information.
 
 Options:
@@ -2793,7 +2793,6 @@ Ex:
 `sudo netstat -nltp`
 
 5. Packet Sniffing with `tcpdump`:
-----------------------------------
 `tcpdump` => Inspect contents of network packets to ensure payloads(data) are actually being delivered.
 [requires root/superuser privileges]
 
@@ -2809,7 +2808,6 @@ Ex:
 `sudo tcpdump` => Produces output for all the packets from/to the network devices assoc. with the system.
 
 6. `telnet` command (OBSOLETE):
--------------------------------
 It was originally intended to log onto 'remote systems` but is replaced with with better protocols such as SSH.
 
 'telnet' can still be used in N/W TROUBLE SHOOTING.
@@ -2830,10 +2828,9 @@ To put a 'GET' request to, say, root directory: `GET /`
 Quit telnet: telnet> `quit` 
 (output is: "closed")
 
--------------------------------------------------------------------------------------------------
 
-Connecting(via SSH) to a Linux Virtual Machine (running on VirtualBox):
------------------------------------------------------------------------
+## Connecting(via SSH) to a Linux Virtual Machine (running on VirtualBox):
+
 1. Power Off virtual machine from VBOX.
 2. Goto Settings for that machine in VBOX.
 3. Change network setting to 'bridge adapter' (from NAT) and save.
@@ -2844,10 +2841,6 @@ Connecting(via SSH) to a Linux Virtual Machine (running on VirtualBox):
 7. Type `ssh VM_USERNAME@VM_IP_ADDRESS` (Ex: `ssh adminuser@192.168.0.1`)
 8. You will prompted to accept the key(say 'yes') and type the password for that user on the virtual m/c/
 9. You are logged into the VMachine via SSH! :)
-
--------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------
 
 
 
