@@ -276,7 +276,7 @@ Instead, try using: '-' (dashes), '_' (underscores), or camelCase. (Try to avoid
 
 ### File Permissions:
 
-Ex: `-rwx-wxr--` = <type-of-file(1CHAR)><owner-perms(3CHAR)><group-perms(3CHAR)><other-perms(3CHAR)>
+Ex: `-rwx-wxr--` => type-of-file(1CHAR) owner-perms(3CHAR)  group-perms(3CHAR) other-perms(3CHAR)
 
 #### First character: Type of file?
 
@@ -284,322 +284,283 @@ Ex: `-rwx-wxr--` = <type-of-file(1CHAR)><owner-perms(3CHAR)><group-perms(3CHAR)>
 - `d` => Directory File
 - `l` => Symbolic Link
 
-Remaining Characters can be Permission characters:
---------------------------------------------------
-`r` => Read Permission (View Contents of File)
-`w` => Write Permission (Modify or Change Contents of File)
-`x` => Execute Permission (Run the File as a Program)
+#### Remaining Characters can be Permission characters:
 
-['-' means that corresponding permission has been denied]
+- `r` => Read Permission (View Contents of File)
+- `w` => Write Permission (Modify or Change Contents of File)
+- `x` => Execute Permission (Run the File as a Program)
 
-'r', 'w', and 'x' meaning for Directories:
-------------------------------------------
-`r` => Allows File Names inside the Directory to be read.
-`w` => Allows Entries to be Modififed within the Directory.
-`x` => Allows access to Contents and MetaData for Entries.
+'-' means that corresponding permission has been denied
 
-Permission Categories:
-----------------------
-'u' => user 
-'g' => group 
-'o' => other
-'a' => all
+#### 'r', 'w', and 'x' meaning for Directories:
 
-1. Groups(g):
-Every user -> Belongs to at least one group. 
-A user -> Maybe part of multiple groups.
-groups are used -> to organize users.
+- `r` => Allows File Names inside the Directory to be read.
+- `w` => Allows Entries to be Modififed within the Directory.
+- `x` => Allows access to Contents and MetaData for Entries.
 
-Check all the groups which a user belongs to:
-`groups` (or) `id -Gn` [Same output for both]
+#### Permission Categories:
 
-Changing Permissions:
----------------------
+- `u` => user 
+- `g` => group 
+- `o` => other
+- `a` => all
+
+- Groups(g): Every user -> Belongs to at least one group. A user maybe part of multiple groups. Groups are used to organize users.
+
+Check all the groups which a user belongs to: `groups` (or) `id -Gn` (Same output for both)
+
+#### Changing Permissions:
+
 `chmod`, `chgrp`, and `chown` commands.
-[ugoa: Category (ctgry), 
-+-=: add, subtract or set permissions (oprtr), 
-rwx: read, write, & execute (prmssn)]
+- ugoa: Category (ctgry)
+- +-=: add, subtract or set permissions (oprtr)
+- rwx: read, write, & execute (prmssn)
 
-`chmod`:
---------
-1. Symbolic Notation: `chmod <ctgry><oprtr><prmssn(s)> fileOrDirectory`
-Ex:
-`chmod g+w data-file.txt`, (Add)
-`chmod a=r data-file.txt`, (Set)
-`chmod g+w,o-x data-file.txt` (Multiple) ... etc.
+##### `chmod`:
 
-2. Octal Notation: `chmod <user-octal><group-octal><other-octal> fileOrDirectory`
-[Read(r) = 4, 
- Write(w) = 2, 
- Execute(x) = 1]
-[Therefore: 
- 7 (all permissions: read, write and execute)
- 6 (read and write)
- 5 (read and execute)
- 4 (read),
- 3 (write and execute)
- 2 (write)
- 1 (execute)]
-Ex:
-`chmod 761 data-file.txt`, (rwx for user, only rw for group, only x for others)
-`chmod 400 data-file.txt`, (read for user, no permissions for group or others)
+- Symbolic Notation: `chmod <ctgry><oprtr><prmssn(s)> fileOrDirectory`. Ex:
+	- `chmod g+w data-file.txt`, (Add)
+	- `chmod a=r data-file.txt`, (Set)
+	- `chmod g+w,o-x data-file.txt` (Multiple) ... etc.
 
-[Common octal combos: 700, 755, 664, 660, 644]
-
-Don't give 777 permission => Gives everyone access to everything about that file. 
-(Malicious code can modify permissions once again (removing you, perhaps) or 
-modifying file or directory contents in ways you did expect.)
-
-`chgrp`:
---------
-Changes the group that the file belongs to:
-`chgrp <groupname> fileOrDirectory`
+- Octal Notation: `chmod <user-octal><group-octal><other-octal> fileOrDirectory`. Read(r) = 4, Write(w) = 2, Execute(x) = 1. Therefore: 
+	- 7 (all permissions: read, write and execute)
+	- 6 (read and write)
+	- 5 (read and execute)
+	- 4 (read),
+	- 3 (write and execute)
+	- 2 (write)
+	- 1 (execute)]
 
 Ex:
-`chgrp sales sales-data.txt`
-(For example, we can even move the file to the shared folder '/usr/local/sales' so that people belonging to the sales group can edit the file there.)
+- `chmod 761 data-file.txt`, (rwx for user, only rw for group, only x for others)
+- `chmod 400 data-file.txt`, (read for user, no permissions for group or others)
 
-[NOTE: IF FILE PERMISSIONS SEEM CORRECT BUT YOU STILL CAN'T DO WHAT YOU WANT TO DO, CHECK THE DIRECTORY PERMISSIONS, THEN THE PARENT DIRECTORY PERMISSIONS.. AND SO ON UNTIL YOU FIND THE PERMISSION THAT NEEDS TO BE UNBLOCKED OR UNTIL YOU REACH THE ROOT(/) DIRECTORY]
+Common octal combos: 700, 755, 664, 660, 644
 
--------------------------------------------------------------------------------------------------
+Don't give 777 permission => Gives everyone access to everything about that file. (Malicious code can modify permissions once again (removing you, perhaps) or modifying file or directory contents in ways you did expect.)
 
-File Creation Mask: (umask)
-===================
+##### `chgrp`:
+
+Changes the group that the file belongs to: `chgrp <groupname> fileOrDirectory`
+
+Ex:
+- `chgrp sales sales-data.txt` (For example, we can even move the file to the shared folder '/usr/local/sales' so that people belonging to the sales group can edit the file there.)
+
+NOTE: IF FILE PERMISSIONS SEEM CORRECT BUT YOU STILL CAN'T DO WHAT YOU WANT TO DO, CHECK THE DIRECTORY PERMISSIONS, THEN THE PARENT DIRECTORY PERMISSIONS.. AND SO ON UNTIL YOU FIND THE PERMISSION THAT NEEDS TO BE UNBLOCKED OR UNTIL YOU REACH THE ROOT(/) DIRECTORY.
+
+## File Creation Mask: (umask)
+
 The file creation mask decides what permissions must a file or directory have (by default) when it is created!.
-If no mask is set:
-`777` => For Directories,
-`666` => For Files
 
-`umask` command:
-----------------
+If no mask is set:
+- `777` => For Directories,
+- `666` => For Files
+
+### `umask` command:
+
 Syntax: `umask [-S] [mode]`  (-S stands for 'symbolic notation')
 
-`umask` "subtracts" permissions (opposite of `chmod`):
-[Ex: If base is '777' and mask is '022', it would subtract 022 from 777. So, new permission = 755.]
-(umask of 002 is ideal for working with groups since it gives your group permission to work with files)
+`umask` "subtracts" permissions (opposite of `chmod`): Ex: If base is '777' and mask is '022', it would subtract 022 from 777. So, new permission = 755. (umask of 002 is ideal for working with groups since it gives your group permission to work with files)
 
-`umask` sometimes needs to MAKE APPROXIMATIONS:
-Ex: Base = 666 and umask = 007 => then final file permission is '660' (and not 66-1)
+`umask` sometimes needs to MAKE APPROXIMATIONS: Ex: Base = 666 and umask = 007 then final file permission is '660' (and not 66-1)
 
 Usage Examples:
-`umask` => View the current umask setting (Ex: 0022)
-`umask -S` => View the current umask setting in Symbolic Notation (Ex: u=rwx,g=rx,o=rx [Displays the allowed permissions])
+- `umask` => View the current umask setting (Ex: 0022)
+- `umask -S` => View the current umask setting in Symbolic Notation (Ex: u=rwx,g=rx,o=rx [Displays the allowed permissions])
 
-`umask 002` => Changes the umask to 002 (popular way of changing permissions)
-`umask -S u=rwx,g=rx,o=rx`
+- `umask 002` => Changes the umask to 002 (popular way of changing permissions)
+- `umask -S u=rwx,g=rx,o=rx`
 
-[Note: Usually in `umask` and `chmod` the 4th MSbit is ignored. Ex: 0644 = 644, 0022 = 022.
-But, 
-	The 4th MSBit can sometimes denote Special Modes:
-	Ex: 1. setuid, 2. setgid, 3. sticky [Covered Later]
-]
+Note: Usually in `umask` and `chmod` the 4th MSbit is ignored. Ex: 0644 = 644, 0022 = 022. But, The 4th MSBit can sometimes denote Special Modes: Ex: 
+1. setuid, 
+2. setgid, 
+3. sticky [Covered Later]
 
--------------------------------------------------------------------------------------------------
+## `find` command:
 
-`find` command:
-===============
 Syntax: `find [path...] [expression]`
-Recursively finds files in the path that match the expression. 
-If no arguments are supplied, it finds all files in the current directory. (Ex: `find`)
+
+Recursively finds files in the path that match the expression. If no arguments are supplied, it finds all files in the current directory. (Ex: `find`)
 
 Options:
---------
-`-name pattern` => Finds files and Directories that match that pattern.
-`-iname pattern` => Like name, but ingores case.
-`-ls` => Perform an `ls` on each of the found items.
+- `-name pattern` => Finds files and Directories that match that pattern.
+- `-iname pattern` => Like name, but ingores case.
+- `-ls` => Perform an `ls` on each of the found items.
 
-`-mtime days` => Finds files that are 'days' old. *('+' => More than, '-' Less than )*
-`-size nums` => Find files that are size of 'num'. *('+' => More than, '-' Less than )*
-`-newer file` => Find files that are newer than 'file'
-`-type d` => Find files that are of type `d` (directory) [@ => links, * => executable]
+- `-mtime days` => Finds files that are 'days' old. *('+' => More than, '-' Less than )*
+- `-size nums` => Find files that are size of 'num'. *('+' => More than, '-' Less than )*
+- `-newer file` => Find files that are newer than 'file'
+- `-type d` => Find files that are of type `d` (directory) [@ => links, * => executable]
 
-`exec command {} \;` => Run 'command' against all the files that are found.
+- `exec <command> {} \;` => Run 'command' against all the files that are found.
 
 Examples:
-`find` => Recursively lists all files under the current directory.
-`find /sbin -name makedev` = > Searches for files named 'makedev' inside '/sbin' directory.
-`find /sbin -iname makedev` = > Searches for files named 'makedev' inside '/sbin' directory(IGNORE CASE)
-`find /sbin -name makedev` = > Searches for files named 'makedev' inside '/sbin' directory.
-`find /sbin -name *v` = > Searches for files ending 'v' inside '/sbin' directory.
-`find /sbin -name makedev` = > Searches for files named 'makedev' inside '/sbin' directory.
+- `find` => Recursively lists all files under the current directory.
+- `find /sbin -name makedev` = > Searches for files named 'makedev' inside '/sbin' directory.
+- `find /sbin -iname makedev` = > Searches for files named 'makedev' inside '/sbin' directory(IGNORE CASE)
+- `find /sbin -name makedev` = > Searches for files named 'makedev' inside '/sbin' directory.
+- `find /sbin -name *v` = > Searches for files ending 'v' inside '/sbin' directory.
+- `find /sbin -name makedev` = > Searches for files named 'makedev' inside '/sbin' directory.
 
-`find . -mtime +10 -mtime +13` = > Searches for files more than 10 days old but less than 13 days old inside current(.) directory.
+- `find . -mtime +10 -mtime +13` = > Searches for files more than 10 days old but less than 13 days old inside current(.) directory.
 
-`find . s* -ls` => Recursively find anything that starts with 's' in CWD(.) and perform `ls` on it.
-`find . -size +1M => Recursively find files in CWD(.) that are 1 MegaByte or larger. (K = kilo, G = giga)
+- `find . s* -ls` => Recursively find anything that starts with 's' in CWD(.) and perform `ls` on it.
+- `find . -size +1M` => Recursively find files in CWD(.) that are 1 MegaByte or larger. (K = kilo, G = giga)
 
-`find . -newer file.txt` => Searches for files that are newer than the file.txt file(modif. time-wise)
+- `find . -newer file.txt` => Searches for files that are newer than the file.txt file(modif. time-wise)
 
-`find . exec file {} \;` => Finds all files in the CWD and executes command 'file' against all of them.
+- `find . exec file {} \;` => Finds all files in the CWD and executes command 'file' against all of them.
+ 
+### The `locate` command:
 
--------------------------------------------------------------------------------------------------
-
-[NOTE: 
-The `locate` command:-
 Syntax: `locate pattern`
-Faster than find.
-Queries an index(adv), but results are NOT in real-time.(disadv)
-May NOT be enabled on all systems.
-]
 
--------------------------------------------------------------------------------------------------
+Faster than find. Queries an index(adv.), but results are NOT in real-time.(disadv.) May NOT be enabled on all systems.
 
-VIEWING & EDITING FILES:
-========================
+## VIEWING & EDITING FILES:
 
 Basic commands:
----------------
-1. `cat file` => Display the contents of a file.
-2. `more file` => Browse through a text file.
-3. `less file` => Display the more than the 'more' command (less is actually more!) -> 'q' to exit.
-4. `head [-x] file` => Output the top portion(x lines) of the file (Default: 10 lines)
-5. `tail [-x] file` => Output the bottom portion(x lines) of the file (Default: 10 lines)
+- `cat file` => Display the contents of a file.
+- `more file` => Browse through a text file.
+- `less file` => Display the more than the 'more' command (less is actually more!) -> 'q' to exit.
+- `head [-x] file` => Output the top portion(x lines) of the file (Default: 10 lines)
+- `tail [-x] file` => Output the bottom portion(x lines) of the file (Default: 10 lines)
 
-`tail -f file` => follow the file:
-----------------------------------
-[To view the changes to a file in real-time, use 'tail -f` but not 'cat'(not real-time).]
-[Ex: log files being written to -> use 'tail'on that log file -> tail gets updated as file grows (to exit press <CTRL-C>)]
+### `tail -f file` => follow the file:
+
+To view the changes to a file in real-time, use `tail -f` but not 'cat'(not real-time).
+
+Ex: log files being written to -> use 'tail'on that log file : tail gets updated as file grows (to exit press 'CTRL-C')
 
 Browsing through a 'more' or 'less' command screen => Same controls as in 'man' pages (Refer 'man')
 
-'nano' Editor:
-==============
-Small text editor.
-Easy to learn and use. [Control commands appear on the screen itself.]
-Not very powerful.
+### 'nano' Editor:
+
+Small text editor. Easy to learn and use. Control commands appear on the screen itself. Not very powerful.
 
 Open a text file in `nano`: `nano fileName`
 
--------------------------------------------------------------------------------------------------
-(Viewing and Editing continued...)
-============
-`vi` editor: 
-============
+
+### `vi` editor: 
+
 More powerful than 'nano'. Requires a learning curve. Commands are Not intuitive.
 
-`vi [file]` => Edit file
-`vim [file]` => Same as `vi` but improved/has more features.
-`view [file]` => Starts vim in 'read-only' mode.
+- `vi [file]` => Edit file
+- `vim [file]` => Same as `vi` but improved/has more features.
+- `view [file]` => Starts vim in 'read-only' mode.
 
-`vi` has three modes: 1. Normal(Command) 2. Insert 3. Line(Visual?)
+`vi` has three modes: 
+1. Normal(Command) 
+2. Insert 
+3. Line(Visual?)
 
 `vi` commands:
---------------
-1. Movement:
-	k - up one line
-	j - down one line
-	h - left one character
-	l - right one character
-	w - right one word
-	b - left one word
-	^ - go to the beginning of line
-	$ - go to the end of line
+- Movement:
+	- `k` - up one line
+	- `j` - down one line
+	- `h` - left one character
+	- `l` - right one character
+	- `w` - right one word
+	- `b` - left one word
+	- `^` - go to the beginning of line
+	- `$` - go to the end of line
 
-2. Inserting Text:
-	i - insert at cursor position
-	I - insert at the beginning of line
-	a - append after cursor position
-	A - append at the end of line
-	o - appends new(empty) line Below current line and moves cursor to it
-	O - appends new(empty) line Above current line and moves cursor to it
+- Inserting Text:
+	- `i` - insert at cursor position
+	- `I` - insert at the beginning of line
+	- `a` - append after cursor position
+	- `A` - append at the end of line
+	- `o` - appends new(empty) line Below current line and moves cursor to it
+	- `O` - appends new(empty) line Above current line and moves cursor to it
 
-3. `vi` Line Mode:
-	:w - Writes(Saves) file 
-	:w! - Forces the file to be saved
-	:q - Quit(come out of vi)
-	:q! - Quit without saving changes (force quit)
-	:wq - Write and quit
-	:wq! - Write and quit forcefully
-	:x - same as ':wq'
-	:n - go to line 'n' (Ex: ':50' goes to line 50)
-	:$ - Positions cursor on the last line
-	:set nu - Turn On line numbering
-	:set nonu - Turn Off line numbering
-	:help [subcommand] - Get Help
+- `vi` Line Mode:
+	- `:w` - Writes(Saves) file 
+	- `:w!` - Forces the file to be saved
+	- `:q` - Quit(come out of vi)
+	- `:q!` - Quit without saving changes (force quit)
+	- `:wq` - Write and quit
+	- `:wq!` - Write and quit forcefully
+	- `:x` - same as ':wq'
+	- `:n` - go to line 'n' (Ex: ':50' goes to line 50)
+	- `:$` - Positions cursor on the last line
+	- `:set nu` - Turn On line numbering
+	- `:set nonu` - Turn Off line numbering
+	- `:help [subcommand]` - Get Help
 
-4. Deleting Text:
-	x - delete a character (at cursor position)
-	dw - delete a word (from cursor position)
-	dd - delete a line (from cursor position)
-	D - Delete from the current position to end of line (Delete remaining text on line)
+- Deleting Text:
+	- `x` - delete a character (at cursor position)
+	- `dw` - delete a word (from cursor position)
+	- `dd` - delete a line (from cursor position)
+	- `D` - Delete from the current position to end of line (Delete remaining text on line)
 
-5. Replacing/Changing text:
-	r - replace the current character
-	cw - change the current word
-	cc - change the current line
-	c$ (or) C - change text from current position to the end of the line($)
-	~ - reverses the case of the character(upper <=> lower)
+- Replacing/Changing text:
+	- `r` - replace the current character
+	- `cw` - change the current word
+	- `cc` - change the current line
+	- `c$` (or) `C` - change text from current position to the end of the line($)
+	- `~` - reverses the case of the character(upper <=> lower)
 
-[NOTE:: We can repeat a command by preceding it with a number. (***IMPORTANT***)
-Ex:
-`5k` => Move up 5 lines
-`80i<text><ESC>` => Insert entered text(<text>) 80 times at cursor position]
+NOTE: We can repeat a command by preceding it with a number. Ex:
+- `5k` => Move up 5 lines
+- `80i<text><ESC>` => Insert entered text 80 times at cursor position
 
-6. Copying and Pasting:
-	yy - yank(copy) the current line
-	y<position> - Yank the <position>
-	p - paste the most recently deleted or yanked(copied) text.
+- Copying and Pasting:
+	- `yy` - yank(copy) the current line
+	- `y<position>` - Yank the position
+	- `p` - paste the most recently deleted or yanked(copied) text.
 
 7. Undoing and redoing:
-	u - Undo
-	<CTRL-R> - Redo
+	- `u` - Undo
+	- `<CTRL-R>` - Redo
 
 8. Searching:
-	/<pattern> - Forward Search(First match to Last match)
-	?<pattern> - Reverse Search(Last match to First match)
-	n - go to Next match
-	N - go to Previous match
+	- `/<pattern>` - Forward Search(First match to Last match)
+	- `?<pattern>` - Reverse Search(Last match to First match)
+	- `n` - go to Next match
+	- `N` - go to Previous match
 
 8. `vi` Modes (How to get into them):
-	<ESC> - Normal Mode
-	i, a, o,.. etc - Insert Mode
-	: - Line Mode
+	- `<ESC>` - Normal Mode
+	- `i`, `a`, `o`,.. etc - Insert Mode
+	- `:` - Line Mode
 
-Need vim help? Type 'vimtutor' and hit enter at the command prompt.
+Need vim help? Type `vimtutor` and hit enter at the command prompt.
 
--------------------------------------------------------------------------------------------------
-(Viewing and Editing continued...)
-===============
-`emacs` editor: 
-===============
-Also a powerful editor.
-Some people use vi, some use emacs. => Choose whatever you're comfortable with.
+### `emacs` editor: 
+
+Also a powerful editor. Some people use vi, some use emacs. => Choose whatever you're comfortable with.
 
 Opening a file: `emacs [file]` (edit file)
 
 Emac command guide:
--------------------
-C-<char> : means hold down <CTRL> while pressing character
-M-<char> : means hold down either <ALT> while pressing character.
-			(or)
-		   means press <ESC> key, release it, and then type a character.
+- `C-<char>` : means hold down CTRL while pressing character
+- `M-<char>` : means hold down either ALT while pressing character (or) means press ESC key, release it, and then type a character.
 
-C-h : Help
-C-x C-c : Exit
-C-x C-s : Save the file
-C-h t : Built-in tutorial
-C-h k <key> : Describe the key
-C-p : Previous line
-C-n : Next line
-C-b : Backward one character
-C-f : Forward one character
-M-f : Forward one word
-M-b : Backward one word
-C-a : Go to beginning of the line
-C-e : Go to end of the line
-M-< : Go to beginning of the file
-M-> : Go to end of the file
-C-d : Delete a character
-M-d : Delete a word
-C-k : Kill(cut)
-C-y : Yank(paste)
-C-x u : undo
-C-u N <command> : Repeat <Command> N times
+- `C-h` : Help
+- `C-x C-c` : Exit
+- `C-x C-s` : Save the file
+- `C-h t` : Built-in tutorial
+- `C-h k <key>` : Describe the key
+- `C-p` : Previous line
+- `C-n` : Next line
+- `C-b` : Backward one character
+- `C-f` : Forward one character
+- `M-f` : Forward one word
+- `M-b` : Backward one word
+- `C-a` : Go to beginning of the line
+- `C-e` : Go to end of the line
+- `M-<` : Go to beginning of the file
+- `M->` : Go to end of the file
+- `C-d` : Delete a character
+- `M-d` : Delete a word
+- `C-k` : Kill(cut)
+- `C-y` : Yank(paste)
+- `C-x` u : undo
+- `C-u N <command>` : Repeat Command N times
 
--------------------------------------------------------------------------------------------------
+### Graphical Editors:
 
-Graphical Editors:
-==================
 Some of the graphical editors are:
 1. emacs - emacs has a graphical mode too
 2. gedit - The default text editor for GNOME Desktop environment (Simialr to notepad)
@@ -611,480 +572,422 @@ Note: Microsoft Office alternatives:
 2. LibreOffice - Full Office Suite (Just like Microsoft Office)
 3. Kate | Genie | jEdit | Sublime Text - Source Code Editors
 
--------------------------------------------------------------------------------------------------
+## Delete, Copy, Move and Rename Files:
 
-Delete, Copy, Move and Rename Files:
-====================================
 
-1. `rm` command: (remove)
-----------------
-`rm file` => Remove file
-`rm -r dir` => Remove directory and its contents recursively
-`rm -f file` => Force removal and never prompt for confirmation
+- `rm` command: (remove)
+	- `rm file` => Remove file
+	- `rm -r dir` => Remove directory and its contents recursively
+	- `rm -f file` => Force removal and never prompt for confirmation
 
-2. `cp` command: (copy)
-----------------
-`cp source_file destination_file` => Copy source file to destination file
-`cp source_file1 [... source_fileN] destination_dir` => Copy source file to destination directory
-`cp -i` => Interactive mode
-`cp -r source_directory destination_directory` => Copy source directory recursively to the destination
-[If destination directory does NOT exist, it gets created with the contents of the source directory.]
+- `cp` command: (copy)
+	- `cp source_file destination_file` => Copy source file to destination file
+	- `cp source_file1 [... source_fileN] destination_dir` => Copy source file to destination directory
+	- `cp -i` => Interactive mode
+	- `cp -r source_directory destination_directory` => Copy source directory recursively to the destination
 
-3. `mv` command: (Move or Rename) 
-----------------
-`mv source [..sourceN] destination` => Moves source file(s) and/or Directories to Destination directory.
-`mv -i source destination` => Interactive mode.
-[`mv` DOES NOT require `-R` to move Source Directories into Destination Directory]
-[Ex: `mv subdir1 /subdir2/newFolder` => Moves subdir1 folder to /subdir2/newFolder folder]
+If destination directory does NOT exist, it gets created with the contents of the source directory.
+
+- `mv` command: (Move or Rename) 
+	- `mv source [..sourceN] destination` => Moves source file(s) and/or Directories to Destination directory.
+	- `mv -i source destination` => Interactive mode.
+
+`mv` DOES NOT require `-R` to move Source Directories into Destination Directory
+
+Ex: `mv subdir1 /subdir2/newFolder` => Moves subdir1 folder to /subdir2/newFolder folder
 
 `mv file1 file2` => Rename file1 to file2 (Overwrites file2 if it exists) [file1, file2 in same folder]
 `mv -i file1 file2` => Rename file1 to file2 (Asks to overwrite file2 if it exists) [file1, file2 in same folder]
 
--------------------------------------------------------------------------------------------------
+## `sort` command:
 
-`sort` command:
-===============
 `sort` sorts the text in a text file Alphabetically (by default) line by line.
+
 Syntax: `sort file` (THE ORIGINAL FILE IS UNAFFECTED - THIS IS ONLY FOR PRINTING TO SCREEN/STDOUT)
 
 Options:
---------
-`-kF` => Sort by key supplied. F is the field number(column number)
-(Ex: `sort -k2 file.txt` => Sorts lines alphabetically according to the 2nd column on each line)
-`-r` => Sort in reverse order [Reverse alphabetical order by default]
-`u` => Sort Unique [Removes the duplicate lines]
+- `-kF` => Sort by key supplied. F is the field number(column number) (Ex: `sort -k2 file.txt` => Sorts lines alphabetically according to the 2nd column on each line)
+- `-r` => Sort in reverse order. Reverse alphabetical order by default.
+- `u` => Sort Unique (Removes the duplicate lines)
 
--------------------------------------------------------------------------------------------------
 
-Create a collection(bundle/archive) a group of files:
-=====================================================
-Use `tar`:
-`tar [-] c|x|t f tarfile [pattern]`
+## Create a collection(bundle/archive) a group of files:
 
-[Simpler way to remember: `tar options tarFileName filesToBeArchived`]
+Use `tar`: `tar [-] c|x|t f tarfile [pattern]`
 
-(`tar` does NOT need the hyphen (-) for options, but including it is optional (no harm!))
-Create, extract or list contents of a tar archive using pattern, if supplied.
+Simpler way to remember: `tar options tarFileName filesToBeArchived`
 
-c => Create a tar archive
-x => Extract files from the archive
-t => Display table of contents (List)
-v => Be Verbose
-z => Use compression
-f file => Use this file
+`tar` does NOT need the hyphen (-) for options, but including it is optional (no harm!). Create, extract or list contents of a tar archive using pattern, if supplied.
+
+`tar` options:
+- `c` => Create a tar archive
+- `x` => Extract files from the archive
+- `t` => Display table of contents (List)
+- `v` => Be Verbose
+- `z` => Use compression
+- `f` file => Use this file
 
 Usage examples:
----------------
-`tar cf tps.tar tpsreports` => create(c) an archive (tps.tar) for this file(f) called 'tpsreports'
-`tar xf tps.tar` => Extract(x) this file(f) 'tps.tar'
-`tar xfv taps.tar` => Be verbose(give a listing of all the extracted files)
+- `tar cf tps.tar tpsreports` => create(c) an archive (tps.tar) for this file(f) called 'tpsreports'
+- `tar xf tps.tar` => Extract(x) this file(f) 'tps.tar'
+- `tar xfv taps.tar` => Be verbose(give a listing of all the extracted files)
 
--------------------------------------------------------------------------------------------------
+## Compress Files:
 
-Compress Files:
-===============
 `gzip` command. (Compresses supplied file)
 
-`gzip file` => Compress files and adds extension '.gz' to it (original file AFFECTED!)
-`gunzip` => Uncompress files
+- `gzip file` => Compress files and adds extension '.gz' to it (original file AFFECTED!)
+- `gunzip` => Uncompress files
 
 Viewing contents of a gzipped file:
------------------------------------
-`gzcat` => Concatenates compressed files
+- `gzcat` => Concatenates compressed files
 (OR)
-`zcat` => Concantenates commpress files
+- `zcat` => Concantenates commpressed files
 
-Disk Usage Stats:
------------------
-`du` => Estimates file usage(Bytes)
-`du -k` => Displays sizes in KiloBytes(KB)
-`du -h` => Display sizes in human-readable format(Ex: 5M for 5 megabytes)
+### Disk Usage Stats:
+- `du` => Estimates file usage(Bytes)
+- `du -k` => Displays sizes in KiloBytes(KB)
+- `du -h` => Display sizes in human-readable format(Ex: 5M for 5 megabytes)
 
-examples:
----------
-`du -k data.txt` => gives how much space data.txt is using.
-`gzip data.txt` => compresses data.txt to data.txt.gz
-`du -k data.txt.gz` => gives how much space data.txt.gz (the compressed file) is using.
-`gunzip data.txt.gz` => uncompresses data.txt.gz to data.txt (original state)
+Combining `du` & `gzip`. Examples:
+- `du -k data.txt` => gives how much space data.txt is using.
+- `gzip data.txt` => compresses data.txt to data.txt.gz
+- `du -k data.txt.gz` => gives how much space data.txt.gz (the compressed file) is using.
+- `gunzip data.txt.gz` => uncompresses data.txt.gz to data.txt (original state)
 
--------------------------------------------------------------------------------------------------
+### `tar` and `gzip`:
 
-`tar` and `gzip`:
-=================
-`-z` option of tar uses gzip for compression while archiving. (Uses '.tgz' or 'tar.gz' extension)
+- `-z` option of tar uses gzip for compression while archiving. (Uses '.tgz' or 'tar.gz' extension)
 
 Ex:
-`tar zcf tps.tgz tpsreports` => Compresses(z) and archives(c) this file(f) tpsreports into tps.tgz.
-`tar ztvf tps.tgz` => Displays contents(t) of compressed(z) archive file(f) tps.tgz in a verbose(v) way.
+- `tar zcf tps.tgz tpsreports` => Compresses(z) and archives(c) this file(f) tpsreports into tps.tgz.
+- `tar ztvf tps.tgz` => Displays contents(t) of compressed(z) archive file(f) tps.tgz in a verbose(v) way.
 
--------------------------------------------------------------------------------------------------
+## WildCards: 
 
-WildCards: *(Already done in other courses, just SKIPPING them here)*
-==========
-%SKIPPED HERE% (Learn from notes of other, previous courses)
+(Already done in other courses, just SKIPPING them here)
+(Learn from notes of other, previous courses)
 
--------------------------------------------------------------------------------------------------
-
-Input/Output and Redirection:
-=============================
+## Input/Output and Redirection:
 
 There are 3 different types of input and output: 
-Standard Input => stdin => 0 (File Descriptor)
-Standard Output => stdout => 1 (File Descriptor)
-Standard Error => stderr => 2 (File Descriptor)
+- Standard Input => stdin => 0 (File Descriptor)
+- Standard Output => stdout => 1 (File Descriptor)
+- Standard Error => stderr => 2 (File Descriptor)
 
-[File Descriptor number is like the number/id of the inputs or outputs. The machine uses the numbers instead of 'standard input' (human readable form) to recognize input and output]
+File Descriptor number is like the number/id of the inputs or outputs. The machine uses the numbers instead of 'standard input' (human readable form) to recognize input and output
 
-Redirection:
-------------
-`>` => Redirects standard output to a file. (Overwries(truncates) existing contents)
-`>>` => Redirects standard output to a file. (Appends to any existing contents)
-`<` => Redirects input from a file to a command.
-
-Ex:
-`echo new line > file.txt` => 'file.txt' contains the output of `echo` command ('new line').
-`ls -l > file.txt` => 'file.txt' contains the output of `ls -l` command (nothing printed on screen).
-`ls -l >> file.txt` => Appends the output of `ls -l` command to 'file.txt' (nothing printed on screen).
+### Redirection:
+- `>` => Redirects standard output to a file. (Overwries(truncates) existing contents)
+- `>>` => Redirects standard output to a file. (Appends to any existing contents)
+- `<` => Redirects input from a file to a command.
 
 Ex:
-`sort < files.txt` => sort works on input which is the content of 'file.txt' 
-(In sort's case it is the same as 'sort file.txt')
+- `echo new line > file.txt` => 'file.txt' contains the output of `echo` command ('new line').
+- `ls -l > file.txt` => 'file.txt' contains the output of `ls -l` command (nothing printed on screen).
+- `ls -l >> file.txt` => Appends the output of `ls -l` command to 'file.txt' (nothing printed on screen).
+
+Ex:
+- `sort < files.txt` => sort works on input which is the content of 'file.txt' (In sort's case it is the same as 'sort file.txt')
 
 Note: Using file descriptors to work with stdin/stdout/stderr:
--------------------------------------------------------------
-`&` => Used with redirection to signal that a file descriptor is being used.
+- `&` => Used with redirection to signal that a file descriptor is being used.
+
 Ex:
-`2>&1` : Redirecting standard error to standard output (Combines standard error and standard output)
-`2>file` : Redirect standard error to a file.
+- `2>&1` : Redirecting standard error to standard output (Combines standard error and standard output)
+- `2>file` : Redirect standard error to a file.
 
-The Null Device:
-----------------
-If you want to 'IGNORE/DISCARD' the output, you can send it to the Null Device('/dev/null'):
-Ex:
-`ls here not-here 2> /dev/null` [Don't want to see errors on screen nor save them to a file]
+### The Null Device:
+If you want to 'IGNORE/DISCARD' the output, you can send it to the Null Device('/dev/null'): Ex:
+- `ls here not-here 2> /dev/null` [Don't want to see errors on screen nor save them to a file]
 
-[Null device is also known as the 'bit bucket']
+Null device is also known as the 'bit bucket'
 
-Choosing whether to redirect standard output or standard error to a file:
--------------------------------------------------------------------------
-Ex:
-`ls -l 2> file.txt` => Redirects std error to 'file.txt'(No space between 2 and >)[& stdout to screen]
-`ls -l 1> file.txt` => Redirects std output to 'file.txt'(No space between 1 and >)[& stderr to screen]
+Choosing whether to redirect standard output or standard error to a file. Ex:
+- `ls -l 2> file.txt` => Redirects std error to 'file.txt'(No space between 2 and >)[& stdout to screen]
+- `ls -l 1> file.txt` => Redirects std output to 'file.txt'(No space between 1 and >)[& stderr to screen]
 
-Sending standard output to one file and standard error to another(or to the same):
-----------------------------------------------------------------------------------
-Ex: `ls existingFile not-here-file 1> out.txt 2> err.txt`
-[Std output (for existingFile) goes to out.txt and Std error (for not-here-file) goes to err.txt] 
+Sending standard output to one file and standard error to another(or to the same). Ex: 
+- `ls existingFile not-here-file 1> out.txt 2> err.txt` => Std. output (for existingFile) goes to out.txt and Std error (for not-here-file) goes to err.txt
 
-Combining standard output and standard error (redirect to the same file):
--------------------------------------------------------------------------
-Ex: `ls existingFile not-here-file > out.txt 2>&1`
-[The above appends standard error to standard output, so both are saved into out.txt only (not screen)]
-Ex: `ls here not-here > /dev/null 2>&1` 
-[The above appends standard error to standard output, so both are sent to /dev/null (ignored)]
+Combining standard output and standard error (redirect to the same file): Ex: 
+- `ls existingFile not-here-file > out.txt 2>&1`
 
-Important:
-----------
-When NO file descriptor is used in redirection, Only the standard output is redirected but the standard input is printed on the screen.
-Ex: `ls -l existingFile not-here-file > lsOutput.txt`
-(The stdout is saved in lsOutput.txt (not printed) while stderr for 'not-here-file' was not redirected and hence, was printed to the screen)
+The above appends standard error to standard output, so both are saved into out.txt only (not screen)
+
+Ex: 
+- `ls here not-here > /dev/null 2>&1` => Appends standard error to standard output, so both are sent to /dev/null (ignored)
+
+Important: When NO file descriptor is used in redirection, Only the standard output is redirected but the standard input is printed on the screen. Ex: 
+- `ls -l existingFile not-here-file > lsOutput.txt` = The stdout is saved in lsOutput.txt (not printed) while stderr for 'not-here-file' was not redirected and hence, was printed to the screen. 
+
 Sample Output: 
-`ls cannot access not-here: No such file or directory` (but ls of existingFile was saved as content of lsOutput.txt)
+- `ls cannot access not-here: No such file or directory` (but ls of existingFile was saved as content of lsOutput.txt)
 
-Combining input and output redirection:
----------------------------------------
+### Combining input and output redirection:
+
 Syntax: `command < ipFileName > opFileName`
-(The command is run with 'ipFileName' as input and the output of the command is saved to 'opFileName')
+
+The command is run with 'ipFileName' as input and the output of the command is saved to 'opFileName'
+
 Ex: `sort < file1 > file2`
 
--------------------------------------------------------------------------------------------------
+## Comparing two files:
 
-Comparing two files:
-====================
-`diff file1 file2` = Compare two files.
-`sdiff file1 file2` = Compare two files Side-by-Side (file1 : left, file2 : right).
-`vimdiff file1 file2` = Highlight differences in vim editor.
+- `diff file1 file2` = Compare two files.
+- `sdiff file1 file2` = Compare two files Side-by-Side (file1 : left, file2 : right).
+- `vimdiff file1 file2` = Highlight differences in vim editor.
 
-`diff` Example:
----------------
-`diff file1 file2`
-(o/p: 
-	3c3
-	< this is a line in a file
-	---
-	> this is a line in a file
-)
-Here, 3c3 is following the pattern => '<LineNumeFile1><Action><LineNumFile2>'
-<action> can be Add(a), changes(c) or Delete(d) indicating the kind of difference.
-'<' => @beginning of a line indicates it is a line from file1
-'>' => @beginning of a line indicates it is a line from file2
-`---` => It is just a separator
+### `diff` Example:
 
-`sdiff` Example:
-----------------
+- `diff file1 file2`
+
+Output: 
+```
+3c3
+< this is a line in a file
+---
+> this is a line in a file
+```
+
+Here, 3c3 is following the pattern => `<LineNumeFile1><Action><LineNumFile2>`. `<action>` can be Add(a), changes(c) or Delete(d) indicating the kind of difference.
+- `<` => @beginning of a line indicates it is a line from file1
+- `>` => @beginning of a line indicates it is a line from file2
+- `---` => It is just a separator
+
+### `sdiff` Example:
+
 `sdiff file1 file2`
-(o/p: 
-	line in file 1 | line in file 2
-					> line in a file 2 
-)
-'|' => Indicates differing lines (side-by-side lines separated by '|')
-'<' => @beginning of a line indicates it is a line from file1 (line only exists in file1)
-'>' => @beginning of a line indicates it is a line from file2 (line only exists in file1)
+Output:
+```
+line in file 1 | line in file 2
+		> line in a file 2 
+```
+- `|` => Indicates differing lines (side-by-side lines separated by '|')
+- `<` => @beginning of a line indicates it is a line from file1 (line only exists in file1)
+- `>` => @beginning of a line indicates it is a line from file2 (line only exists in file1)
 
-`vimdiff` Example:
-------------------
-`vimdiff file1 file2` [Both files will be opened in separate windows!]
-<Ctrl-w> w 	: Go to the next window
-:q 			: Quit (Close current window)
-:qa 		: Quit All (Close both files)
-:qa!		: Force Quit All (Force close both files!) - changes that you don't want to save.
+### `vimdiff` Example:
 
--------------------------------------------------------------------------------------------------
+`vimdiff file1 file2` (Both files will be opened in separate windows!)
 
-Searching in Files and using Pipes:
-===================================
+- `<Ctrl-w> w` 	: Go to the next window
+- `:q` 		: Quit (Close current window)
+- `:qa` 	: Quit All (Close both files)
+- `:qa!`	: Force Quit All (Force close both files!) - changes that you don't want to save.
+
+## Searching in Files and using Pipes:
+
 Use the `grep` command to search inside files. `grep` displays Lines of a file matching a pattern.
-[If we DON'T supply a file name grep uses the STANDARD INPUT to search against.]
+(If we DON'T supply a file name grep uses the STANDARD INPUT to search against.)
 
-Syntax: `grep pattern file`:
-----------------------------
+Syntax: `grep pattern file`
+
 Options:
-`-i` => Perform a search, ignoring case
-`-c` => Count the number of occurrences of the pattern in a file
-`-n` => Precede output with Line Numbers
-`-v` => Invert Match. Print lines that do NOT match.
+- `-i` => Perform a search, ignoring case
+- `-c` => Count the number of occurrences of the pattern in a file
+- `-n` => Precede output with Line Numbers
+- `-v` => Invert Match. Print lines that do NOT match.
 
 Ex:
-`grep o secret.txt` => searches for 'o' in 'secret.txt' and prints the matching lines 
+- `grep o secret.txt` => searches for 'o' in 'secret.txt' and prints the matching lines 
 (lines from the file that contain 'o')
-`grep -v user secret.txt` => Matches all lines that do NOT contain 'user' in 'secret.txt' file.
-`grep -i User secret.txt` => Matches all lines that contain 'user' in 'secret.txt' file.(IGNORES CASE)
-`grep -n blah secret.txt` => Matches all lines that contain 'blah' in 'secret.txt' file.(PRINTS LINE NUM)
+- `grep -v user secret.txt` => Matches all lines that do NOT contain 'user' in 'secret.txt' file.
+- `grep -i User secret.txt` => Matches all lines that contain 'user' in 'secret.txt' file.(IGNORES CASE)
+- `grep -n blah secret.txt` => Matches all lines that contain 'blah' in 'secret.txt' file.(PRINTS LINE NUM)
 
-Finding out the Type of a file:
--------------------------------
+### Finding out the Type of a file:
+
 The `file` command is used.
+
 Syntax: `file file_name` => Displays the file type.
 
 Ex:
-`file sales.data` (Ex. O/P: 'sales.data: ASCII text')
-`file jason.tar` (Ex. O/P: 'jason.tar: POSIX tar archive')
-`file collection` (Ex: O/P: 'collection: directory')
+- `file sales.data` (Ex. O/P: 'sales.data: ASCII text')
+- `file jason.tar` (Ex. O/P: 'jason.tar: POSIX tar archive')
+- `file collection` (Ex: O/P: 'collection: directory')
 
-Searching for 'strings' in a Binary file:
------------------------------------------
+### Searching for 'strings' in a Binary file:
+
 To display printable strings contained in a binary file, use the `string` command.
+
 Syntax: `string binaryFileName`
 
-Pipes (or) Pipelining:
-----------------------
+### Pipes (or) Pipelining:
+
 The pipe symbol is '|'. It's used to chain commands together.
+
 Visualization: 'command-output | command-input'
+
 (The pipe takes the std. output of one command(left) and feeds it as std. input to other command(right))
 
-Only the standard output is sent as standard input to the next command.
-(use 2>&1 to send standard error as well - check redirection topic)
+Only the standard output is sent as standard input to the next command. (use 2>&1 to send standard error as well - check redirection topic)
 
 Common usage examples:
-`grep pattern file` <=> `cat file | grep pattern` (Equivalent)
-`ls -l | cat | grep -i john` (We can chain as many commands as we want)
+- `grep pattern file` <=> `cat file | grep pattern` (Equivalent)
+- `ls -l | cat | grep -i john` (We can chain as many commands as we want)
 
-`cut` command:
---------------
-`cut [file]` => Cuts out selected portions of the file. (If file is omitted, uses STANDARD INPUT).
-[Cut does NOT affect the original file.]
+### `cut` command:
 
-`cut -d<delimiter>` => Use delimiter as the field(column) separator
-`cut -fN` => Display the Nth field.
+- `cut [file]` => Cuts out selected portions of the file. (If file is omitted, uses STANDARD INPUT). (Cut does NOT affect the original file.)
+
+- `cut -d<delimiter>` => Use delimiter as the field(column) separator
+- `cut -fN` => Display the Nth field.
 
 Ex: 
-`cut -d' ' -f2 file1.txt` => Selects column 2 from file1.txt using space as delimiter between fields
-`grep bob /etc/passwd | cut -d: -f1,5` => cuts 1 and 5 ':' separated columns of /etc/passwd.
-(/etc/passwd contains user data such as name, home folder, etc.)
+- `cut -d' ' -f2 file1.txt` => Selects column 2 from file1.txt using space as delimiter between fields
+- `grep bob /etc/passwd | cut -d: -f1,5` => cuts 1 and 5 ':' separated columns of /etc/passwd. 
 
-Translating Characters(`tr`):
------------------------------
-`tr` is used to translate all occurrences of a value/string in a file to another value/string.
-(If NO file is supplied, it takes the STANDARD INPUT.) [original file not affected]
+`/etc/passwd` contains user data such as name, home folder, etc.
+
+### Translating Characters(`tr`):
+
+`tr` is used to translate all occurrences of a value/string in a file to another value/string. If NO file is supplied, it takes the STANDARD INPUT. Original file not affected.
+
 Syntax: `tr "<oldchar>" "<newchar>" file`
-Ex:
-`tr ":" " " file.txt` => Translate all the ':' with spaces(' ') in 'file.txt'.
 
-Formatting output(`column`):
-----------------------------
+Ex:
+- `tr ":" " " file.txt` => Translate all the ':' with spaces(' ') in 'file.txt'.
+
+### Formatting output(`column`):
+
 Syntax: `column [options] [file...]`
-Ex:
-`column -t` : Determine the number of columns the input contains and create a table. 
-(Space is the delimiter between columns by default)
 
-`more` and `less` commands: [Printing out to a pager]
----------------------------
-Already learnt. (Refer earlier or previous notes)
-Keep in mind that these two commands can also take take redirected inputs as well (STANDARD INPUT).
 Ex:
-`cat /etc/passwd | less`
+- `column -t` : Determine the number of columns the input contains and create a table. (Space is the delimiter between columns by default)
+
+### `more` and `less` commands: (Printing out to a pager)
+
+Already learnt. (Refer earlier or previous notes) Keep in mind that these two commands can also take take redirected inputs as well (STANDARD INPUT).
+Ex:
+- `cat /etc/passwd | less`
 
 (THERE ARE MANY SMALL COMMANDS THAT DO ONE THING VERY WELL. WE CAN CHAIN MANY OF THESE COMMANDS TOGETHER TO EXECUTE SOMETHING COMPLEX AND POWERFUL)
 
--------------------------------------------------------------------------------------------------
 
-===============================
-COPYING FILES OVER THE NETWORK:
-===============================
+## Copying Files Over the Network:
+
 To copy files between 'remote server and local host' (or) 'between two remote servers'.
 
-1. SCP - SECURE COPY.
-2. SFTP - SSH(or SECURE) FILE TRANSFER PROTOCOL.
+- SCP - SECURE COPY.
+- SFTP - SSH(or SECURE) FILE TRANSFER PROTOCOL.
 
 Both SCP and SFTP are extensions of the 'SSH' (Secure Shell) Protocol.
-(In SCP, we need to know what files are to be transferred while writing the command/connecting.)
-(In SFTP, we need NOT know before connecting, what files are going to be transferred.)
+- (In SCP, we need to know what files are to be transferred while writing the command/connecting.)
+- (In SFTP, we need NOT know before connecting, what files are going to be transferred.)
 
 Using SCP/SFTP:
----------------
-Mac & Linux come with scp and sftp command line utilities (openSSH in the case of MAC)
-For Windows systems, we need to install a tool called 'putty' ['pscp.exe' and 'psftp.exe'].
+- Mac & Linux come with scp and sftp command line utilities (openSSH in the case of MAC)
+- For Windows systems, we need to install a tool called 'putty' ['pscp.exe' and 'psftp.exe'].
 
 Graphical SCP/SFTP clients:
----------------------------
 1. Cyberduck, (Mac and Windows)
 2. FileZilla, (Mac, Linux and Windows)
 3. WinSCP. (Only Windows)
 
--------------------------------------------------------------------------------------------------
+### SCP:
+- `scp source destination` => Copy source to destination (Destination is like - 'serverName:directoryPath')
 
-1. SCP:
--------
-`scp source destination` => Copy source to destination (Destination is like - 'serverName:directoryPath')
 (Full Syntax: `scp source_file_name username@destination_host:destination_folder`)
-Ex:
-`scp sourceFileName host:destinationPath`,
-`scp z.txt linuxsvr:/tmp/`,
-`scp z.txt adminuser@linuxsvr:~/` => Transfer files as a different user(adminuser) [password required]
 
-(we can use SSH or SFTP to check if the copied local files exist on the remote server now.)
+Ex:
+- `scp sourceFileName host:destinationPath`,
+- `scp z.txt linuxsvr:/tmp/`,
+- `scp z.txt adminuser@linuxsvr:~/` => Transfer files as a different user(adminuser) [password required]
+
+(We can use SSH or SFTP to check if the copied local files exist on the remote server now.)
 
 SCP Options: 
-`-v` => We can use the `-v` parameter to print debug information into the screen.
-`-p` => An estimated time and the connection speed will appear on the screen.
-`-r` => Copy directories and their contents recursively.
-`-C` => The `-C` parameter will compress your files on the go, making the transfer faster. 
-(No further compression if file is already compressed. Ex: .zip, .rar, .iso, ... etc)
+- `-v` => We can use the `-v` parameter to print debug information into the screen.
+- `-p` => An estimated time and the connection speed will appear on the screen.
+- `-r` => Copy directories and their contents recursively.
+- `-C` => The `-C` parameter will compress your files on the go, making the transfer faster. (No further compression if file is already compressed. Ex: .zip, .rar, .iso, ... etc)
+- `-p` => Specify the Specific port to use. Ex: `scp -P 2249 Label.pdf mrarianto@202.x.x.x:.` (we are using port 2249)
 
-`-p` => Specify the Specific port to use:
-Ex:
-`scp -P 2249 Label.pdf mrarianto@202.x.x.x:.`
-(we are using port 2249)
+By default SCP using `AES-128` to encrypt files. If you want to change to another cipher to encrypt it, you can use `-c` parameter. Take a look of this command. Ex:
+- `scp -c 3des Label.pdf mrarianto@202.x.x.x:.`
 
-By default SCP using `AES-128` to encrypt files. If you want to change to another cipher to encrypt it, you can use `-c` parameter. Take a look of this command.
-Ex:
-`scp -c 3des Label.pdf mrarianto@202.x.x.x:.`
-Tha above command uses 3des algorithm to encrypt the file.
+The above command uses 3des algorithm to encrypt the file.
 
 Limiting Bandwidth:
-`-l` =>  limit the bandwidth to use. 
-(It will be useful if you do an automation script to copy a lot of file, but you don’t want the bandwidth is drained by the SCP process.)
-Ex:
-`scp -l 400 Label.pdf mrarianto@202.x.x.x:.`
+- `-l` =>  limit the bandwidth to use. (It will be useful if you do an automation script to copy a lot of file, but you don’t want the bandwidth is drained by the SCP process.) Ex:
+	- `scp -l 400 Label.pdf mrarianto@202.x.x.x:.`
+	
 The 400 value behind “-l” parameter is mean that we limit the bandwidth for SCP process only 50 KB/sec. 
 One thing to remember that bandwidth is specified in Kilobits/sec (kbps). It is mean that 8 bits equal with 1 byte. BUT, While SCP counts in KiloByte/sec (KB/s). So if you want to limit your bandwidth for SCP maximum only 50 KB/s, you need to set it into 50 x 8 = 400.
 
--------------------------------------------------------------------------------------------------
+### SFTP:
 
-2. SFTP:
---------
-`sftp host` (or) ` => Start a secure file transfer session with host (host can be an IP address as well)
+`sftp user@host` => Start a secure file transfer session with host (host can be an IP address as well)
 Ex:
-`sftp jason@host` (or) 
-`sftp tecmint@27.48.137.6` ... etc.
+- `sftp jason@host` (or) 
+- `sftp tecmint@27.48.137.6` ... etc.
 
 (NOTE: you maybe prompted for a password.)
 
 SFTP Note/Points:
-Once you successfully connect, you are at the command prompt of the remote server.
-For example, `pwd` returns CWD on the server, `ls` returns `ls` of CWD on the server.
-To use the commands for your local host computer while connected, precede commands with an 'l',(stands for 'local'). 
-So, to view the CWD on your local system, type `lpwd`, to list the files in the CWD of your local system, type 'lls', .. and so on.
+- Once you successfully connect, you are at the command prompt of the remote server.
+- For example, `pwd` returns CWD on the server, `ls` returns `ls` of CWD on the server.
+- To use the commands for your local host computer while connected, precede commands with an 'l',(stands for 'local'). 
+- So, to view the CWD on your local system, type `lpwd`, to list the files in the CWD of your local system, type 'lls', .. and so on.
 
 Therefore: SFTP commands:
 1. `pwd` => Remote's Working Directory.
-
 2. `lpwd` => Local System's Working Directory.
-
 3. `ls` => List files on Remote.
-
 4. `lls` => List files on the Local System.
-
 5. `put localFile` => Puts a local system file onto the remote systems CWD.
-
 6. `mput localFile1 [...localFileN]` => Put multiple Local System files onto the REMOTE.
-
 7. `get remoteFile [localFileName]` => Get Remote file onto the Local system .
-
 8. `mget remoteFile1 [...remoteFileN] [localFileName]` => Get multiple Remote files onto the Local system.
 
 [NOTE: To transfer directories in `put`, `mput`, `get` or `mget`, user `-r` option (recursive)]
 
 9. `?` (or) `help` => SFTP help command screen shows the commands we can use to accomplish various tasks.
-
 10. `cd` => Changes directory on the Remote Server.
-
 11. `lcd` => Changes directory on the Local System.
-
 12. `mkdir` => Make a directory on the Remote Server.
-
 13. `lmkdir` => Make a directory on the Local System.
-
 14. `rm` => Remove files and Directories on the Remote Server.
-
 15. `rmdir` => Remove empty Directories from the Remote Server.
-
 16. `exit` or `bye` => Close/Terminate the SFTP the session.
-
-17. `chown`, `chgrp`, chmod` => All on the Remote Server.(NO command from SFTP to change local permissions!)
-
+17. `chown`, `chgrp`, `chmod` => All on the Remote Server.(NO command from SFTP to change local permissions!)
 18. `lumask` => This is the only permission related command in SFTP for the Local System.
 
--------------------------------------------------------------------------------------------------
-
 (Other utilities):
-------------------
-The `ftp` command. (Don't use if possible, use SFTP or SCP.)
-`ftp host` => Start a file transfer session with host. (Not secured!)
-[It means that your Login credentials are sent in plain text over the network.]
-[The files that you download/upload are NOT encrypted either.]
+- The `ftp` command. (Don't use if possible, use SFTP or SCP.)
+- `ftp host` => Start a file transfer session with host. (Not secured!)
 
--------------------------------------------------------------------------------------------------
+Using `ftp` means that your Login credentials are sent in plain text over the network. The files that you download/upload are NOT encrypted either.
 
-Customizing the Shell Prompt:
-=============================
+## Customizing the Shell Prompt:
+
 An Environment Variable holds the shell prompt.
-$PS1 => for bash, ksh and sh.
-$prompt => Csh, tcsh, and zsh.
+- `$PS1` => for bash, ksh and sh.
+- `$prompt` => Csh, tcsh, and zsh.
 
 (Check `man bash` pages for complete info.)
 
-** Bash Prompt:=> **
+**Bash Prompt:**
 
 Format Strings: (That can be placed within the prompt environment variable):
----------------
-`\d` => Date in 'Weekday Month Day' format (Ex: Tue May 26)
-`\h` => Hostname (upto the first period (.))
-`\H` => Hostname
-`\n` => Newline
-`\t` => Current time in 24 hrs format (HH:MM:SS)
-`\T` => Current time in 12 hrs format (HH:MM:SS)
-`\@` (or) `\&` => Current time in 12 hrs am/pm format
-`\A` => Current time in 24 hrs HH:MM format
-`\u` => Username of the current user
-`\w` => Current Working Directory
-`\W` => Basename of the Current Working Directory
-`\$` => If the effective UID is 0, a '#', otherwise a '$'[Superuser(Eff.UID=0) gets '#', everyone else: '$']
+- `\d` => Date in 'Weekday Month Day' format (Ex: Tue May 26)
+- `\h` => Hostname (upto the first period (.))
+- `\H` => Hostname
+- `\n` => Newline
+- `\t` => Current time in 24 hrs format (HH:MM:SS)
+- `\T` => Current time in 12 hrs format (HH:MM:SS)
+- `\@` (or) `\&` => Current time in 12 hrs am/pm format
+- `\A` => Current time in 24 hrs HH:MM format
+- `\u` => Username of the current user
+- `\w` => Current Working Directory
+- `\W` => Basename of the Current Working Directory
+- `\$` => If the effective UID is 0, a '#', otherwise a '$'[Superuser(Eff.UID=0) gets '#', everyone else: '$']
 
 Persist the PS1 changes(for subsequent sessions):
--------------------------------------------------
-PS1 changes created on the prompt are gone after we quit the session.(Not available for the next session).
-So, We must add the PS1 changes as a line to the '~/.bash_profile' file.
+- PS1 changes created on the prompt are gone after we quit the session.(Not available for the next session).
+- So, We must add the PS1 changes as a line to the '~/.bash_profile' file.
+
 We can do this either 
 1. Manually: Insert something like `export PS1="[\u@\h \w]\$"` into '~/.bash_profile' file.
 (OR)
@@ -1092,26 +995,23 @@ We can do this either
 
 (NOTE: personal initialization files, like .bash_profile, are also known as 'Dot Files' since they begin with a '.')
 
--------------------------------------------------------------------------------------------------
+## Shell Aliases:
 
-Shell Aliases:
-==============
 Used for shortening long commands.
-`alias name=value` => Create a new alias(name) for a command/sequence of commands(;, &, || separated)(value)
-`alias` => List all of the current aliases that are set.
+- `alias name=value` => Create a new alias(name) for a command/sequence of commands(;, &, || separated)(value)
+- `alias` => List all of the current aliases that are set.
 
-Aliases can also be used for adjusting commmon typing errors (ex: 'grpe' alias for 'grep')
-Aliases can also be used to make Linux behave like another OS (ex: 'cls' alias for 'clear')
+- Aliases can also be used for adjusting commmon typing errors (ex: 'grpe' alias for 'grep')
+- Aliases can also be used to make Linux behave like another OS (ex: 'cls' alias for 'clear')
 
 Removing Aliases:
------------------
-`unalias name` => removes the alias with name 'name'
-`unalias -a` => Removes all the aliases
+- `unalias name` => removes the alias with name 'name'
+- `unalias -a` => Removes all the aliases
 
 Persist the Aliases(for subsequent sessions):
----------------------------------------------
-Aliases create on the prompt are gone after we quit the session.(Not available for the next session).
-So, We need to add the alias command as a line to the '~/.bash_profile' file (just like for shell prompt).
+- Aliases create on the prompt are gone after we quit the session.(Not available for the next session).
+- So, We need to add the alias command as a line to the '~/.bash_profile' file (just like for shell prompt).
+
 This can be done:
 1. Manually: Insert something like `alias cls="clear"` into '~/.bash_profile' file.
 (OR)
@@ -1119,70 +1019,62 @@ This can be done:
 
 (NOTE: Keep your alias usage to a minimum. Because, working on a different system where your aliases don't work might cripple you/slow you down/Need to copy your configuration file to each system you work on)
 
--------------------------------------------------------------------------------------------------
+## Environment Variables:
 
-Environment Variables:
-======================
-These are 'name=value' pairs.
-Usually, Environment variables are in UPPERCASE(convention).
-Ex: EDITOR=nano
+These are 'name=value' pairs. Usually, Environment variables are in UPPERCASE(convention). Ex: `EDITOR=nano`
 
 (Use the `man bash` pages for more info on environment variables)
 
-Viewing all the Environment variables: (and their values on the command line)
---------------------------------------
-`printenv` => Prints all the Environment variables to the screen.
-`printenv ENV_VAR` => Prints the value of the specified Environment Variable. (Case-Sensitive!)
-`echo $ENV_VAR` => Prints the value of specified Environment Variable. (prepend name with a $).
+### Viewing all the Environment variables: 
 
-Creating/Modify Environment Variables:
--------------------------------
+(And their values on the command line)
+
+- `printenv` => Prints all the Environment variables to the screen.
+- `printenv ENV_VAR` => Prints the value of the specified Environment Variable. (Case-Sensitive!)
+- `echo $ENV_VAR` => Prints the value of specified Environment Variable. (prepend name with a $).
+
+### Creating/Modify Environment Variables:
+
 Syntax: `export VAR="value"`
+
 Ex:
-`export EDITOR="vi"` => Creates EDITOR environment variables to 'vi'.(or modifies value to it, if EV exists)
-`export TZ="US/Pacific"` => Sets the Default Time Zone to the US Pacific time.
+- `export EDITOR="vi"` => Creates EDITOR environment variables to 'vi'.(or modifies value to it, if EV exists)
+- `export TZ="US/Pacific"` => Sets the Default Time Zone to the US Pacific time.
 (Date command would return a different date/time depending on the TZ environment variable value)
 
-Removing Environment Variables:
--------------------------------
-Syntax: `unset VAR`
-Ex:
-`unset TZ` => removes the Time Zone Environment Variable.
+### Removing Environment Variables:
 
-Persisting the Environment Variables Settings:
-----------------------------------------------
-The act of setting/unsetting the Environment Variables on the command line is NOT persistent. (That is, the changes made to them won't be available for the subsequent sessions).
-So, we must save the environment variables into the '~/.bash_profile' file.
+Syntax: `unset VAR`
+
+Ex:
+- `unset TZ` => removes the Time Zone Environment Variable.
+
+### Persisting the Environment Variables Settings:
+
+The act of setting/unsetting the Environment Variables on the command line is NOT persistent. (That is, the changes made to them won't be available for the subsequent sessions). So, we must save the environment variables into the '~/.bash_profile' file.
+
 This is done either:
 1. Manually: Insert something like `export TZ="US/Central"` into '~/.bash_profile' file.
 (OR)
 2. Append to file: `echo 'export TZ="US/Central"' >> ~/.bash_profile`.
 
-NOTE: Changing time-zone Environment Variable(TZ) to Indian Standard time:
-`export TZ="Asia/Calcutta"` => Now \t, \@, etc in the chell prompt will show IST.
-(Even the `date` command will show the IST only.)
-
--------------------------------------------------------------------------------------------------
+NOTE: Changing time-zone Environment Variable(TZ) to Indian Standard time: `export TZ="Asia/Calcutta"` => Now \t, \@, etc in the chell prompt will show IST. (Even the `date` command will show the IST only.)
 
 **Important**
 NOTE:
-1. Whenever the output of a command is too much/too long, we can pipe the output of that command to a pager utility like 'less' or 'more':
-Ex:
-`cat bigBigFile.txt | less`
+- Whenever the output of a command is too much/too long, we can pipe the output of that command to a pager utility like 'less' or 'more': Ex:
+	- `cat bigBigFile.txt | less`
 
-2. Refreshing the terminal to include the changes made to '~/.bash_profile':
-To see the changes take effect, run:
-`source ~/.bash_profile` (or) `. ~/.bash_profile`
-and the terminal is refreshed with the new changes.
-[This is a handy command that can be used instead of exiting and restarting the terminal]
+- Refreshing the terminal to include the changes made to '~/.bash_profile': To see the changes take effect, run:
+	- `source ~/.bash_profile` (or) `. ~/.bash_profile` and the terminal is refreshed with the new changes.
 
-3. To view users on the system, run:
-`who`
+(This is a handy command that can be used instead of exiting and restarting the terminal)
 
-4. To view which user you are on the system(current user), run:
-`whoami`
+- To view users on the system, run:
+	- `who`
 
--------------------------------------------------------------------------------------------------
+- To view which user you are on the system(current user), run:
+	- `whoami`
 
 Processes and Job Control:
 ==========================
