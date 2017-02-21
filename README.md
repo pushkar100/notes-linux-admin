@@ -33,14 +33,14 @@ Linux Directories === Windows Folders (Folders and Directories are used intercha
 
 ### Common Directories: (8 'must know' directories!)
 
-1. `/` => "root" (or, just `slash`) is the top level of the file system hierarchy.
-2. `/bin` => Contains binaries or executable programs.
-3. `/etc` => System Configuration Files
-4. `/home` => Home Directories (of the users on the system)
-5. `/opt` => Optional or Third Party Software (Ex: `Google Earth`s files and executables)
-6. `/tmp` => Temporary space, usually cleared on reboot(DONT have important stuff that you want to SAVE)
-7. `/usr` => User related programs.
-8. `/var` => Variable Data, most notable being the `log files` (system log files.)
+- `/` => "root" (or, just `slash`) is the top level of the file system hierarchy.
+- `/bin` => Contains binaries or executable programs.
+- `/etc` => System Configuration Files
+- `/home` => Home Directories (of the users on the system)
+- `/opt` => Optional or Third Party Software (Ex: `Google Earth`s files and executables)
+- `/tmp` => Temporary space, usually cleared on reboot(DONT have important stuff that you want to SAVE)
+- `/usr` => User related programs.
+- `/var` => Variable Data, most notable being the `log files` (system log files.)
 
 Directories can have important sub-directories too: Example:-
 - `/usr` :=
@@ -52,52 +52,54 @@ Directories can have important sub-directories too: Example:-
     - `/var/log` = The variables directory containing a subdirectory 'log' that holds system log messages.
 
 Other Important Directories:
-1. `/boot` => Contains files needed to boot the operating system.
-2. `/cdrom` (or) `/mount` (or) `/mnt` => Mount-point for CD-ROMs/removable media/external file systems.
-3. `/cgroup` => Control groups hierarchy.
-4. `/dev` => Device Files, typically controlled by Operating Sytem and System Administrators.
-5. `/export` => Shared file systems.
-6. `/lib` (or) `/lib64` => System libraries (or) System libraries(64bit).
-7. `/lost+found` => Used by OS to recover files after a file system check has been performed.
-8. `/proc` => Provides information about running processes.
-9. `/sbin` => System administration binaries.
-10. `/selinux` => Displays information about SELinux.
-11. `/sys` => Used to display and sometimes configure the devices known to the Linux Kernel.
+- `/boot` => Contains files needed to boot the operating system.
+- `/cdrom` (or) `/mount` (or) `/mnt` => Mount-point for CD-ROMs/removable media/external file systems.
+- `/cgroup` => Control groups hierarchy.
+- `/dev` => Device Files, typically controlled by Operating Sytem and System Administrators.
+- `/export` => Shared file systems.
+- `/lib` (or) `/lib64` => System libraries (or) System libraries(64bit).
+- `/lost+found` => Used by OS to recover files after a file system check has been performed.
+- `/proc` => Provides information about running processes.
+- `/sbin` => System administration binaries.
+- `/selinux` => Displays information about SELinux.
+- `/sys` => Used to display and sometimes configure the devices known to the Linux Kernel.
 
 Some Server Related Directories:
-1. /srv => Contains data which is served by the system.
-2. /srv/www => Contains Web Server files.
-3. /srv/ftp => Contains FTP files.
+- /srv => Contains data which is served by the system.
+- /srv/www => Contains Web Server files.
+- /srv/ftp => Contains FTP files.
 
 ### Application Directory Structure:
 
-1. Third Party Applications can be in `/usr/local` Directory:
+- Third Party Applications can be in `/usr/local` Directory:
 Some applications that are NOT BUNDLED(Third Party) with the Linux OS by default are stored in the: `/usr/local` directory. These application directories have their own Linux-Likes sub-directory structure. Ex: 
-  - `/usr/local/<application-name>/etc` => Application's configuration files(at runtime).
-  - `/usr/local/<application-name>/bin` => Application's binary(executable) files.
-  - `/usr/local/<application-name>/log` => Application's log files(execution log messages).
+ 
+ - `/usr/local/<application-name>/etc` => Application's configuration files(at runtime).
+ - `/usr/local/<application-name>/bin` => Application's binary(executable) files.
+ - `/usr/local/<application-name>/log` => Application's log files(execution log messages).
 
-2. Third Party Applications can also be in `/opt` Directory. Ex:
-    - `/opt/<application-name>/bin`
-    - `/opt/<application-name>/etc`
-    - `/opt/<application-name>/lib`
-    - `/opt/<application-name>/log`, ... etc.
+- Third Party Applications can also be in `/opt` Directory. Ex:
+
+- `/opt/<application-name>/bin`
+- `/opt/<application-name>/etc`
+- `/opt/<application-name>/lib`
+- `/opt/<application-name>/log`, ... etc.
 
 
 NOTE:
-1. Sometimes, even though third-party applications get installed in `usr/local` or `/opt`, they can save/install some of their files in Other Directories, too. Ex: 
-  - `/etc/opt/<application-name>`
-  - `/var/opt/<application-name>`
+- Sometimes, even though third-party applications get installed in `usr/local` or `/opt`, they can save/install some of their files in Other Directories, too. Ex: 
+	- `/etc/opt/<application-name>`
+	- `/var/opt/<application-name>`
 
-2. Sometimes when third-party applications are installed, they are not given their own directory structure, but instead they are installed in a 'Shared' Manner. Ex:
-  - `/usr/local/bin/<application-name>`
-  - `/usr/local/etc/<application-name>.conf`
-  - `/usr/local/lib/<application-name>.so`
+- Sometimes when third-party applications are installed, they are not given their own directory structure, but instead they are installed in a 'Shared' Manner. Ex:
+	- `/usr/local/bin/<application-name>`
+	- `/usr/local/etc/<application-name>.conf`
+	- `/usr/local/lib/<application-name>.so`
 
-3. We could use organisation/company name and store all the application(s)' files belonging to a particular organization under one folder. Ex:
-  - `/opt/<organization-name>/etc` (or) `/opt/<organization-name>/<application-name/etc`,
-  - `/opt/<organization-name>/bin` (or) `/opt/<organization-name>/<application-name/bin`,
-  - `/opt/<organization-name>/lib` (or) `/opt/<organization-name>/<application-name/lib`
+- We could use organisation/company name and store all the application(s)' files belonging to a particular organization under one folder. Ex:
+	- `/opt/<organization-name>/etc` (or) `/opt/<organization-name>/<application-name/etc`,
+	- `/opt/<organization-name>/bin` (or) `/opt/<organization-name>/<application-name/bin`,
+	- `/opt/<organization-name>/lib` (or) `/opt/<organization-name>/<application-name/lib`
 
 The Google Example: `/opt/google` | `/opt/google/chrome` | `/opt/google/earth`
 
@@ -127,8 +129,6 @@ Note: sometimes you may have a root access and a normal account as well. ROOT AC
 Note: Some services have THEIR OWN ACCOUNTS (like `ftp`): And hence, their own HOME folder. Ex: `/srv/ftp`  (= `~ftp`)
 
 ## Basic Linux Commands:   
-
-**(Already done in another course, just listing the basics here)**
 
 Commands are case-sensitive.
 
@@ -204,7 +204,7 @@ NOTE: `ls -` does NOT work!
 
 (Also works for directories found in $PATH)
 
-1. We can use the FULL(ABSOLUTE) PATH of the command (location of the command) to execute it.
+- We can use the FULL(ABSOLUTE) PATH of the command (location of the command) to execute it.
 
 (Can be used to execute shell scripts also)
 
@@ -213,7 +213,7 @@ Syntax: `/full/path/to/command`
 Ex:
 - `/bin/cat datafile.txt` => '/bin/cat' is the full path of the `cat` command. (datafile.txt is in CWD)
 
-2. Use `./command` to execute the command residing in/relative to the current working directory.
+- Use `./command` to execute the command residing in/relative to the current working directory.
 
 (Can be used to execute shell scripts also)
 
@@ -222,87 +222,67 @@ Syntax: `./relative/path/to/command` (`.` represents PWD)
 Ex:
 - `./myscript.sh` => Executees myscript.sh that is in the current directory(.) .
 
-Creating & Deleting Directories:
-================================
-`mkdir directory` => Create an Empty directory.
-`rmdir directoty` => Remove/Delete an Empty directory.
-`rm -rf directory` => Forcibly delete a directory(empty or not, all contents deleted - recursively)
+### Creating & Deleting Directories:
 
-`mkdir -p directory` => Create Empty directories along with Parent directories(if not existing).
+- `mkdir directory` => Create an Empty directory.
+- `rmdir directoty` => Remove/Delete an Empty directory.
+- `rm -rf directory` => Forcibly delete a directory(empty or not, all contents deleted - recursively)
+
+- `mkdir -p directory` => Create Empty directories along with Parent directories(if not existing).
+
 Ex:
-`mkdir -p one/two/three` => 
-[Creates an empty directory `one` in te CWD containing directory 'two' which contains directory `three`]
+- `mkdir -p one/two/three` => Creates an empty directory `one` in te CWD containing directory 'two' which contains directory `three`
 
-`rmdir -p directory` => Deletes empty directories including the specified empty parent directories.
+- `rmdir -p directory` => Deletes empty directories including the specified empty parent directories. 
+
 Ex:
-`rmdir -p one/two/three` =>
-[Deletes the nested empty directories `one`, `two` and `three`]
+- `rmdir -p one/two/three` => Deletes the nested empty directories `one`, `two` and `three`
 
-[NOTE: When you delete something from the CLI, it's gone forever. NO TRASH! from which we can retrieve]
+NOTE: When you delete something from the CLI, it's gone forever. NO TRASH! from which we can retrieve
 
--------------------------------------------------------------------------------------------------
+### Listing Files and Directories:
 
-Listing Files and Directories:   ***( Already done in another course, just listing the basics here )***
-==============================
-1. `ls -l` => Long Listing 
-(Permissions, number of links, owner, group, file size in bytes, last modification time, file name)
+- `ls -l` => Long Listing (Permissions, number of links, owner, group, file size in bytes, last modification time, file name)
+- `ls -a` => List Hidden files as well (files that begin with a '.' / period) 
+- `ls -F` => Reveals file types 
 
-2. `ls -a` => List Hidden files as well (files that begin with a '.' / period) 
+If name "ends" in: `/` => Directory, `@` or  `->` => Link, `*` => Executable.
 
-3. `ls -F` => Reveals file types 
-[ If name "ends" in:
-'/' => Directory, 
-'@' or  '->' => Link, 
-'*' => Executable]
-
-4. `ls -t` => List files by time. (Most recently modified file first)
-
-5. `ls -r` =? List files in reverse order.
-
-6. `ls -R` => Lists files Recursively. (Files of subdirectories and their subdirectories .. so on)
+- `ls -t` => List files by time. (Most recently modified file first)
+- `ls -r` =? List files in reverse order.
+- `ls -R` => Lists files Recursively. (Files of subdirectories and their subdirectories .. so on)
 
 Others:
--------
-7. `ls -d` => List Directory names but not contents (of the listed directories).
+- `ls -d` => List Directory names but not contents (of the listed directories).
+- `ls --color` => Colorize the output.
 
-8. `ls --color` => Colorize the output.
+### `tree` command:
 
-***( Already done in another course, just listing the basics here )***
-
--------------------------------------------------------------------------------------------------
-
-`tree` command:
-===============
-Similar to `ls -R`. But, it's more of a visual output only. (Using tree-like lines)
-Ex:
-`tree -d` => List Directories only.
-`tree -C` => Colorize the output.
+Similar to `ls -R`. But, it's more of a visual output only. (Using tree-like lines) Ex:
+- `tree -d` => List Directories only.
+- `tree -C` => Colorize the output.
 
 (`tree` command may not be available as a command by default. Will need to add it.)
 
--------------------------------------------------------------------------------------------------
+### Spaces in names(file or directory names):
 
-Spaces in names(file or directory names):
-=========================================
 1. Spaces have to be escaped(Ex: `cd /home/pushkar/Technical\ Notes`)
+
 (or)
+
 2. Use quotes('' or  "") (Ex: `cd 'My Notes.txt'`) 
 
-Instead, try using: '-' (dashes), '_' (underscores), or camelCase. 
-[Try to avoid spaces while naming!]
+Instead, try using: '-' (dashes), '_' (underscores), or camelCase. (Try to avoid spaces while naming!)
 
--------------------------------------------------------------------------------------------------
+### File Permissions:
 
-File Permissions:
-=================
-(Ex: `-rwx-wxr--`) 
-"<type-of-file(1CHAR)><owner-perms(3CHAR)><group-perms(3CHAR)><other-perms(3CHAR)>"
+Ex: `-rwx-wxr--` = <type-of-file(1CHAR)><owner-perms(3CHAR)><group-perms(3CHAR)><other-perms(3CHAR)>
 
-First character: Type of file?
-------------------------------
-`-` => Regular File
-`d` => Directory File
-`l` => Symbolic Link
+#### First character: Type of file?
+
+- `-` => Regular File
+- `d` => Directory File
+- `l` => Symbolic Link
 
 Remaining Characters can be Permission characters:
 --------------------------------------------------
