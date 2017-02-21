@@ -1080,152 +1080,135 @@ NOTE:
 
 Creating and viewing processs, background vs foreground processes, killing a process, etc.
 
-Displaying process information:
--------------------------------
-`ps` => Display Process Status.(No arguments? Displays ps for all processes associated with current session)
+### Displaying process information:
 
-Options for `ps`:
------------------
-`-e` => Everything, all processes(NOT just limited to your session).
-`-f` => Full format listing.
-`-u username` => Display username's processes only. (Ex: `ps -fu joehenderson`)
-`-p pid` => Display information for process with PID 'pid'.
+- `ps` => Display Process Status.(No arguments? Displays ps for all processes associated with current session)
 
-(The full listing `-f` contains: 
+#### Options for `ps`:
+
+- `-e` => Everything, all processes(NOT just limited to your session).
+- `-f` => Full format listing.
+- `-u username` => Display username's processes only. (Ex: `ps -fu joehenderson`)
+- `-p pid` => Display information for process with PID 'pid'.
+
+The full listing `-f` contains: 
 1. UID (User ID), 
 2. PID (Process ID),
 3. PPID (Parent Process ID),
 4. Time , 5. Process/Command Name ... etc
-)
 
-[One of the main reasons for running `ps` is to get the Process ID (PID)]
 
-((NOTE:: PID != JOB NUMBER))
+One of the main reasons for running `ps` is to get the Process ID (PID)
+
+NOTE:: PID != JOB NUMBER
 
 Common `ps` commands:
----------------------
-`ps -e` => Display all processes.
-`ps -ef` => Display all processes, full listing.
-`ps -eH` => Display a process tree. (IMPORTANT)
-`ps -e --forest` => Display a process tree. (IMPORTANT)
-`ps -u username` => Display user's processes.
+- `ps -e` => Display all processes.
+- `ps -ef` => Display all processes, full listing.
+- `ps -eH` => Display a process tree. (IMPORTANT)
+- `ps -e --forest` => Display a process tree. (IMPORTANT)
+- `ps -u username` => Display user's processes.
 
 Other common commands:
-----------------------
-`pstree` => Display processes in tree format.
-`top` => Interactive process viewer. (Press 'q' to exit, '?' for help)
-`htop` => Interactive process viewer. (Less popular, may not be available by default on the system)
+- `pstree` => Display processes in tree format.
+- `top` => Interactive process viewer. (Press 'q' to exit, '?' for help)
+- `htop` => Interactive process viewer. (Less popular, may not be available by default on the system)
 
-[The `top` command places the processes using most of the CPU and Memory resources at the TOP of the list.
-It also displays the CPU and Memory usage columns.]
+The `top` command places the processes using most of the CPU and Memory resources at the TOP of the list.
+It also displays the CPU and Memory usage columns.
 
-Killing a Currently running Foreground Process:
------------------------------------------------
-Press `<CTRL-C>` on the CLI while the process is running.
-(Pressing this kills the foreground process and return the shell prompt to the user)
+#### Killing a Currently running Foreground Process:
 
-Suspend a Foreground Process:
------------------------------
-Press `<CTRL-Z>` to suspend a foreground process.
-[Note: A process that is suspended is NOT running in the background! It is actually stopped.]
-A [stopped] process can be then run in the background : type `fg %jobnumber`
+- Press `<CTRL-C>` on the CLI while the process is running. (Pressing this kills the foreground process and return the shell prompt to the user)
 
-Background Processes:
----------------------
-It maybe convenient to keep a long running process in the background.
-Background processes do NOT block the execution of other processes (esp. on the CLI). 
+#### Suspend a Foreground Process:
 
-Starting a background process:
-------------------------------
-`<command> &` => Start the command in the background. 
-(It Displays two numbers as output => 'Job No.' in brackets[] and 'PID' (Ex: [1] 2373) )
-Ex:
-`./some-long-running-script &` => Starts the script in the background (Ex. O/P: [1] [4232])
-(We can view the status of the process by running `ps -p 4232`)
+- Press `<CTRL-Z>` to suspend a foreground process.
 
-Listing jobs: (Helps list all the currently active jobs => Usually lists the Background Processes)
--------------
+Note: A process that is suspended is NOT running in the background! It is actually stopped. A (stopped) process can be then run in the background : type `fg %jobnumber`
+
+#### Background Processes:
+
+It maybe convenient to keep a long running process in the background. Background processes do NOT block the execution of other processes (esp. on the CLI). 
+
+##### Starting a background process:
+
+- `<command> &` => Start the command in the background. (It Displays two numbers as output => 'Job No.' in brackets[] and 'PID' (Ex: [1] 2373) ) Ex:
+	- `./some-long-running-script &` => Starts the script in the background (Ex. O/P: [1] [4232]) (We can view the status of the process by running `ps -p 4232`)
+
+### Listing jobs: (Helps list all the currently active jobs => Usually lists the Background Processes)
+
 We can list all the currently running jobs in the system.
-`jobs [%num]` => List jobs. (No arguments? List all the active jobs)
-`jobs -l [%num]` => Gives a long listing of the jobs.
-[
-The '+' sign in the jobs output represents the current job.
-The '-' sign in the jobs output represents the previous job.
-]
-`jobs %+` (or) `jobs %%`=> Refers/lists the current job.
-`jobs %-` => Refers/lists the previous job.
+- `jobs [%num]` => List jobs. (No arguments? List all the active jobs)
+- `jobs -l [%num]` => Gives a long listing of the jobs.
 
-Forcing processes into Background:
-----------------------------------
-`bg` => Send a suspended process(current job) to the background. 
-(current job - refers to last job that was stopped in the FG or the last job that was started in the BG)
-`bg %num` => You can background a process with a specific job number 'num' by preceding it with a '%' sign.
-Ex:
-`bg %1` => Forces a suspened process in Foreground to the Background (runs it in the background).
+(The '+' sign in the jobs output represents the current job. The '-' sign in the jobs output represents the previous job.)
+
+- `jobs %+` (or) `jobs %%`=> Refers/lists the current job.
+- `jobs %-` => Refers/lists the previous job.
+
+### Forcing processes into Background:
+
+- `bg` => Send a suspended process(current job) to the background.  (current job - refers to last job that was stopped in the FG or the last job that was started in the BG)
+- `bg %num` => You can background a process with a specific job number 'num' by preceding it with a '%' sign. Ex:
+	- `bg %1` => Forces a suspened process in Foreground to the Background (runs it in the background).
 
 Forcing processes into Foreground:
-----------------------------------
-`fg`= Send a background process(current job) to the foreground.
-(current job - refers to last job that was stopped in the FG or the last job that was started in the BG)
-`fg %num` (or) `%num` => Foreground a BG process with a specific jobno. 'num' by preceding it with '%' sign.
-Ex:
-`fg %1` (or) `%1` => Forces a Background process into the Foreground.
 
-************************************************************************
-***** Killing processes: With 1. 'job number' or 2. 'process ID':- *****
-************************************************************************
+- `fg`= Send a background process(current job) to the foreground. (Current job - refers to last job that was stopped in the FG or the last job that was started in the BG)
+- `fg %num` (or) `%num` => Foreground a BG process with a specific jobno. 'num' by preceding it with '%' sign. Ex:
+	- `fg %1` (or) `%1` => Forces a Background process into the Foreground.
 
-Killing any process using PID:
-------------------------------
-`<CTRL-C>` => Kills the foreground process.
-`kill pid` => Kill a process with Process ID 'pid'. (Default signal used by kill = TERM (termination) | 15)
-`kill -sig pid` => Send a signal 'sig' to a process (to kill a process).
-[NOTE:: `kill -l` => Displays a list of signals.]]
-Ex:
-`kill 123` => kill process with ID 123. (Default signal used by kill = TERM (termination) | 15)
+## Killing Processes (Job-wise/Process-wise):
 
-Killing any process using job number: 
--------------------------------------
-`kill %jobnumber` => Kills a process with job number 'jobnumber'
-Ex:
-`kill %1` => Kills process with job number 1.
+### Killing any process using PID:
 
-Signals have numbers associated with them(Ex):
-----------------------------------------------
-`kill -l` => Displays a list of signals that can be sent to a process and the numbers associated with them.
+- `<CTRL-C>` => Kills the foreground process.
+- `kill pid` => Kill a process with Process ID 'pid'. (Default signal used by kill = TERM (termination) | 15)
+- `kill -sig pid` => Send a signal 'sig' to a process (to kill a process).
+
+NOTE: `kill -l` => Displays a list of signals. Ex:
+- `kill 123` => kill process with ID 123. (Default signal used by kill = TERM (termination) | 15)
+
+### Killing any process using job number: 
+
+-`kill %jobnumber` => Kills a process with job number 'jobnumber'. Ex:
+	- `kill %1` => Kills process with job number 1.
+
+### Signals have numbers associated with them(Ex):
+
+- `kill -l` => Displays a list of signals that can be sent to a process and the numbers associated with them.
+
 For Example:
-TERM <=> 15 (Terminate signal)
-SIGKILL <=> 9 (KILL signal) .. etc.
+- TERM <=> 15 (Terminate signal)
+- SIGKILL <=> 9 (KILL signal) .. etc.
 
 Ex:
-`kill -15 123` => Same as kill process with ID 123 since default signal is -TERM (or -15)
-`kill -TERM 123` => Same as kill process with ID 123 since default signal is -TERM (or -15)
+- `kill -15 123` => Same as kill process with ID 123 since default signal is -TERM (or -15)
+- `kill -TERM 123` => Same as kill process with ID 123 since default signal is -TERM (or -15)
 
 NOTE::
 `kill -9 123` => If a process does NOT terminate with default signal '15' - then USE kill signal '9'.
 
-Summary:
---------
-To display information about all running processes = Use `ps` command
-To kill a process in the Foreground = Type <CTRL-C>
-To suspend a process in the Foreground = Type <CTRL-Z>
-To background a suspended process = Use `bg` command
-To foreground a process = Use `fg` command
-To display information about your running jobs = Use `jobs` command
-To kill jobs using the job number/Kill processes using the PID = Use `kill` command
+### Summary:
 
--------------------------------------------------------------------------------------------------
+- To display information about all running processes = Use `ps` command
+- To kill a process in the Foreground = Type `<CTRL-C>`
+- To suspend a process in the Foreground = Type `<CTRL-Z>`
+- To background a suspended process = Use `bg` command
+- To foreground a process = Use `fg` command
+- To display information about your running jobs = Use `jobs` command
+- To kill jobs using the job number/Kill processes using the PID = Use `kill` command
 
-Scheduling Repeated Jobs with CRON:
-===================================
-We can use cron to SCHEDULE and AUTOMATE tasks.
-The cron service STARTS when the SYSTEM BOOTS and checks for SCHEDULED JOBS to be RUN EVERY MINUTE.
+## Scheduling Repeated Jobs with CRON:
 
-`cron` => A time based job-scheduling service.
-`crontab` => A program to create, read, update and delete your job schedules
+We can use cron to SCHEDULE and AUTOMATE tasks. The cron service STARTS when the SYSTEM BOOTS and checks for SCHEDULED JOBS to be RUN EVERY MINUTE.
+
+- `cron` => A time based job-scheduling service.
+- `crontab` => A program to create, read, update and delete your job schedules
 
 `crontab` format: (config file that contains information about scheduled jobs)
------------------
+
 Each Line in a cron table represents a 'job' and contains 2 parameters:
 1. When to run
 2. What to run.
@@ -1241,7 +1224,7 @@ Format:
 
 Ex: `0 7 * * 1 /opt/sales/bin/weekly-report` => This script runs every Monday 07 Hrs (or 7:00 AM).
 
-[Note:: Asterisk (*) => Matches any/every time (or date).]
+Note:: Asterisk (*) => Matches any/every time (or date).
 
 Redirecting Output (of the cron jobs):
 --------------------------------------
