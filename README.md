@@ -1076,8 +1076,8 @@ NOTE:
 - To view which user you are on the system(current user), run:
 	- `whoami`
 
-Processes and Job Control:
-==========================
+## Processes and Job Control:
+
 Creating and viewing processs, background vs foreground processes, killing a process, etc.
 
 Displaying process information:
