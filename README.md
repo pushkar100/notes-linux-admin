@@ -1214,6 +1214,7 @@ Each Line in a cron table represents a 'job' and contains 2 parameters:
 2. What to run.
 
 Format:
+```
 * * * * * command
 | | | | |
 | | | | + -- Day of the week (0-6) - Starting with 'sunday'(0)
@@ -1221,427 +1222,383 @@ Format:
 | | + ------ Day of the month (1-31)
 | + -------- Hour (0-23)
 + ---------- Minute (0-59)
+```
 
 Ex: `0 7 * * 1 /opt/sales/bin/weekly-report` => This script runs every Monday 07 Hrs (or 7:00 AM).
 
 Note:: Asterisk (*) => Matches any/every time (or date).
 
-Redirecting Output (of the cron jobs):
+### Redirecting Output (of the cron jobs):
 
 Ex: `0 2 * * * /root/backupdb/ > /tmp/db.log 2>&1` => Backs up database at 2:00 (AM) every day.
 (Here > is used to redirect the std. output to the /tmp/db.log file along with std. error (2>&1))
 
-Using multiple values:
+### Using multiple values:
 
-Use commas(,) to represent multiple values (or)
-Use divider(/) to divide the total time frame for that column. (or)
-Use ranges(-) to specify a range for time / date.
-Ex:
-# Run every 30 minutes:
-`0,30 * * * * /opt/acme/bin/half-hour-check`
-# Another way to do the same thing: (Dividing the total minutes(60) by 2 => half hour)
-`*/2 * * * * /opt/acme/bin/half-hour-check` 
-# Run for the first 5 minutes of the hour:
-`0-4 * * * * /opt/acme/bin/first-five-mins`
+- Use commas(,) to represent multiple values (or)
+- Use divider(/) to divide the total time frame for that column. (or)
+- Use ranges(-) to specify a range for time / date.
+
+Ex: Run every 30 minutes:
+- `0,30 * * * * /opt/acme/bin/half-hour-check`
+
+Another way to do the same thing: (Dividing the total minutes(60) by 2 => half hour)
+- `*/2 * * * * /opt/acme/bin/half-hour-check` 
+
+Run for the first 5 minutes of the hour:
+- `0-4 * * * * /opt/acme/bin/first-five-mins`
 
 Using keywords/Shortcuts in your crontabs:
-
-`@yearly` 	=> `0 0 1 1 *` (Run once a year on the 1st day of the 1st month) (day can be any weekday)
-`@annually` => `0 0 1 1 *` (Run once a year on the 1st day of the 1st month) (day can  e any weekday)
-`@monthly` 	=> `0 0 1 * *` (Run once every month on the 1st day of the month) (day can be any weekday)
-`@weekly` 	=> `0 0 * * 0` (Run once every sunday on every month) (sunday can be any day)
-`@daily` 	=> `0 0 * * *` (Run once every day at 00:00 (12AM), every month, any weekday)
-`@midnight` => `0 0 * * *` (Run once every day at 00:00 (12AM), every month, any weekday) (12AM = midnight)
-`@hourly` 	=> `0 * * * *` (Run once every hour at start of hour (0th minute), every day, month, any wkday)
+- `@yearly` 	=> `0 0 1 1 *` (Run once a year on the 1st day of the 1st month) (day can be any weekday)
+- `@annually` 	=> `0 0 1 1 *` (Run once a year on the 1st day of the 1st month) (day can  e any weekday)
+- `@monthly` 	=> `0 0 1 * *` (Run once every month on the 1st day of the month) (day can be any weekday)
+- `@weekly` 	=> `0 0 * * 0` (Run once every sunday on every month) (sunday can be any day)
+- `@daily` 	=> `0 0 * * *` (Run once every day at 00:00 (12AM), every month, any weekday)
+- `@midnight` 	=> `0 0 * * *` (Run once every day at 00:00 (12AM), every month, any weekday) (12AM = midnight)
+- `@hourly` 	=> `0 * * * *` (Run once every hour at start of hour (0th minute), every day, month, any wkday)
 
 Not all of these shortcuts might work on your linux distribution. (Use `man cron` to check)
 
-`crontab` command:
+### `crontab` command:
 
-`crontab file` => INSTALL a new crontab from the contents of the file specified.
-`crontab -l` => LIST your cron jobs. (No cron jobs? -> Ex. o/p = 'no crontab for adminuser')
-`crontab -e` => EDIT your cron jobs. (Invokes the editor specified in the '$EDITOR' environment variable)
-`crontab -r` => REMOVE all of your cron jobs.
+- `crontab file` => INSTALL a new crontab from the contents of the file specified.
+- `crontab -l` => LIST your cron jobs. (No cron jobs? -> Ex. o/p = 'no crontab for adminuser')
+- `crontab -e` => EDIT your cron jobs. (Invokes the editor specified in the '$EDITOR' environment variable)
+- `crontab -r` => REMOVE all of your cron jobs.
 
 Ex:
-`vi my-cron-file` => Make a cron file.
+- `vi my-cron-file` => Make a cron file.
+
 (Ex. contents: `0 7 * * 1 /opt/bin/weekly` -> runs the weekly file every monday)
-`crontab my-cron-file` => Installs the 'my-cron-file' as a cron/scheduled job in th crontab.
-`crontab -l` => Lists our cron jobs (Ex. o/p in this case: '0 7 * * 1 /opt/bin/weekly')
-[ Once a cron job has been added to the crontab it is run at scheduled times and specified file ]
-`crontab -r` => Deletes/Removes all the cron jobs(In this case, 'my-cron-file')
+
+- `crontab my-cron-file` => Installs the 'my-cron-file' as a cron/scheduled job in th crontab.
+- `crontab -l` => Lists our cron jobs (Ex. o/p in this case: '0 7 * * 1 /opt/bin/weekly')
+
+Once a cron job has been added to the crontab it is run at scheduled times and specified file.
+
+- `crontab -r` => Deletes/Removes all the cron jobs(In this case, 'my-cron-file')
 
 Therefore, cron service runs scheduled jobs and these jobs can be manipulated using the `crontab` command.
 
-
-
-Switching Users and Running commands as Others:
-
+## Switching Users and Running commands as Others:
 
 Use `su` to switch users:
 
-`su` (or) `su root` => Become Superuser (The admin is usually the superuser of the system)
-`su username` => Switch to account having user name as 'username'.
-Ex:
-`su` : switches to the root user (superuser)
-`su oracle` : Switches to the user named oracle
+- `su` (or) `su root` => Become Superuser (The admin is usually the superuser of the system)
+- `su username` => Switch to account having user name as 'username'.
 
-Options for `su`:
+Ex:
+- `su` : switches to the root user (superuser)
+- `su oracle` : Switches to the user named oracle
+
+### Options for `su`:
 
 1. `-` => A hyphen is used to provide an environment similar to what the user would expect had he/she logged in directly. 
-(For example, we end up in the HOME directory of the switched-in user.)
-Ex:
-We can check the environment variables set for the currently-switched-to user using '-'. 
-(Otherwise, we can ONLY see environment variables associated with the previous user's account)
-***
-`export TEST=1`
-`su oracle`
-`echo $TEST` => Returns 1 even if TEST was the environment variable of the previous user's session.
-***
-`export TEST=1`
-`su - oracle`	(Using '-' to set the environment similar to direct login to terminal of the switched user)
-`echo $TEST` => Returns nothing (Because $TEST was not set in this (switched) user's session)
-***
+
+For example, we end up in the HOME directory of the switched-in user. We can check the environment variables set for the currently-switched-to user using '-'. Otherwise, we can ONLY see environment variables associated with the previous user's account
+
+```
+export TEST=1
+su oracle
+echo $TEST  # Returns 1 even if TEST was the environment variable of the previous user's session.
+```
+```
+export TEST=1
+su - oracle	# (Using '-' to set the environment similar to direct login to terminal of the switched user)
+echo $TEST	# Returns nothing (Because $TEST was not set in this (switched) user's session)
+```
 
 2. `-c <command>` => Specify a command to be executed.
-(If command is more than one word in length, surround it with quotes('' or ""). Ex: `su -c "ls -l"`)
-Ex:
-`su -c COMMAND anotherusername` : Runs COMMAND as anotherusername [DOES NOT SWITCH USER]
-`su -c COMMAND - anotherusername` : Runs COMMAND as anotherusername (& has access to his/her environment variables) [DOES NOT SWITCH USER]
-[NOTE:: Alternate way to execute commands as another user account is to use the `sudo` command (later)]
 
-User identification commands:
+If command is more than one word in length, surround it with quotes('' or ""). Ex: `su -c "ls -l"`. Ex:
+	- `su -c COMMAND anotherusername` : Runs COMMAND as anotherusername [DOES NOT SWITCH USER]
+	- `su -c COMMAND - anotherusername` : Runs COMMAND as anotherusername (& has access to his/her environment variables). DOES NOT SWITCH USER.
+	
+NOTE:: Alternate way to execute commands as another user account is to use the `sudo` command (later)
 
-`whoami` => To know the effective username. To know what user you are logged in as.
-Ex:
-`whoami` => 'jason'
-`su oracle`
-`whoami` => 'oracle'
+### User identification commands:
 
-`who` => Lists all the users currently logged onto the system.
+- `whoami` => To know the effective username. To know what user you are logged in as. Ex:
+	- `whoami` => 'jason'
+	- `su oracle`
+	- `whoami` => 'oracle'
+
+- `who` => Lists all the users currently logged onto the system.
 
 
-The `sudo` command: (Execute commands as another user) - Important!
+### The `sudo` command: (Execute commands as another user) - Important!
 
-`sudo` stands for 'Super User do' and typically used to execute commands as another user, usually SUPERUSER.
-(That is, it allows us to execute commands with the security privileges of another user)
+- `sudo` stands for 'Super User do' and typically used to execute commands as another user, usually SUPERUSER. (That is, it allows us to execute commands with the security privileges of another user)
 
 It is commonly used to install, start and stop applications that require the 'root' user privileges.
 
-[Note: On running `sudo`, you might be prompted for a password(once in a session), and you have to give the USER'S PASSWORD (& NOT the `root` password) - And if the user has root permissions, the sudo command is executed.]
+Note: On running `sudo`, you might be prompted for a password(once in a session), and you have to give the USER'S PASSWORD (& NOT the `root` password) - And if the user has root permissions, the sudo command is executed.
 
-Executing commands with `sudo`:
+#### Executing commands with `sudo`:
 
-`sudo -l` => List the available commands
-`sudo <command>` => Run command a root(as the superuser)
-`sudo -u root <command>` => Same as running command as root(as superuser)
-`sudo -u user <command>` => Run the command as user 'user'
-(`-u` is used to specify the user.)
+- `sudo -l` => List the available commands
+- `sudo <command>` => Run command a root(as the superuser)
+- `sudo -u root <command>` => Same as running command as root(as superuser)
+- `sudo -u user <command>` => Run the command as user 'user' (`-u` is used to specify the user.)
 
-Switching users - again, we can use `sudo`:
+#### Switching users - again, we can use `sudo`:
 
-`sudo su` => Switch to the superuser(root) account.
-`sudo su -` => Switch to the superuser(root) account with root's environment.
-`sudo su - username` => Switch to username's account with username's environment.
-** Alternatively: **
-`sudo -s` => Starts a shell with root(superuser) account.
+- `sudo su` => Switch to the superuser(root) account.
+- `sudo su -` => Switch to the superuser(root) account with root's environment.
+- `sudo su - username` => Switch to username's account with username's environment.
+
+Alternatively:
+- `sudo -s` => Starts a shell with root(superuser) account.
 (or)
-`sudo -u root -s` => Starts a shell with root(superuser) account.
-`sudo -u user -s` => Starts a shell as 'user' (from the specified account).
+- `sudo -u root -s` => Starts a shell with root(superuser) account.
+- `sudo -u user -s` => Starts a shell as 'user' (from the specified account).
 
 Examples:
-`sudo /etc/init.d/oracle start` => Starts an application called 'oracle' as the root/superuser.
-`sudo -u bob /opt/bobapp/bin/start` => Starts bobapp as the user 'bob'.
-`sudo -s` => Uses `sudo` to switch to the root/superuser account.
+- `sudo /etc/init.d/oracle start` => Starts an application called 'oracle' as the root/superuser.
+- `sudo -u bob /opt/bobapp/bin/start` => Starts bobapp as the user 'bob'.
+- `sudo -s` => Uses `sudo` to switch to the root/superuser account.
 
-Modifying the `sudo` configuration:
+### Modifying the `sudo` configuration:
 
-`visudo` => Edit the '/etc/sudoers' file. (We need root access to execute `visudo`)
-[Therefore, switch to root and run `visudo` (OR) run `sudo visudo` from current account]
-The visudo file format:
-There are many lines of code in the visudo file but one common type of line encountered is:
-Syntax: 
-`user host=(users)[NOPASSWD:]commands`
-[
-user 	 : username of an account,
-host 	 : system name/ host name,
-NOPASSWD:: 'Optional' parameter suggesting that this user does NOT need a passwrod to run these commands.,
-commands : Contains all the commands the user can run(Multiple commands are comma(,) separated)
-]
+- `visudo` => Edit the '/etc/sudoers' file. (We need root access to execute `visudo`)
+
+Therefore, switch to root and run `visudo` (OR) run `sudo visudo` from current account
+
+The visudo file format: There are many lines of code in the visudo file but one common type of line encountered is - Syntax: 
+- `user host=(users)[NOPASSWD:]commands`
+	- user 	 : username of an account,
+	- host 	 : system name/ host name,
+	- NOPASSWD:: 'Optional' parameter suggesting that this user does NOT need a passwrod to run these commands.,
+	- commands : Contains all the commands the user can run(Multiple commands are comma(,) separated)
+
 Ex:
-`adminuser ALL=(ALL)NOPASSWD:ALL`,
-`jason linuxsvr=(root) /etc/init.d/oracle`
+- `adminuser ALL=(ALL)NOPASSWD:ALL`,
+- `jason linuxsvr=(root) /etc/init.d/oracle`
 
+Note: If you ever forget to run a command with `sudo`, you can run the command again with:
+- `sudo !!` => Basically, it runs the previous command
 
-					*** :::NOTE::: ***
+`!!` refers to the last command in the command history and runs that command with superuser/root permission.
 
-If you ever forget to run a command with `sudo`,
-you can run the command again with:
-`sudo !!` => Basically, it runs the previous command
-(!! refers to the last command in the command history)
-and runs that command with superuser/root permission(sudo)
-
-Running a previous command with `sudo` provided the 
-command starts with a particular string:
-`sudo !u` => Runs the most recently executed command
-in history that starts with 'u' from the root/superuser
-account.
+Running a previous command with `sudo` provided the command starts with a particular string:
+- `sudo !u` => Runs the most recently executed command in history that starts with 'u' from the root/superuser account.
 
 
 
 Summary:
+- To switch users => Use `su` command.
+- To execute commands with superuser control => Use `sudo` command.
 
-To switch users => Use `su` command.
-To execute commands with superuser control => Use `sudo` command.
+## Shell History:
 
+All executed commands are added to the shell history, which can be displayed and recalled. Shell history is stored in Memory and on Disk. Commands can be stored in one these files (depends on shell):
+- `~/.bash_history`, (BASH SHELL)
+- `~/.history`,
+- `~/.histfile`
 
+### Viewing history:
+- `history` => Displays the shell history (each line contains a command along with a serial/command number).
 
-Shell History:
-
-All executed commands are added to the shell history, which can be displayed and recalled.
-Shell history is stored in Memory and on Disk.
-Commands can be stored in one these files (depends on shell):
-~/.bash_history, [BASH SHELL]
-~/.history,
-~/.histfile`
-
-Viewing history:
-
-`history` => Displays the shell history (each line contains a command along with a serial/command number).
-
-Setting the size of the history: (number of commands saved)
+### Setting the size of the history: (number of commands saved)
 
 The HISTSIZE environment variable controls the number of commands in the history.(500 by default)
-`export HISTSIZE=1000` => Sets the history size to 1000.
-(Can place this line in '~/.bash_profile' to persist changes)
+- `export HISTSIZE=1000` => Sets the history size to 1000. (Can place this line in '~/.bash_profile' to persist changes)
 
-Repeating commands from history:
+### Repeating commands from history:
 
-`!N` => Repeat command on line number N (in `history`)
-`!!` => Repeat the previous command.
-`!string` => Repeat the MOST RECENT comman STARTING with 'string'. (Ex: `!gre` => maybe executes 'grep')
+- `!N` => Repeat command on line number N (in `history`)
+- `!!` => Repeat the previous command.
+- `!string` => Repeat the MOST RECENT comman STARTING with 'string'. (Ex: `!gre` => maybe executes 'grep')
 
-Reuse/Pull Out the arguments from the previous command:
+### Reuse/Pull Out the arguments from the previous command:
 
-`!:N` => Pulls out Nth argument from the previous command.
-[:N - Represents a word on the command line . 0 - command, 1 - first argument, ... etc]
-Ex:
-`head file1 file2 file3`
-`vi !:2` => Pulls out argument 2 from previous command (file2) and opens it in the `vi` Editor`
+- `!:N` => Pulls out Nth argument from the previous command. `:N` - Represents a word on the command line . 0 - command, 1 - first argument, ... etc. Ex:
+- `head file1 file2 file3`
+- `vi !:2` => Pulls out argument 2 from previous command (file2) and opens it in the `vi` Editor
 
 Another example: 
-`echo !:2 !ch:2` => Pulls out 2nd argument to previous command and 2d argument to the most recently used command that started with 'ch' (Maybe chown, chgrp, chmod, .. etc).
+- `echo !:2 !ch:2` => Pulls out 2nd argument to previous command and 2d argument to the most recently used command that started with `ch` (Maybe chown, chgrp, chmod, .. etc).
 
 Shortcuts: 
+- `!^` => pulls out FIRST argument to the previous command. (`!^` <=> `!:1`)
+- `!$` => pulls out LAST argument to the previous command. (`!^` <=> `!:N` where N is the Nth among N args) 
+- `!*` => Reuse ALL the arguments to the previous command in the current command. (Ex: `grep !*`)
 
-`!^` => pulls out FIRST argument to the previous command. (`!^` <=> `!:1`)
-`!$` => pulls out LAST argument to the previous command. (`!^` <=> `!:N` where N is the Nth among N args) 
-`!*` => Reuse ALL the arguments to the previous command in the current command. (Ex: `grep !*`)
 Ex:
-`head file1 file2 file2`
-`vi !$` => pulls out file3 and opens it in `vi` Editor.
+- `head file1 file2 file2`
+- `vi !$` => pulls out file3 and opens it in `vi` Editor.
 
 
-Searching for commands:
+### Searching for commands:
 
-`<CTRL-R>` => Reverse search the shell history. (Matches typed pattern with commands in history)
-	<ENTER> - Execute the command
-	<ARROWS> - Change the command
-	<CTRL-G> - Cancel the search
+- `<CTRL-R>` => Reverse search the shell history. (Matches typed pattern with commands in history)
+	- `<ENTER>` - Execute the command
+	- `<ARROWS>` - Change the command
+	- `<CTRL-G>` - Cancel the search
 
-Autocompletion:
+### Autocompletion:
 
-Use the <TAB> key to autocomplete:
+Use the `<TAB>` key to autocomplete:
 1. File and Directory paths, Other paths
 2. Environment Variables
-3. Usernames(~) [Ex: '~ja<TAB>` => '~jason']
+3. Usernames(~) [Ex: `~ja<TAB>` => `~jason`]
 4. Commands
 
+## Installing & Managing Software:
 
-
-Installing & Managing Software:
-
-Typically, when we want to install a software we do so with a 'Package'.
-Package => 'Collection of files'.
-It contains:
+Typically, when we want to install a software we do so with a 'Package'. Package is a 'Collection of files'. It contains:
 1. Data, and 
 2. Metadata: Package Description, Version, & Dependencies.
 
-'Package Manager':
-It is used to - Install, Upgrade or Remove packages.
-It manages dependencies. (Automatically installs any required dependencies)
-Keeps track of what is installed. (What files belong to what packages, versions, etc)
+### Package Manager:
+- It is used to - Install, Upgrade or Remove packages.
+- It manages dependencies. (Automatically installs any required dependencies)
+- Keeps track of what is installed. (What files belong to what packages, versions, etc)
 
 
-The `RPM` Format: [The Red Hat Package Manager]
+### The `RPM` Format: 
 
-For installing Software on RPM Distros: RedHat, CentOS, Fedora, Oracle Linux, Scientific Linux.
-The `yum` command is a package manager utility for the distros supporting RPM format:
-`yum search string` => Search for packages (online, included in the pkg mgr) matching the 'string'.
-`yum info [package]` => Display information.
-`yum install [-y] package` => Install Package.
-`yum remove package` => Remove Package.
+The Red Hat Package Manager
 
-**[NOTE:: Installing/Removing Software requires Superuser/root privileges.]**
+For installing Software on RPM Distros: RedHat, CentOS, Fedora, Oracle Linux, Scientific Linux. The `yum` command is a package manager utility for the distros supporting RPM format:
+- `yum search string` => Search for packages (online, included in the pkg mgr) matching the 'string'.
+- `yum info [package]` => Display information.
+- `yum install [-y] package` => Install Package.
+- `yum remove package` => Remove Package.
 
-RPM commands: (An alternative command to the `yum` utility)
+**Installing/Removing Software requires Superuser/root privileges**
 
-`rpm -qa` => List all installed packages.
-`rpm -qf /path/to/file` => List the file's packages.
-`rpm -ql package` => List all the package's files.
-`rpm -ivh package.rpm` => Install package
-`rpm -e package` => Erase/uninstall package.
+RPM commands: (An **alternative** command to the `yum` utility)
+- `rpm -qa` => List all installed packages.
+- `rpm -qf /path/to/file` => List the file's packages.
+- `rpm -ql package` => List all the package's files.
+- `rpm -ivh package.rpm` => Install package
+- `rpm -e package` => Erase/uninstall package.
 
-[
-`-i` : Install package,
-`-v` : Verbose,
-`h` : Print hash messages
-]
+Options:
+- `-i` : Install package,
+- `-v` : Verbose,
+- `h` : Print hash messages
 
 Examples(yum):
+- `yum search inkscape` => searches online for matching 'inkscape' packages (from mirrors)
+- `yum info inkscape-docs.x84_64` => Gets info on a particular package (Ex: one of matched packages in search) (info gives a brief descrption and specs to help understand what the package is)
 
-`yum search inkscape` => searches online for matching 'inkscape' packages (from mirrors)
-`yum info inkscape-docs.x84_64` => Gets info on a particular package (Ex: one of matched packages in search)
-(info gives a brief descrption and specs to help understand what the package is)
-Installation/Removal requires superuser access: (run `su -s` and switch or `sudo` the command)
+If installation/removal requires superuser access: (run `su -s` and switch or `sudo` the command)
 
-`sudo yum install inkscape` => Installs the 'inkscape' package (With prompt asking for yes(y)/no(n))
+- `sudo yum install inkscape` => Installs the 'inkscape' package (With prompt asking for yes(y)/no(n))
 (OR)
-`sudo yum install -y inkscape` => Installs the 'inkscape' package (Without prompt)
+- `sudo yum install -y inkscape` => Installs the 'inkscape' package (Without prompt)
 
-`sudo yum remove inkscape` => Removes the 'inkscape' package (With prompt asking for yes(y)/no(n))
+- `sudo yum remove inkscape` => Removes the 'inkscape' package (With prompt asking for yes(y)/no(n))
 (OR)
-`sudo yum remove inkscape` => Removes the 'inkscape' package (Without prompt)
+- `sudo yum remove inkscape` => Removes the 'inkscape' package (Without prompt)
 
-Installing packages not included in the package manager:
+### Installing packages not included in the package manager:
 
-These are the applications/software that are not `yum search`able.
-In that case, we must:
+These are the applications/software that are not `yum search`able. In that case, we must:
 1. Goto the website and directly download the .rpm package file for the application(GOES TO '~/Downloads'),
 2. Run the `rpm` commands to install (NOT the `yum` commands)
 Ex:
-`rpm -ivh nautilus-dropbox.fedora-i386.rpm` => Installs the package (Provided it exists [Downloaded])
+- `rpm -ivh nautilus-dropbox.fedora-i386.rpm` => Installs the package (Provided it exists [Downloaded])
 
-General Package Info Commands: (Any installed package)
+### General Package Info Commands: (Any installed package)
+- `rpm -qa | sort | less` => Displays all the installed package in alphabetical order on the `less` pager.
+- `rpm -qf /usr/bin/which` => Displays to what package a file belongs to(Ex.o/p: `which-2.20-7.el7.x86_64`)
+- `rpm -ql which` => Lists all the files that are part of the 'which' package
 
-`rpm -qa | sort | less` => Displays all the installed package in alphabetical order on the `less` pager.
-`rpm -qf /usr/bin/which` => Displays to what package a file belongs to(Ex.o/p: `which-2.20-7.el7.x86_64`)
-`rpm -ql which` => Lists all the files that are part of the 'which' package
-
-[Note: 
+Note: 
 1. While installing a package, it also installs All the Other Packages that this Package depends on.
 2. Use the `which package-name` command to check if the package was installed(returns location of it)]
 
+### Installing on 'Debian' Distros: 'apt' package format:
 
-
-Installing on 'Debian' Distros: 'apt' package format:
-
-The 'Debian' distros do NOT use '.rpm' packages but uses `.apt` instead.
-(Debian distros also includes 'Linux Mint' and 'Ubuntu')
+The 'Debian' distros do NOT use '.rpm' packages but uses `.apt` instead. (Debian distros also includes 'Linux Mint' and 'Ubuntu')
 
 Debian based systems use a package manager called `apt`:
-`apt` is composed of a few smaller utilities, two of the most famous of them being `apt-cache` and `apt-get`.
+- `apt` is composed of a few smaller utilities, two of the most famous of them being `apt-cache` and `apt-get`.
 
 Commands:
+- `apt-cache search string` => Searches for a package (online, included in the pkg mgr) matching the 'string'.
+- `apt-get install [-y] package` => Installs the package. If `-y` is supplied, it does NOT prompt for a y/n.
 
-`apt-cache search string` => Searches for a package (online, included in the pkg mgr) matching the 'string'.
-`apt-get install [-y] package` => Installs the package. If `-y` is supplied, it does NOT prompt for a y/n.
+- `apt-get remove package` => Remove a package from the system. (Leave any configuration files undeleted)
+- `apt-get purge package` => Remove a package from the system and delete the configuration files also.
 
-`apt-get remove package` => Remove a package from the system. (Leave any configuration files undeleted)
-`apt-get purge package` => Remove a package from the system and delete the configuration files also.
+- `apt-cache show package` => Displays info about a package.
 
-`apt-cache show package` => Displays info about a package.
+### The `dpkg` command - used in addition to the `apt` utility:
 
-The `dpkg` command - used in addition to the `apt` utility:
-[Installing from '.deb' that was downloaded to the system - similar to directly installing .rpm pkgs.]
-`dpkg -l` => List installed packages.
-`dpkg -S /path/to/file` => List the file's package. (Capital S option)
-`dpkg -L package` => List all the files in the package. (Capital L option)
-`dpkg -i package.deb` => Installs the package.
+Installing from '.deb' that was downloaded to the system - similar to directly installing `.rpm` pkgs.
 
-(ONCE AGAIN, INSTALLING PACKAGES ON DEBIAN DISTROS ALSO REQUIRES `ROOT` ACCESS.)
-(`su` command to switch to root (or) `sudo` command to execute as 'root')
+- `dpkg -l` => List installed packages.
+- `dpkg -S /path/to/file` => List the file's package. (Capital S option)
+- `dpkg -L package` => List all the files in the package. (Capital L option)
+- `dpkg -i package.deb` => Installs the package.
 
-[Note: 
+ONCE AGAIN, INSTALLING PACKAGES ON DEBIAN DISTROS ALSO REQUIRES `ROOT` ACCESS. `su` command to switch to root (or) `sudo` command to execute as 'root'.
+
+Note: 
 1. While installing a package, it also installs All the Other Packages that this Package depends on.
 2. Use the `which package-name` command to check if the package was installed(returns location of it)]
 
+## The Linux Boot Process:
 
+**Watch Udemy Course for full demo of the boot process**
 
-The Linux Boot Process:
+### BIOS:
 
+- The BIOS stands for Basic Input-Output.
+- It is a special firmware - that checks the hardware connected to a system.
+- It is Operating System Independent (Applies to all OSes and not just Linux)
+- Its primary purpose is to find and execute the 'Boot Loader'.
+- BIOS - performs the POST (Power-On Self Test) which basically tests CPU, MEMORY, etc.
+- Only if the POST succeeds does the BIOS load the 'Boot Loader'.
 
-*** [WATCH SECTION 5, LECTURE 39 FOR FULL VIDEO DEMO OF THE BOOT - VERY USEFUL] ***
+- BIOS - knows about different 'Boot devices' : Like the Hard Drives, USB Drives, DVD Drives, etc.
+- The BIOS searches the above list for a 'bootable device' in the order specified.
+- The boot device search order can be changed (Interrupt the boot sequence and enter into an interactive mode).
+- The key sequence to do this (change boot device search order) varies from one hardware manufacturer to another.
 
-BIOS:
+(Ex: `F2` opens the setup in some systems. You might have to press `F12` and then enable `F2` key from the options.)
 
-The BIOS stands for Basic Input-Output.
-It is a special firmware - that checks the hardware connected to a system.
-It is Operating System Independent (Applies to all OSes and not just Linux)
-Its primary purpose is to find and execute the 'Boot Loader'.
-BIOS - performs the POST (Power-On Self Test) which basically tests CPU, MEMORY, etc.
-Only if the POST succeeds does the BIOS load the 'Boot Loader'.
+Once the 'Bootable Device' is found, the BIOS will run the 'Boot Loader'. This is typically the 'GRUB' (Grand Unified Bootloader) is used. But, on older Linux systems you may find 'LILO' (Linux Loader). The primary purpose of the 'Boot Loader' is to START the OPERATING SYSTEM. Boot loaders could start the Operating System with Different Options. (If there are multiple OSes installed, we can tell the Boot loader which OS to load/run.)
 
-BIOS - knows about different 'Boot devices' : Like the Hard Drives, USB Drives, DVD Drives, etc.
-The BIOS searches the above list for a 'bootable device' in the order specified.
-The boot device search order can be changed (Interrupt the boot sequence and enter into an interactive mode).
-The key sequence to do this (change boot device search order) varies from one hardware manufacturer to another.
+### Initial RAM Disk:
 
-(Ex: `F2` opens the setup in some systems)
+- `initrd` or Initial RAM Disk is a temporary file system that is loaded from Disk and Stored in Memory. It contains helpers and kernel modules (sometimes called 'Drivers') required to load the permanent OS file system.
 
-Once the 'Bootable Device' is found, the BIOS will run the 'Boot Loader'.
-This is typically the 'GRUB' (Grand Unified Bootloader) is used.
-[But, on older Linux systems you may find 'LILO' (Linux Loader)].
-The primary purpose of the 'Boot Loader' is to START the OPERATING SYSTEM.
-Boot loaders could start the Operating System with Different Options.
+Once the real OS filesystem has been mounted by `initrd`, its job is done and the loading process continues from the real Operating System File System. 
 
-[If there are multiple OSes installed, we can tell the Boot loader which OS to load/run.]
-
-Initial RAM Disk:
-
-'initrd' or Initial RAM Disk is a temporary file system that is loaded from Disk and Stored in Memory.
-It contains helpers and kernel modules (sometimes called 'Drivers') required to load the permanent OS file system.
-
-Once the real OS filesystem has been mounted by 'initrd', its job is done and the loading process continues from the real Operating System File System. 
-
-The '/boot' directory:
+### The '/boot' directory:
 
 The '/boot' directory contains the files required to boot Linux:
 1. initrd
 2. kernel (The Linux Kernel)
 3. Boot Loader Configuration
 
-To view the '/boot' directory:
-`ls -F /boot` => Lists the directory with visual classification(-F)
-[
-	The kernel is typically named 'vmlinux' or 'vmlinuz' (Name ends in 'z' if the kernel is compressed)
-	The Initial RAM Disk is 'initrd.img'
+#### To view the '/boot' directory:
+- `ls -F /boot` => Lists the directory with visual classification(-F)
+	- The kernel is typically named 'vmlinux' or 'vmlinuz' (Name ends in 'z' if the kernel is compressed)
+	- The Initial RAM Disk is 'initrd.img'
 
-]
+NOTE: You can use -F (in `ls` command) which classifies the file with different special character for different kind of files:
+	- / – directory.
+	- nothing – normal file.
+	- @ – link file.
+	- * – Executable file
 
-(NOTE:
-You can use -F (in `ls` command) which classifies the file with different special character for different kind of files:
-	/ – directory.
-	nothing – normal file.
-	@ – link file.
-	* – Executable file
-)
+### The Kernel Ring Buffer:
 
-The Kernel Ring Buffer:
-
-Teh ring buffer is a data structure maintained by the kernel to store messages from the kernel.
-It is of fixed size and older messages get deleted when new ones are added.
-Get kernel messages by executing the command:
-`dmesg` 
+The ring buffer is a data structure maintained by the kernel to store messages from the kernel. It is of fixed size and older messages get deleted when new ones are added. Get kernel messages by executing the command:
+- `dmesg` 
 (or) 
-`dmesg -T` [Also displays the time of the message in human-readable format] 
-(The message log contains even the earliest messages that fly away quickly during boot process)
+- `dmesg -T` (Also displays the time of the message in human-readable format). The message log contains even the earliest messages that fly away quickly during boot process
 
-Location of the kernel messages:
-'var/log/dmesg' => (Viewing this file is equivalent to running the `dmesg` command)
-(This files contains all kernel messages from start to now, unlike the ring buffer's `dmesg` command.)
+#### Location of the kernel messages:
+- `var/log/dmesg` => (Viewing this file is equivalent to running the `dmesg` command) This files contains all kernel messages from start to now, unlike the ring buffer's `dmesg` command.
 
-Linux uses Run Levels: (To determine what processes and services to start)
+### Linux uses Run Levels: (To determine what processes and services to start)
 
 Run Levels:
 0 = Shuts down the system.
