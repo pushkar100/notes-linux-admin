@@ -1598,99 +1598,84 @@ The ring buffer is a data structure maintained by the kernel to store messages f
 #### Location of the kernel messages:
 - `var/log/dmesg` => (Viewing this file is equivalent to running the `dmesg` command) This files contains all kernel messages from start to now, unlike the ring buffer's `dmesg` command.
 
-### Linux uses Run Levels: (To determine what processes and services to start)
+## Linux uses Run Levels: (To determine what processes and services to start)
 
-Run Levels:
-0 = Shuts down the system.
-1, S, s = Single user mode. Used for maintenance.
-2 = Multi-User mode with GUI(Debian/Ubuntu).
-3 = Multi-User text mode(Red Hat/CentOS).
-4 = Undefined.
-5 = Multi-User with GUI(Red Hat/CentOS).
-6 = Reboot.
+### Run Levels:
+- 0 = Shuts down the system.
+- 1, S, s = Single user mode. Used for maintenance.
+- 2 = Multi-User mode with GUI(Debian/Ubuntu).
+- 3 = Multi-User text mode(Red Hat/CentOS).
+- 4 = Undefined.
+- 5 = Multi-User with GUI(Red Hat/CentOS).
+- 6 = Reboot.
 
-Setting the Run Level:
+### Setting the Run Level:
 
-Traditionally run levels were controlled by the 'init' program.
-The File containing 'init' configurations is:
-`/etc/inittab`.
+Traditionally run levels were controlled by the 'init' program. The File containing 'init' configurations is: `/etc/inittab`.
 
 To change the "Default" Run Level:
 1. Open '/etc/inittab' file
-2. Go to the 'initdefault' line and change the run level number:
-	Ex: `id:3:initdefault:` line where 3 is the Default Run Level.
+2. Go to the 'initdefault' line and change the run level number. Ex: `id:3:initdefault:` line where 3 is the Default Run Level.
 
 To Change run level: (`telinit`) (NOT the default run level)
-`telinit 5` => Changes run level to 5 [Multi-User with GUI]
+- `telinit 5` => Changes run level to 5 [Multi-User with GUI]
 
-NOTE:: 'init' is slowly being phased out by other utilities like 'systemd'.
+NOTE: 'init' is slowly being phased out by other utilities like 'systemd'.
 
-`systemd`:
+### `systemd`:
 
-Uses 'targets' instead of run levels. (targets are roughly equivalent to run levels)
-To get the list of available 'targets', look inside: '/lib/systemd/system'
-(Ex: `ls -l /lib/systemd/system`, 
-`ls -l /lib/systemd/system/runlevel5.target`)
+Uses 'targets' instead of run levels. (targets are roughly equivalent to run levels). To get the list of available 'targets', look inside: '/lib/systemd/system' (Ex: `ls -l /lib/systemd/system`, `ls -l /lib/systemd/system/runlevel5.target`)
 
-[Run level targets are actually 'symlinks' to the real targets being used.]
+Run level targets are actually 'symlinks' to the real targets being used.
 
 To get/view the System default run-level target:
-`systemctl get-default` => (Sample output: 'multi-user.target')
+- `systemctl get-default` => (Sample output: 'multi-user.target')
 
-To change the "default" run level or target with systemd:
-Ex: `systemctl set-default graphical.target` 
-('graphical.target' is equivalent to 'run-level 5' (Multi-User GUI))
+To change the "default" run level or target with systemd: Ex: 
+- `systemctl set-default graphical.target` ('graphical.target' is equivalent to 'run-level 5' (Multi-User GUI))
 
 To change the target/run level target: (NOT the default run level target)
-`systemctl isolate graphical.target` => Changes run level to 'graphical.target'.
+- `systemctl isolate graphical.target` => Changes run level to 'graphical.target'.
 
-Rebooting:
+## Rebooting:
 
 Even though we can use the:
-`telinit 6` (or)
-`systemctl isolate reboot.target` to reboot the system,
+- `telinit 6` (or)
+- `systemctl isolate reboot.target` to reboot the system,
 We can also use system command:
-`reboot` => Reboots the system.
+- `reboot` => Reboots the system.
 
-`Shutdown` command for rebooting:
+- `Shutdown` command for rebooting:
 
-Even though we can use:
-`telinit 0` to shutdown,
-there exists commands to shutdown the system:
-`shutdown [options] time [message]` 
-
-`-r` option => Tells the system to reboot after shutdown!
+Even though we can use: `telinit 0` to shutdown, there exists commands to shutdown the system:
+- `shutdown [options] time [message]` 
+	- `-r` option => Tells the system to reboot after shutdown!
 
 'time' formats:
 1. `HH:MM` = Shutdown at HH hrs and MM mins.
 2. `+N` = Waits for N minutes before performing shutdown.
 3. `now` = Shuts down immediately.
 
-'message': This is a broadcast message sent to all users on the system that it is being shutdown/rebooted.
-(All logged-in users are notified that the system is going down, and login operations are blocked.)
+'message': This is a broadcast message sent to all users on the system that it is being shutdown/rebooted. (All logged-in users are notified that the system is going down, and login operations are blocked.)
 
 Ex:
-`shutdown -r 15:30 "Rebooting!"`,
-`shutdown -r +5 "Rebooting soon!"`,
-`shutdown -r now`
+- `shutdown -r 15:30 "Rebooting!"`,
+- `shutdown -r +5 "Rebooting soon!"`,
+- `shutdown -r now`
 
 Power Off a system: (3 main ways)
-
 1. `telinit 0`
 2. `systemctl isolate poweroff.target` (Selects the 'poweroff' target)
 3. `poweroff` (Simple command that can be executed at the CLI to power off the system)
 
+## The System Log:
 
+Aids in the process of messages. (Each process need not have to create its own log files). Allows logging to be centrally controlled. Uses facilities and severities to categorize messages.
 
-The System Log:
-
-Aids in the process of messages. (Each process need not have to create its own log files)
-Allows logging to be centrally controlled.
-Uses facilities and severities to categorize messages.
-
-Facilities:
+### Facilities:
 
 What type of program / what place in the system the message originated from.
+```
 0 	kern 		kernel messages
 1 	user 		user-level messages
 2 	mail 		mail system
@@ -1709,11 +1694,12 @@ What type of program / what place in the system the message originated from.
 16 	local1		local use 1
 ...
 16 	local7		local use 7
+```
 
 We can use local0 to local7 for our own purposes.
 
 Severities:
-
+```
 0 	Emergency	emerg(panic)	System is unusable
 1 	Alert 		alert 			Take action immediately
 2 	Critical	crit			Critical Conditions
@@ -1722,291 +1708,253 @@ Severities:
 5 	Notice		notice			Normal but significant condition
 6 	Info		info			Informational messages
 7 	Debug		debug			Debug-level messages
+```
 
-`rsyslog`:
+### `rsyslog`:
 
 `rsyslog` is one the syslog servers in use.
 
-1. Main configuration file for `rsyslog`: 
-'/etc/rsyslog.conf'
+1. Main configuration file for `rsyslog`:  '/etc/rsyslog.conf'
 
-2. Add additional configuration files:
-`IncludeConfig /etc/rsyslog.d/*.conf` => 
-[The `IncludeConfig` directive asks the rsyslog to add any file ending with '.conf' and existing in the '/etc/rsyslog.d/' directory.]
+2. Add additional configuration files: `IncludeConfig /etc/rsyslog.d/*.conf` => The `IncludeConfig` directive asks the rsyslog to add any file ending with '.conf' and existing in the '/etc/rsyslog.d/' directory.
 
 Logging rules:
-
 1. Selector field: Syntax: `FACILITY.SEVERITY`
-('*' severity for all[Ex: 'mail.*' <=> 'mail'] (Wildcards supported for both facilities and severities),
- 'none' severity for none[Ex: mail.none],
- 'mail.emerg;ftp.err;cron.info' => Match multiple severities with semicolon(;)
- )
+	- '*' severity for all[Ex: 'mail.*' <=> 'mail'] (Wildcards supported for both facilities and severities),
+	- 'none' severity for none[Ex: mail.none],
+	- 'mail.emerg;ftp.err;cron.info' => Match multiple severities with semicolon(;)
 
 2. Action Field: How a message is processed.
 
-Caching vs Non-caching:
+### Caching vs Non-caching:
 
-Caching is used if the path starts with a hyphen(-)
-Ex: 'mail.*' logs saved to '-/var/log/mail.info'
+Caching is used if the path starts with a hyphen(-) Ex: 'mail.*' logs saved to '-/var/log/mail.info'
 
-You may lose some messages during a system crash if you are using the crash mode.
-Using caching mode can improve I/O performance.
+You may lose some messages during a system crash if you are using the crash mode. Using caching mode can improve I/O performance.
 
-Different severities can have different caching modes:
-Ex:
-`mail.info` ===> '-/var/log/mail.info'
-`mail.warn` ===> '-/var/log/mail.warn'
-`mail.err` ===> '/var/log/mail.err' [No caching]
-(Lower severities are cached while higher severities are not cached.)
+Different severities can have different caching modes: Ex:
+- `mail.info` ===> '-/var/log/mail.info'
+- `mail.warn` ===> '-/var/log/mail.warn'
+- `mail.err` ===> '/var/log/mail.err' (No caching)
 
-Generate 'syslog' messages:
+Lower severities are cached while higher severities are not cached.
 
-Use the `logger` command.
-Ex:
-`logger [options] message`.
+Generate 'syslog' messages: Use the `logger` command. Ex:
+- `logger [options] message`.
 
 Options for `logger`:
-`-p FACILITY.SEVERITY` => Defaults to 'user.notice' if nothing is specified.
-`-t TAG` => Tag our messages in the log file.
+- `-p FACILITY.SEVERITY` => Defaults to 'user.notice' if nothing is specified.
+- `-t TAG` => Tag our messages in the log file.
 
 Ex:
-`logger -p mail.info -t mailtest "Test."
-`sudo tail -1 /var/log/mail.log` => (Sample o/p: 'Apr 4 14:33:16 linuxsvr mailtest: Test.')
+- `logger -p mail.info -t mailtest "Test."`
+- `sudo tail -1 /var/log/mail.log` => (Sample o/p: 'Apr 4 14:33:16 linuxsvr mailtest: Test.')
 
-[NOTE:: `logrotate` command => Did not learn (go back to videos if you wish to learn)]
+NOTE: `logrotate` command => Did not learn (go back to videos if you wish to learn)
 
+NOTE: Removing blank lines and comment lines from a file/stdin:
+- `grep -Ev '^#|^$' fileName`
+	- The ^ stands for beginning of line in regular expression pattern. (^# => comments)
+	- The $ stands for the end of the line in regular expression pattern. (^$ => Blank lines)
+	- | stands for OR (this[left side] or that[right side])
 
+## Disk Management:
 
-NOTE::
-Removing blank lines and comment lines from a file/stdin:
-`grep -Ev '^#|^$' fileName`
-(
-The ^ stands for beginning of line in regular expression pattern. (^# => comments)
-The $ stands for the end of the line in regular expression pattern. (^$ => Blank lines)
-| stands for OR (this[left side] or that[right side])
-)
+Disks can be divided into parts - called Partitions. Partitions allow you to separate data. Participation Schemes: Ex: 
+1. OS | Application | User | Swap,
+2. OS | User Home Directories | Etc..
 
+(As a system administrator, you get to decide)
 
+### Advantages of partitioning:
 
-Disk Management:
+Can protect the overall system. Keep users from creating outages by using a home directory partition. (Ex: If the system runs a web server, we can partition OS and the server on the disk, so damage/outage in one won't affect the other, esp. the OS will still keep running)
 
+### (MBR) Master Boot Record:
 
-Disks can be divided into parts - called Partitions.
-Partitions allow you to separate data.
-Participation Schemes:
-Ex: 1. OS 2. Application 3. User 4. Swap,
-1. OS 2. User Home Directories, etc.
-(As a system administrator, you get to decide).
+- MBR - It's a 'boot sector' that exists at the beginning of partitioned computer mass storage devices like fixed disks or removable drives.
+- MBR = Boot Sector (sectors, tracks, cylinders ...) at the beginning of a storage device
+- MBR contains information about how the 'logical partitions' are 'organized' on the disk. The information is contained in a Partition Table.
+- MBR allows UPTO '4' PRIMARY partitions.
 
-Advantages of partitioning:
-
-Can protect the overall system.
-Keep users from creating outages by using a home directory partition.
-(Ex: If the system runs a web server, we can partition OS and the server on the disk, so damage/outage in one won't affect the other, esp. the OS will still keep running)
-
-(MBR) Master Boot Record:
-
-MBR - It's a 'boot sector' that exists at the beginning of partitioned computer mass storage devices like fixed disks or removable drives.
-
-[MBR = Boot Sector (sectors, tracks, cylinders ...) at the beginning of a storage device]
-
-MBR contains information about how the 'logical partitions' are 'organized' on the disk.
-The information is contained in a Partition Table.
-
-MBR allows UPTO '4' PRIMARY partitions.
-
-If you want to use more than 4, we need to use an 'Extended Partition'.
-An Extended Partition is a special kind of primary partition that is used as a 'container' for OTHER partitions. (Hence, create unlimited number of partitions inside the extended partition)
+If you want to use more than 4, we need to use an 'Extended Partition'. An Extended Partition is a special kind of primary partition that is used as a 'container' for OTHER partitions. (Hence, create unlimited number of partitions inside the extended partition)
 
 Disadvantage of MBR: Can ONLY address 2TB of disk space.
 
-(GPT) GUID Partition Table:
+### (GPT) GUID Partition Table:
 
-It is slowly replacing MBR as the boot sector of the partitioned disks.
-
-GUID = Global Unique Identifier.
-
-[GUID is actually part of UEFI(Unified Extensible Firmware Interface) that is gradually replacing BIOS]
-
-GPT has been already used in some BIOS systems because of the MBR's disadvantage(support only 2tb space).
-
-GPT: NO Concept of Primary/Extended Partitions
+- It is slowly replacing MBR as the boot sector of the partitioned disks.
+- GUID = Global Unique Identifier.
+- GUID is actually part of UEFI(Unified Extensible Firmware Interface) that is gradually replacing BIOS
+- GPT has been already used in some BIOS systems because of the MBR's disadvantage(support only 2tb space).
+- GPT: NO Concept of Primary/Extended Partitions
 
 GPT Supports:
-Upto 128 Partitions.
-Upto 9.4ZB Disk Sizes. (ZB = Zeta Byte)
-(NOT supported by older OSes and May require Newer or Special Tools)
+- Upto 128 Partitions.
+- Upto 9.4ZB Disk Sizes. (ZB = Zeta Byte)
 
+(GPT NOT supported by older OSes and May require Newer or Special Tools)
 
-Mount Points:
+### Mount Points:
 
 A mount point is simply a DIRECTORY that is USED to ACCESS THE DATA on a Partition.
 
-'/' (slash) => It is always a Mount Point.(At least 1 Partition is mounted on the '/' directory)
-Any other additional partitions are mounted Inside the '/' Directory Tree.
-Ex:
-If we allocated a partition to the '/home' directory (mounted), then all the files and directories inside it can be found under that partition.
-(Ex: '/home/jason' is on the partition mounted on '/home') 
+- '/' (slash) => It is always a Mount Point.(At least 1 Partition is mounted on the '/' directory). Any other additional partitions are mounted Inside the '/' Directory Tree.
 
-If we, say, umounted (remove) the '/home` partition and instead allocate it to the '/export/home' direcory (mount) then all the files inside '/home' will be available under the mounted partition of '/export/home'.
-(Ex: '/export/home/jason' available under the mounted partition '/export/home')
+Ex: If we allocated a partition to the '/home' directory (mounted), then all the files and directories inside it can be found under that partition. (Ex: '/home/jason' is on the partition mounted on '/home') 
 
-Mount Partitions over Existing Data:
+If we, say, umounted (remove) the `/home` partition and instead allocate it to the '/export/home' direcory (mount) then all the files inside '/home' will be available under the mounted partition of '/export/home'. (Ex: '/export/home/jason' available under the mounted partition '/export/home')
 
-We can mount partitions over existing data. For example, if files(or directories) were create inside '/home' before the '/home' partition was mounted/create, those files will NOT be accessible after '/home' is mounted as a partition.
-[They will exist but you not be able to access them.]
-Ex:
-*'/home' is not mounted and '/' is the existing mount*
-`mkdir /home/sarah`
-`mount /dev/sdb2 /home` ('/home' mounted/partitioned)
-*You will not be able to access '/home/sarah' now. Data for that folder exists on '/' partition*
-*Therefore, We cannot access the '/home/sarah' folder from the '/home' partition*
-`unmount /home` (Removing the '/home' partition, so files inside belong once again to '/' mount)
-*You can now access '/home/sarah' once again since mount was '/' when 'sarah' directory was created*
+### Mount Partitions over Existing Data:
 
-Mount Points over other Mount Points:
+We can mount partitions over existing data. For example, if files(or directories) were create inside '/home' before the '/home' partition was mounted/create, those files will NOT be accessible after '/home' is mounted as a partition. They will exist but you not be able to access them.
 
-This is possible. For Example: 
-If '/home' is a mount point, we can create another mount point '/home/jason' over the existing '/home' mount point.
-(The important thing to note is that '/home' must be mounted BEFORE mounting '/home/jason'!).
+Ex: Assume '/home' is not mounted and '/' is the existing mount:
+- `mkdir /home/sarah`
+- `mount /dev/sdb2 /home` ('/home' mounted/partitioned)
+
+You will not be able to access '/home/sarah' now. Data for that folder exists on '/' partition. Therefore, We cannot access the '/home/sarah' folder from the '/home' partition.
+
+- `unmount /home` (Removing the '/home' partition, so files inside belong once again to '/' mount). You can now access '/home/sarah' once again since mount was '/' when 'sarah' directory was created
+
+### Mount Points over other Mount Points:
+
+This is possible. For Example: If '/home' is a mount point, we can create another mount point '/home/jason' over the existing '/home' mount point. (The important thing to note is that '/home' must be mounted BEFORE mounting '/home/jason'!).
 
 
-`fdisk`:
+### `fdisk`:
 
-'fdisk' is a standard linux tool or a utility that has been traditionally used to CREATE and MODIFY PARTITONS on a Disk.
-(Alternatives: `gdisk` or `parted`)
+`fdisk` is a standard linux tool or a utility that has been traditionally used to CREATE and MODIFY PARTITONS on a Disk. (Alternatives: `gdisk` or `parted`)
 
-[Note:: Earlier version of `fdisk` are NOT supported by GPT.]
+Note:: Earlier version of `fdisk` are NOT supported by GPT.
 
 To manage the partitions on a disk using the `fdisk` utility, simply provide the 'path' to the 'device' you wish to manage as an argument to the command, Ex:
-`fdisk /path/to/device`
+- `fdisk /path/to/device`
 
-`fdisk -l` => Displays a list of available devices('disks') and all the 'partitions' they contain.
-[You may like to use `fdisk -l | less`]
-(The above will list the disks and the partitions that they have, if any.)
+- `fdisk -l` => Displays a list of available devices('disks') and all the 'partitions' they contain. You may like to use `fdisk -l | less`. (The above will list the disks and the partitions that they have, if any.)
 
-`fdisk -l /dev/sda` => Displays a specific disk device's partitions (and its nested partitions).
+- `fdisk -l /dev/sda` => Displays a specific disk device's partitions (and its nested partitions).
 
-`fdisk /dev/sdb` => Opens the command utility for '/dev/sdb' disk device (Use 'm' for commands help)
-(Once you run this command, the `fdisk` utility opens up, with its own commands:)
+- `fdisk /dev/sdb` => Opens the command utility for '/dev/sdb' disk device (Use 'm' for commands help) (Once you run this command, the `fdisk` utility opens up, with its own commands:)
 
 Commands inside `fdisk` device manager:
-p: print the partition table
-n: create a new partition
-d: delete a partition
-q: quit without saving changes
-w: write the new partition table and exit
-l: View a list of partitions along with their numbers
+- p: print the partition table
+- n: create a new partition
+- d: delete a partition
+- q: quit without saving changes
+- w: write the new partition table and exit
+- l: View a list of partitions along with their numbers
 
-(A) CREATE an "MBR" partition (inside a disk using `fdisk` device manager):
+#### CREATE an "MBR" partition (inside a disk using `fdisk` device manager):
+
 1. Press `n` to create a partition 
-:=> Prompted to press 'p' for primary partition (or) 'e' for extended. (You chose 'p' - primary, say)
-:=> It will ask you to choose partition number, 1 to 4. (Default is partition 1) (You chose 1, say)
-:=> It will prompt you to select a start address from X-to-Y. (Default is X) (You chose X, say)
-:=> It will ask you for the size of the partition. Format to enter: +NS (Ex: You typed '+1G', say)
+
+- Prompted to press 'p' for primary partition (or) 'e' for extended. (You chose 'p' - primary, say)
+- It will ask you to choose partition number, 1 to 4. (Default is partition 1) (You chose 1, say)
+- It will prompt you to select a start address from X-to-Y. (Default is X) (You chose X, say)
+- It will ask you for the size of the partition. Format to enter: +NS (Ex: You typed '+1G', say)
+
 (S is size = K for KiloBytes, M for MegaBytes, G for GigaBytes)
 (N is the quanity. Ex: '+1G' means you chose 1 GigaByte of data from start address(X) for that partition)
-:=> Partition is Created (Inside the selected disk device)
-[Example Output: 'Partition 1 of type Linux and of 1 GiB is set']
 
-(Once you create a partition 'x' (1 <= x <= 4), the next partition will ask you to select a partition number from '1-4 excluding x'. Suppose you selected 1 initially then next time it will ask you to select a partition number from 2-4)
+- Partition is Created (Inside the selected disk device)
 
-(The default size for any partition is the full remaining size that you have left. For example you may create 3 partitions of sizes 1GB, 2GB, and for the third one just hit <enter> and the default/remaining size is selected for it.)
+Example Output: 'Partition 1 of type Linux and of 1 GiB is set'
 
-(Note:: Default partition type created is 'Linux' and represented by the number '83')
+Once you create a partition 'x' (1 <= x <= 4), the next partition will ask you to select a partition number from '1-4 excluding x'. Suppose you selected 1 initially then next time it will ask you to select a partition number from 2-4.
 
-(B) CHANGE the partition TYPE:
-:=> Type 't'
-:=> Output is 'selected partition is 1'
-:=> You are prompted for the Partition number(A hex number) [Says type 'L' for help with partition types]
-:=> Type 'l' to see the list of partitions and their numbers.
+The default size for any partition is the full remaining size that you have left. For example you may create 3 partitions of sizes 1GB, 2GB, and for the third one just hit `<enter>` and the default/remaining size is selected for it.
+
+Note: Default partition type created is 'Linux' and represented by the number '83'.
+
+2. CHANGE the partition TYPE:
+- Type 't'
+- Output is 'selected partition is 1'
+- You are prompted for the Partition number(A hex number) [Says type 'L' for help with partition types]
+- Type 'l' to see the list of partitions and their numbers.
+
 (Say, Linux is 83 and you want to change to 'linux Swap' type, which is '82')
+
 (Note: The numbers are in hexadecimal format, so even 'fe' is a number)
-:=> You are prompted again for the Partition type Hex number. You Type '82' (say)
-:=> Sample Output: `Changed type of partition 'Linux' to 'Linux Swap / Solaris'`
 
-[Note:: You may repeat step (A) and [optionally, step (B)] for subsequent partitions you may want to create (and change the type of) ] 
+- You are prompted again for the Partition type Hex number. You Type '82' (say)
+- Sample Output: `Changed type of partition 'Linux' to 'Linux Swap / Solaris'`
 
-View all the existing partitions (Partition Table):
-Type `p`.
+Note: You may repeat step (A) and, optionally step (B), for subsequent partitions you may want to create (and change the type of).
 
-DELETE a partition (inside the chosen disk):
-:=> Type 'd'
-:=> As we enter ‘d‘, it will prompt me to enter partition number that we want to delete from disk.(Ex: '4')
-:=> It will delete that partition number (Ex: '4') on disk and shows free space in partition table. 
+#### View all the existing partitions (Partition Table):
+- Type `p`.
 
-SAVING all the partitions added/deleted in the `fdisk` utility (and EXITING/QUITTING):
-Type `w` : It saves all the partitions it showed in the partition table (whatever we added/deleted) and quits the utility back to the command prompt.
+#### DELETE a partition (inside the chosen disk):
+- Type 'd'
+- As we enter ‘d‘, it will prompt me to enter partition number that we want to delete from disk.(Ex: '4')
+- It will delete that partition number (Ex: '4') on disk and shows free space in partition table. 
 
-QUITTING without Saving:
-Type `q`.
+#### SAVING all the partitions added/deleted in the `fdisk` utility (and EXITING/QUITTING):
+- Type `w` : It saves all the partitions it showed in the partition table (whatever we added/deleted) and quits the utility back to the command prompt.
 
-CREATING a "GPT" Partition (Inside a Disk using the `fdisk` utility):
+#### QUITTING without Saving:
+- Type `q`.
 
-Type 'g': (Prints message that you 'building a new GPT disklabel')
-:=> Simialr commands to MBR. (n-create, p-print GPT table, d-delete partition, w-save&quit, q-quit)
-:=> Only thing to remember is that instead of '1-4' partition numbers, there are '1-128'.
-:=> No primary/extended partitions like in MBR. (All partitions are equival)
+#### CREATING a "GPT" Partition (Inside a Disk using the `fdisk` utility):
 
+1. Type 'g': (Prints message that you 'building a new GPT disklabel')
+- Simialr commands to MBR. (n-create, p-print GPT table, d-delete partition, w-save&quit, q-quit)
+- Only thing to remember is that instead of '1-4' partition numbers, there are '1-128'.
+- No primary/extended partitions like in MBR. (All partitions are equival)
 
-
-File Systems:
+### File Systems:
 
 Before a partition can be used by a system, it will need a File System.
 
-'ext' : Extendeded file system was create specifically for linux and is the default
-(ext2, ext3, ext4 are later releases)
+- `ext` : Extendeded file system was create specifically for linux and is the default(ext2, ext3, ext4 are later releases)
 
-Other File Systems: 'ReiserFS', 'JFS', 'XFS', 'ZFS', 'Btrfs'
+- Other File Systems: 'ReiserFS', 'JFS', 'XFS', 'ZFS', 'Btrfs'
 
-Create a File System:
+#### Create a File System:
+- `mkfs -t TYPE DEVICE` => Creates a file system of specified TYPE on the mentioned disk DEVICE. (DEVICE: path to the partition where you want the file system to reside). (Ex: `mkfs -t ext3 /dev/sdb2`)
 
-`mkfs -t TYPE DEVICE` => Creates a file system of specified TYPE on the mentioned disk DEVICE
-(DEVICE: path to the partition where you want the file system to reside).
-(Ex: `mkfs -t ext3 /dev/sdb2`)
-
-'Note: We may also use dot(.) notation instead of `-t`: Ex. `mkfs.ext4 /dev/sdb3`'
+Note: We may also use dot(.) notation instead of `-t`: Ex. `mkfs.ext4 /dev/sdb3`
 
 Location of the mkfs files: `ls -l /sbin/mkfs*`
 
 'mkfs' help: `man mkfs.ext2` to find more info about the ext2 file system creation commands.
 
-
-
-Mounting a Device Partition: [Mount Point is simply a directory which we place a device partition on]
+### Mounting a Device Partition: [Mount Point is simply a directory which we place a device partition on]
 
 (After creating and assigning a file system.)
-`mount DEVICE MOUNT_POINT` => Mounts a device partition to the directory specified.
+
+- `mount DEVICE MOUNT_POINT` => Mounts a device partition to the directory specified.
+
 Ex:
-`mount /dev/sdb3 /opt`
+- `mount /dev/sdb3 /opt`
 
-Viewing currently mounted file systems:
+#### Viewing currently mounted file systems:
 
-`mount` => No Args - Therefore, mount displays all the filesystems (physical as well as virtual file systems.)
+- `mount` => No Args - Therefore, mount displays all the filesystems (physical as well as virtual file systems.)
 
 Manual mounts do NOT persist!:
 
 In order to makes mounts persist between reboots, add an entry in the '/etc/fstab' file.
 
-Unmount a file System: (umount command)
+#### Unmount a file System: (`umount` command)
 
-`umount DEVICE_OR_MOUNT_POINT`
-eX:
-`umount /opt` (unmount using mount point)
-`umount /dev/sdb3` (unmount using device partition)
+- `umount DEVICE_OR_MOUNT_POINT`
 
-Preparing a swap space:
+Ex:
+- `umount /opt` (unmount using mount point)
+- `umount /dev/sdb3` (unmount using device partition)
+
+#### Preparing a swap space:
 
 Instead of creating a file system and mounting it, we can create a 'Swap Area' and 'Enable' it.
+- `mkswap DEVICE` => Creates a swap space.(Ex: `mkswap /dev/sdb1`)
+- `swapon DEVICE` => Enables the created swap space.(Ex: `swapon /dev/sdb1`)
+- `swapon -s` => Displays the swap devices in use.
 
-`mkswap DEVICE` => Creates a swap space.(Ex: `mkswap /dev/sdb1`)
-`swapon DEVICE` => Enables the created swap space.(Ex: `swapon /dev/sdb1`)
-`swapon -s` => Displays the swap devices in use.
+### `/etc/fstab` file - The File System Table:
 
-`/etc/fstab` file - The File System Table:
-
-Controls what devices get mounted and where on boot.
-Each entry(one line) has 6 fields:
+Controls what devices get mounted and where on boot. Each entry(one line) has 6 fields:
 1. Device (label/path-to-device (or) UUID)
 2. Mount point
 3. File system type
@@ -2016,36 +1964,31 @@ Each entry(one line) has 6 fields:
 (Lines starting with '#' are comments and are ignored)
 
 Example Entries: 
-`/dev/sda2		/		xfs 	defaults 	0	1`
-`/dev/sda1		swap 	swap 	defaults 	0	0`
+- `/dev/sda2		/		xfs 	defaults 	0	1`
+- `/dev/sda1		swap 	swap 	defaults 	0	0`
 
 Example using UUID:
-`UUID=dbae4fe7-b06f-4319-85dc-b93ba4a16b17		/		xfs 		defaults 		0		1`
+- `UUID=dbae4fe7-b06f-4319-85dc-b93ba4a16b17		/		xfs 		defaults 	0	1`
 
-[You may ignore the dump utility column (leave it at 0) if you do not use it to backup filesystems.]
-[Good practice to set `fsck` of '/' to 1 and remaining FSes to '2']
+You may ignore the dump utility column (leave it at 0) if you do not use it to backup filesystems.Good practice to set `fsck` of '/' to 1 and remaining FSes to '2'
 
-'man fstab' => Information about the full list of options.
+- `man fstab` => Information about the full list of options.
 
-Viewing Labels and UUIDs of file systems:
+#### Viewing Labels and UUIDs of file systems:
+- `lsblk -f` => Shows label, name, fstype, and UUIDs of devices.
+- `blkid` => 'Shows the path, type and UUIDs of devices'
 
-`lsblk -f` => Shows label, name, fstype, and UUIDs of devices.
-`blkid` => 'Shows the path, type and UUIDs of devices'
-
-Labelling a file system(changing the name):
+#### Labelling a file system(changing the name):
 
 For 'ext' filesystems we can use the `e2label`
-`e2label DEVICE MOUN_POINT` => Changes label of device(FS) at mount point(directory).
+- `e2label DEVICE MOUN_POINT` => Changes label of device(FS) at mount point(directory).
+
 Ex:
-`e2label /dev/sdb3 opt`
+- `e2label /dev/sdb3 opt`
 
+## MANAGING USERS AND GROUPS:
 
-
-MANAGING USERS AND GROUPS:
-
-
-Linux is a multi-user OS. The multi-users can also use the system at the Same Time!
-Each user account has the follwoing fields associated:
+Linux is a multi-user OS. The multi-users can also use the system at the Same Time! Each user account has the follwoing fields associated:
 1. Username (or Login ID)
 2. UID (user ID). This is a unique number.
 3. Default group (to which user belongs) (GID or group ID)
@@ -2053,445 +1996,385 @@ Each user account has the follwoing fields associated:
 5. Home directory location
 6. Shell (Shell to execute when user logs into the system)
 
-All the user information(above) is stored in the - `/etc/passwd` file:  [Separated by a colon(:)]
-The FIRST ENTRY in the file is the ROOT/SuperUser account.
-Format of each user's account(one entry = one line = one user):
-`username:password:UID:GID:comments:home_dir:shell`
+All the user information(above) is stored in the - `/etc/passwd` file: Separated by a colon(:). The FIRST ENTRY in the file is the ROOT/SuperUser account. Format of each user's account(one entry = one line = one user):
+- `username:password:UID:GID:comments:home_dir:shell`
 
-The root account:
-`root:x:0:0:root:/root:/bin/bash` => 
-(root user with x password, 0 uid, 0 gid, comment 'root', '/root' home dir, '/bin/bash' default shell to execute on login).
+### The root account:
+- `root:x:0:0:root:/root:/bin/bash` => (root user with x password, 0 uid, 0 gid, comment 'root', '/root' home dir, '/bin/bash' default shell to execute on login).
 
-[UID and GID for the root account are '0']
+UID and GID for the root account are '0'.
 
 Other user account example:
-`joe:x:1000:1000:Joe Henderson:/home/joe:/bin/bash`
+- `joe:x:1000:1000:Joe Henderson:/home/joe:/bin/bash`
 
-[!!NOTE!!: password is 'x' - Exncrypted password is actually stored in the '/etx/shadow' file]
+NOTE!: password is 'x' - Exncrypted password is actually stored in the '/etx/shadow' file.
 
 Note:
-
-1. Better to have Usernames less than 8 characters or else[convention] we see + sign appended at 8th character position (or UID instead).
-[Ex: Run this command for a long username: `ps -fu joehenderson`]
-
-2. Usernames are case-sensitive. [All lowercase by convention]
-
+1. Better to have Usernames less than 8 characters or else[convention] we see + sign appended at 8th character position (or UID instead). Ex: Run this command for a long username: `ps -fu joehenderson`.
+2. Usernames are case-sensitive. (All lowercase by convention).
 3. Numbers are allowed in usernames.
-
 4. Do Not use special characters.
 
-Passwords are stored in '/etc/shadow' file:
+### Passwords are stored in '/etc/shadow' file:
 
-Encrypted passwords used to be(earlier) stored in 'etc/passwd'.
-But, '/etc/passwd' is readable by "everyone".
-Now(current linux), encrypted passwords are stored in '/etc/shadow'.
-'/etc/shadow' is readable by 'root'/'superuser' alone.
-This prevents users trying to crack passwords.
+Encrypted passwords used to be(earlier) stored in 'etc/passwd'. But, '/etc/passwd' is readable by "everyone". Now(current linux), encrypted passwords are stored in '/etc/shadow'. '/etc/shadow' is readable by 'root'/'superuser' alone. This prevents users trying to crack passwords.
 
-UIDs:
+### UIDs:
 
-The root/superuser account always has UID = 0.
-UIDs are unique numbers.
-System accounts typically have UIDs less than 1000 (< 1000). [Configured in '/etc/login.defs']
+The root/superuser account always has `UID = 0`. UIDs are unique numbers. System accounts typically have UIDs less than 1000 (< 1000). (Configured in '/etc/login.defs')
 
-GIDs:
+### GIDs:
 
-The GID listed in the '/etc/passwd' file is the default group for an account.
-New files belong to a user's Default group.
+The GID listed in the '/etc/passwd' file is the default group for an account. New files belong to a user's Default group.
 Users can switch groups using the `newgrp` command. (This can be done before creating new files for the new group)
 
-[[::Note:: Systems or applications also have accounts - viewable inside the '/etc/passwd' file]]
+Note: Systems or applications also have accounts - viewable inside the '/etc/passwd' file.
 
-Comment Field:
+### Comment Field:
 
-Typically contains the user's full name.
-In the case of system or application accounts, it often contains what the account is used for.
-It may contain additional info, like phone number.
-Also called the GECOS field.
+- Typically contains the user's full name. 
+- In the case of system or application accounts, it often contains what the account is used for.
+- It may contain additional info, like phone number.
+- Also called the GECOS field.
 
-Home Directory:
+### Home Directory:
 
-Upon login, the user is placed inside his HOME directory (Ex: '/home/jason' for user 'jason')
-If this directory does NOT exist then he is placed in the root directory('/').
+Upon login, the user is placed inside his HOME directory (Ex: '/home/jason' for user 'jason'). If this directory does NOT exist then he is placed in the root directory('/').
 
-Shell:
+### Shell:
 
-The shell will be executed when a user logs in.
-List of available shells are in '/etc/shells'.
-The shell does NOT have to be a shell:
-Ex:
-To prevent the interactive use of an account, use : '/usr/sbin/nologin' (or) '/bin/false' as the shell.
-(In the above, No one can execute the shell interactively, but only execute a menu-driven application that only gives them access to certain actions).
-Shells can be command line applications.
+The shell will be executed when a user logs in. List of available shells are in '/etc/shells'. The shell does NOT have to be a shell: 
 
-The '/etc/shadow' file:
+Example: To prevent the interactive use of an account, use : '/usr/sbin/nologin' (or) '/bin/false' as the shell.
+(In the above, No one can execute the shell interactively, but only execute a menu-driven application that only gives them access to certain actions). Shells can be command line applications.
+
+### The '/etc/shadow' file:
 
 Contains the encrypted passwords of the user accounts.
+
 Format:
 `username:encryptedpass:dayssincepasswordchanged:numdaysbeforewhichpasswordmustbechanged:daystochangepass(99999-neverchange):daystowarnusertochangepass:numdaysafterpasswordexpiredtodisableacct:numdayssinceacctdisabled:futureuse`
+
 Ex:
 `root:$@234524#242Dde#$3:16502:0:99999:7:::`
 
 
-CREATING A USER ACCOUNT: [Requires root account privileges - Ex> use 'sudo']
+### CREATING A USER ACCOUNT: [Requires root account privileges - Ex> use 'sudo']
 
-Syntax:
-`useradd [options] username` 
+Syntax: `useradd [options] username` 
 
 Options:
-`-c "COMMENT"` => Comments for the account.
-`-m` => Create the home directory
-`-s /shell/path` => Path to the user's shell
-`-g GROUP` => Specify the default groud.
-`-G GROUP2,[...GROUPN]` => Additional groups(no spaces between commas)
+- `-c "COMMENT"` => Comments for the account.
+- `-m` => Create the home directory
+- `-s /shell/path` => Path to the user's shell
+- `-g GROUP` => Specify the default groud.
+- `-G GROUP2,[...GROUPN]` => Additional groups(no spaces between commas)
 
-[Note:: Specify option `-u UID` to explicitly set the UID of the account being created. Ex: `-u 97`]
+Note:: Specify option `-u UID` to explicitly set the UID of the account being created. Ex: `-u 97`.
 
 Ex:
-`useradd -c "Grant Stewart" -m -s /bin/bash grant`,
-`useradd -c "Eddie Harris" -m -s /bin/bash -g sales -G projectx harris` (Added to sales and projectX grps)
+- `useradd -c "Grant Stewart" -m -s /bin/bash grant`,
+- `useradd -c "Eddie Harris" -m -s /bin/bash -g sales -G projectx harris` (Added to sales and projectX grps)
 
-Create a password for the created user:
+### Create a password for the created user:
 
-Syntax:
-`passwd username` 
+Syntax: `passwd username` 
+
 Ex:
-`passwd grant` => System asks for password for the user 'grant' (and a retype to confirm).
+- `passwd grant` => System asks for password for the user 'grant' (and a retype to confirm).
 
-[Note: The created user entry and his password are "Appended" to the '/etc/passwd' and '/etc/shadow' files respectively.]
+Note: The created user entry and his password are "Appended" to the '/etc/passwd' and '/etc/shadow' files respectively.
 
-System or Application Accounts:
+### System or Application Accounts:
 
-Not every account is meant to be for a user. 
-Some accounts exist to run applications or perform system functions.
-Examples of these accounts include those that run web server processes, database server processes, etc.
+Not every account is meant to be for a user. Some accounts exist to run applications or perform system functions. Examples of these accounts include those that run web server processes, database server processes, etc.
 
 Extra Options:
-`-r` : Requests create an application/system account.
-(This means that the application receives a UID in the application UIDs range)(As defined in the '/etc/login.defs' file)
-`-d HOME_DIR` : Specify Home Directory using the `-d` option (instead of the `-m`) - we can give location.
-(Default home directory, if not specified in -d, is `/home/acctname`)
+- `-r` : Requests create an application/system account. (This means that the application receives a UID in the application UIDs range)(As defined in the '/etc/login.defs' file)
+- `-d HOME_DIR` : Specify Home Directory using the `-d` option (instead of the `-m`) - we can give location. (Default home directory, if not specified in -d, is `/home/acctname`)
 
 Ex:
-`useradd -c "Apache Web Server User" -d /opt/apache -r -s /usr/bin/nologin apache`
-(We do Not want someone to login to this system using the application account - hence => /usr/bin/nologin)
+- `useradd -c "Apache Web Server User" -d /opt/apache -r -s /usr/bin/nologin apache` (We do Not want someone to login to this system using the application account - hence => /usr/bin/nologin)
 
-The `-m` option:
+#### The `-m` option:
 
-When using the `-m` option, the Home directory for the user is created.
-The contents of '/etc/skel' (stands for 'skeleton') are copied into the User's Home directory.
-This '/etc/skel' contains shell "configuration files" ('.profile', '.bashrc', etc)
+When using the `-m` option, the Home directory for the user is created. The contents of '/etc/skel' (stands for 'skeleton') are copied into the User's Home directory. This '/etc/skel' contains shell "configuration files" ('.profile', '.bashrc', etc)
 
-DELETING an account:
+### DELETING an account:
 
-Syntax:
-`userdel [-r] username`
+Syntax: `userdel [-r] username`
+
 Ex:
-`userdel grant` => Deletes user 'grant' from system but keeps his home folder un-deleted.
-`userdel -r grant` => Deletes user 'grant' from system and also deletes his home folder.
-(The `-r` also removes the user's mailspool file if it exists.)
+- `userdel grant` => Deletes user 'grant' from system but keeps his home folder un-deleted.
+- `userdel -r grant` => Deletes user 'grant' from system and also deletes his home folder. (The `-r` also removes the user's mailspool file if it exists.)
 
-MODIFY an existing account:
+### MODIFY an existing account:
 
-Syntax:
-`usermod [options] username`
+Syntax: `usermod [options] username`
 
 Similar options to `useradd`:
-`-c "COMMENT"` => Comments for the account.
-`-s /shell/path` => Path to the user's shell
-`-g GROUP` => Specify the default groud.
-`-G GROUP2,[...GROUPN]` => Additional groups(no spaces between commas)
+- `-c "COMMENT"` => Comments for the account.
+- `-s /shell/path` => Path to the user's shell
+- `-g GROUP` => Specify the default groud.
+- `-G GROUP2,[...GROUPN]` => Additional groups(no spaces between commas)
 
 Ex:
-`usermod -c "MYSQL User" mysql` => Updates comment associated with a MySQL account.
+- `usermod -c "MYSQL User" mysql` => Updates comment associated with a MySQL account.
 
 
-GROUP DETAILS AND CREATION:
+### GROUP DETAILS AND CREATION:
 
 The group details are stored in the '/etc/group' file.
 
-Format of the entries in the file:
-`group_name:password:GID:account1,...,accountN`
+Format of the entries in the file: `group_name:password:GID:account1,...,accountN`
 
 (Here too, password is 'x').
 
 GID is the group ID - A unique ID for the group.
 
-FIRST entry in the '/etc/group' file is the 'Root Group'.
-Ex: `root:x:0:`
+FIRST entry in the '/etc/group' file is the 'Root Group'. Ex: `root:x:0:`
 
-Other group example:
-`sales:x:1001:john,mary`
+Other group example: `sales:x:1001:john,mary`
 
-(IMPORTANT NOTE:: 
-Users whose default is a certain group are NOT shown in the entry for that group in '/etc/group' file. 
-BUT, we can check the '/etc/passwd' file to find the user's default group (or) run `groups user-name`
-)
+IMPORTANT NOTE: Users whose default is a certain group are NOT shown in the entry for that group in '/etc/group' file. 
+BUT, we can check the '/etc/passwd' file to find the user's default group (or) run `groups user-name`.
 
-The '/etc/gshadow' file:
+### The '/etc/gshadow' file:
 
 The encrypted group passwords(x) are stored in the '/etc/gshadow' file.
 
-Groups that a member belongs to:
+Groups that a member belongs to: `groups [USERNAME]`
 
-`groups [USERNAME]`
 Ex:
-`groups root` => Displays all groups that root belongs to.
-`groups` => Displays your(currently logged in user) groups (groups that you as the user belong to)
+- `groups root` => Displays all groups that root belongs to.
+- `groups` => Displays your(currently logged in user) groups (groups that you as the user belong to)
 
-Create Groups:
+#### Create Groups:
 
 `groupadd [-g GID] GROUP_NAME`
-Ex:
-`groupadd web` => Adds the 'web' group.
-`groupadd -g 2500 db` => Adss the 'db' group and also explicitly sets the GID to 2500.
 
-Delete a group:
+Ex:
+- `groupadd web` => Adds the 'web' group.
+- `groupadd -g 2500 db` => Adss the 'db' group and also explicitly sets the GID to 2500.
+
+#### Delete a group:
 
 `groupdel GROUP_NAME`
-Ex:
-`groupdel db` => Deletes the 'db' group.
 
-MODIFY a group:
+Ex:
+- `groupdel db` => Deletes the 'db' group.
+
+#### MODIFY a group:
 
 `groupmod [options] group_name`
+
 Options are:
-`-g GID` => Change group ID to specified GID.
-`-n GROUP` => Change group name to specified name 'GROUP'.
+- `-g GID` => Change group ID to specified GID.
+- `-n GROUP` => Change group name to specified name 'GROUP'.
 
-
-
-SPECIAL PERMISSION MODES:
+## SPECIAL PERMISSION MODES:
 
 When we start a process(execution), it runs using the User's UID and GID (we may have run it as others used 'su'/'sudo' etc for root, doesn't matter.)
 
 
-(A) 'setuid' bit:
+### `setuid` bit:
 
 We can explicitly set a UID before execution of a process:
-`setuid` => Set User ID upon execution.
-`setuid` FORCES the process to run as THE OWNER of the file regardless of who executes it.
+- `setuid` => Set User ID upon execution.
+- `setuid` FORCES the process to run as THE OWNER of the file regardless of who executes it.
 
 How to check/tell if setuid is enabled?:
-`ls -l` => `-rwsrw-r-x ..`  The 's' in the Owner's execution field(x) tells that setuid is enabled.
+- `ls -l` => `-rwsrw-r-x ..`  The 's' in the Owner's execution field(x) tells that setuid is enabled.
 
 Examples of commands and files that run with setuid/as owner of the file:
 1. '/usr/bin/passwd' (Ex: need to be owner when changing the password)
 2. `ping` command (Needs root privileges)
-3. `chsh` command - Allows users to update their shell,
-etc...
+3. `chsh` command - Allows users to update their shell, etc...
 
-Security measures:
+#### Security measures:
 
-It is prone to attack by hackers/malicious users since it always runs on owner(usually root) access.
-It is not honored on shell scripts - Scripts will execute as user who runs the script even if the setuid bit is set for the script. 
-(Only 'binary executable' files work with setuid bit enabled)
+- It is prone to attack by hackers/malicious users since it always runs on owner(usually root) access.
+- It is not honored on shell scripts - Scripts will execute as user who runs the script even if the setuid bit is set for the script. (Only 'binary executable' files work with setuid bit enabled)
 
-Octal permissions:
+#### Octal permissions:
 
-setuid: 0, setgid: 0, sticky: 0 => Value for OFF (total 0)
-setuid: 1, setgid: 1, sticky: 1 => Binary Value for ON (total 3)
-setuid: 4, setgid: 2, sticky: 1 => Base 10 Value for ON (total 7)
+- setuid: 0, setgid: 0, sticky: 0 => Value for OFF (total 0)
+- setuid: 1, setgid: 1, sticky: 1 => Binary Value for ON (total 3)
+- setuid: 4, setgid: 2, sticky: 1 => Base 10 Value for ON (total 7)
 
-(Good: 4755 or below, Bad: 4775, Really bad: 4777 [anyone can edit the file!])
+Good: 4755 or below, Bad: 4775, Really bad: 4777 (anyone can edit the file!)
+
 (Ex: 4775 or 4777 is what an attacker hopes to find in your system if they break in! - they can do anything they want to that file and maybe get root permissions.)
 
-Adding the setuid attribute to a file:
+#### Adding the setuid attribute to a file:
 
-We can use the `chmod` command.
-Ex: 
+We can use the `chmod` command. Ex: 
 1. `chmod u+s /path/to/file` (symbolic notation)
 2. `chmod 4755 /path/to/file` (octal notation) - the ADD to MSBit 4, the setuid bit/special bit
 
-Removing the setuid attribute from a file:
+#### Removing the setuid attribute from a file:
 
-Again, we can use the `chmod` command.
-Ex: 
+Again, we can use the `chmod` command. Ex: 
 1. `chmod u-s /path/to/file` (symbolic notation)
 2. `chmod 0755 /path/to/file` (octal notation) - '0' => setuid disabled
 
-Find all the files on the system that have 'setuid' set:
+#### Find all the files on the system that have 'setuid' set:
 
-`find / -perm /4000`,
+- `find / -perm /4000`,
 (or, older style:)
-`fidn / -perm +4000`
+- `fidn / -perm +4000`
 
 
-(A) 'setgid' bit:
+### `setgid` bit:
 
-'setgid' => Set Group ID upon execution.
-(Ex: `-rwxr-sr-x ..` => The execution bit(x) of the 'group' is set to 's' - setgid enabled)
+`setgid` => Set Group ID upon execution. (Ex: `-rwxr-sr-x ..` => The execution bit(x) of the 'group' is set to 's' - setgid enabled)
 
-Examples of commands using this setgid bit:
-`/usr/bin/wall` : anybody who can edit this file can write whatever they want to the terminal(check).
+#### Examples of commands using this setgid bit:
+- `/usr/bin/wall` : anybody who can edit this file can write whatever they want to the terminal(check).
 
-Finding 'setgid' files:
+#### Finding 'setgid' files:
 
-`find / -perm /2000`,
+- `find / -perm /2000`,
 (or, older style:)
-`find / -perm +2000`
+- `find / -perm +2000`
 
-Adding 'setgid' permission:
+#### Adding 'setgid' permission:
 
-We can use the `chmod` command.
-Ex: 
+We can use the `chmod` command. Ex: 
 1. `chmod g+s /path/to/file` (symbolic notation)
 2. `chmod 2755 /path/to/file` (octal notation) - the ADD to MSBit 2, the setgid bit/special bit
 
-Removing the 'setgid' attribute from a file:
+#### Removing the 'setgid' attribute from a file:
 
-Again, we can use the `chmod` command.
-Ex: 
+Again, we can use the `chmod` command. Ex: 
 1. `chmod g-s /path/to/file` (symbolic notation)
 2. `chmod 0755 /path/to/file` (octal notation) - SUBTRACT 2 from special permissons field
 
-Adding both setuid and setgid:
+#### Adding both setuid and setgid:
 
 1. `chmod ug+s /path/to/file` (symbolic notation)
 2. `chmod 6755 /path/to/file` (octal notation)
 
-[[NOTE:: 
-1. Setting the 'setgid' on a Directory causes:
-'New' Files & Directories inside the directory to "inherit" the group of the directory.
-(Pre-existing files/directories within the directory are NOT affected by the setgid.)
-
-2. Because of the above point, 'setgid' is "great for working with 'groups'".
-We can create a folder with a group's GID and appropriate/desired group permissions to the directory.
-So, whatever is added/deleted/modified inside the directory can be accessed by everyone belonging to the group (Shared folder).
-]]
+NOTE:
+1. Setting the 'setgid' on a Directory causes: 'New' Files & Directories inside the directory to "inherit" the group of the directory. (Pre-existing files/directories within the directory are NOT affected by the setgid.)
+2. Because of the above point, 'setgid' is "great for working with 'groups'". We can create a folder with a group's GID and appropriate/desired group permissions to the directory. So, whatever is added/deleted/modified inside the directory can be accessed by everyone belonging to the group (Shared folder).
 
 ** THIRD PARTY TOOLS TO CHECK FOR SETUID AND SETGID ON FILES (alternatives to 'find'): **
+
 Ex: tripwire, AIDE, OSSEC, Samhain, Package managers
 
+### The 'sticky bit':
 
-(C) The 'sticky bit':
+Used on a directory to ONLY allow the OWNER of the file/directory to RENAME (or) DELETE the file. Without the sticky bit set, another user to delete a user's files IF the permissions(777, say) allowed for it. Sticky Bit reperesented by 't' on others(o). (Ex: `-rwxr-xr-t ...`)
 
-Used on a directory to ONLY allow the OWNER of the file/directory to RENAME (or) DELETE the file.
-Without the sticky bit set, another user to delete a user's files IF the permissions(777, say) allowed for it. 
-Sticky Bit reperesented by 't' on others(o).
-(Ex: `-rwxr-xr-t ...`)
-Example: 
-Used on '/tmp' or '/var/tmp'
+Example: Used on '/tmp' or '/var/tmp'
 
-Adding the 'sticky bit':
+#### Adding the 'sticky bit':
 
-We can use the `chmod` command.
-Ex: 
+We can use the `chmod` command. Ex: 
 1. `chmod o+s /path/to/file` (symbolic notation)
 2. `chmod 1777 /path/to/file` (octal notation) - the ADD to MSBit 1, the special bit
 
 (You would typically set sticky bit on 777 permissions because that is where it makes sense to use the sticky bit to only allow user to rename/delete the files/directories even when everyone else has permissions for it.)
 
-Removing the 'sticky bit':
+#### Removing the 'sticky bit':
 
-We can use the `chmod` command.
-Ex: 
+We can use the `chmod` command. Ex: 
 1. `chmod o-t /path/to/file` (symbolic notation)
 2. `chmod 0777 /path/to/file` (octal notation) - the SUBTRACT 1 from the special bit
 
 
-Reading the `ls` command output:
+#### Reading the `ls` command output:
 
 Capitalized special permission bit => Means underlying normal permissions are NOT set.
-(Ex: `-rwSr-xr-- ..`)
-(Ex: `-rwxr-xr-T ..`)
+- Ex: `-rwSr-xr-- ..`
+- Ex: `-rwxr-xr-T ..`
 
 Lowercase special permission bit => Means underlying normal permissions are SET.
-(Ex: `-rwsr-xr-- ..`)
-(Ex: `-rwxr-xr-t ..`)
+- Ex: `-rwsr-xr-- ..`
+- Ex: `-rwxr-xr-t ..`
+
+## NETWORKING:
 
 
+### TCP/IP:
 
+The defacto standard for communication. 
+- TCP - controls data exchange
+- IP - sends data from one device to another
+- Hosts - Devices on a network.
 
-NETWORKING:
+#### IPv4 Classes:
 
-
-TCP/IP:
-
-The defacto standard for communication.
-TCP - controls data exchange
-IP - sends data from one device to another
-Hosts - Devices on a network.
-
-IPv4 Classes:
-
+```
 1.0- 127.0 				= Class A 	(Subnet Mask: 255.0.0.0)
-128.0 - 191.255 		= Class B 	(Subnet Mask: 255.255.0.0)
-192.0.0 - 223.255.255 	= Class C 	(Subnet Mask: 255.255.255.0)
+128.0 - 191.255 			= Class B 	(Subnet Mask: 255.255.0.0)
+192.0.0 - 223.255.255 			= Class C 	(Subnet Mask: 255.255.255.0)
+```
 
-CIDR - Classless Inter-Domain Routing:
+#### CIDR - Classless Inter-Domain Routing:
 
-Dividing networks irrespective of their classes. Division depends on subnet mask.
-ex:
+Dividing networks irrespective of their classes. Division depends on subnet mask. Ex:
+
 CIDR Subnet: 255.255.255.0 (given)
-N/W Address: 121.67.198.0		[According to class A, it would have been 121.0.0.0]
-B/C Address: 121.67.198.255		[According to class A, it would have been 121.255.255.255]
+N/W Address: 121.67.198.0		(According to class A, it would have been 121.0.0.0)
+B/C Address: 121.67.198.255		(According to class A, it would have been 121.255.255.255)
 
-Reserved Private Address Space:
+#### Reserved Private Address Space:
 
-(Ranges of IP addresses reserved for use in private[Non-Routable address spaces])
-10.0.0.0 to 10.255.255.255 => Reserved private address space in class A.
-172.16.0.0 to 172.31.255.255 => Reserved private address space in class B.
-192.168.0.0 to 192.168.255.255 => Reserved private address space in class C.
+Ranges of IP addresses reserved for use in private (Non-Routable address spaces):
+- 10.0.0.0 to 10.255.255.255 => Reserved private address space in class A.
+- 172.16.0.0 to 172.31.255.255 => Reserved private address space in class B.
+- 192.168.0.0 to 192.168.255.255 => Reserved private address space in class C.
 
-[Any of these IP address entries in the hosts file (/etc/hosts) is considered private and non-routable publicly]
+Any of these IP address entries in the hosts file (/etc/hosts) is considered private and non-routable publicly.
 
-Knowing the computer's IP address: (Or, all IPs associated with your computer)
+#### Knowing the computer's IP address: (Or, all IPs associated with your computer)
 
 Command: `ip address` (or) `ip address show`
-(Shortcuts:
-`ip addr` (or) `ip a` (or) `ip a s`
-)
 
-[Not available in Unix (Only Linux) - use `ifconfig`]
+(Shortcuts: `ip addr` (or) `ip a` (or) `ip a s`)
+
+(Not available in Unix (Only Linux) - use `ifconfig` for unix.)
 
 This command shows two addresses:
-1: lo: inet:127.0.0.1 => Your loopback address. (lo stands for 'loopback')
-2: eth0: inet:192.168.1.122/24 => Actually hardware NIC device - has an IP address associated.
+1. `lo: inet:127.0.0.1` => Your loopback address. (lo stands for 'loopback')
+2. `eth0: inet:192.168.1.122/24` => Actually hardware NIC device - has an IP address associated.
+
 (Also, it shows MAC addresses and Subnet Masks)
 
-`ifconfig` :
+#### `ifconfig` :
 
 Another way to determine host's IP addresses. (DEPRECATED, but still very useful-maybe around for sometime)
-Command:
-`ifconfig` => Displays all the IP addresses associated with the computer.
+
+Command: `ifconfig` => Displays all the IP addresses associated with the computer.
 
 Terms:
+- HOST : A device connected to a Network.
+- HOSTNAME : A human readbale format for the IP address of a host (Ex: webprod1 <=> 10.109.215.14) (Ex: We can give a linux system acting as a server a hostname instead of addressing it by IP all the time.) One word Host name: Short Hostname / Unqualified Hostname (Ex: webprod1)
+- DNS: Maps IP address to the domain name (and vice versa)
 
-HOST : A device connected to a Network.
-HOSTNAME : A human readbale format for the IP address of a host (Ex: webprod1 <=> 10.109.215.14)
-(Ex: We can give a linux system acting as a server a hostname instead of addressing it by IP all the time.)
+#### DNS Hostnames:
 
-One word Host name: Short Hostname / Unqualified Hostname (Ex: webprod1)
+- FQDN => Fully Qualified Domain Names. (Ex: webprod1.mycompany.com)
+- TLD => Top Level Domain (Ex: .com, .org, .net, ...)
 
-DNS: Maps IP address to the domain name (and vice versa)
+#### Domains => To the LEFT of the TLDs (Below the TLDs in the tree) (Ex: 'mycompany' in mycompany.com)
 
-DNS Hostnames:
+Domains can be further sub-divided into: Sub-Domain => To the LEFT of the Domains (Below the Domains in the tree) (Ex: 'webprod1' in webprod1.mycompany.com)
 
-FQDN => Fully Qualified Domain Names.
-(Ex: webprod1.mycompany.com)
+An advantage of using sub-domains: Identifying where our server is located: (Ex: webprod1.ny.us.mycompany.com) [NOTE: Sub-Domains need not correspond to geography, can be anything]
 
-TLD => Top Level Domain (Ex: .com, .org, .net, ...)
+#### Viewing the Hostname:
 
-Domains => To the LEFT of the TLDs (Below the TLDs in the tree) (Ex: 'mycompany' in mycompany.com)
-
-Domains can be further sub-divided into:
-Sub-Domain => To the LEFT of the Domains (Below the Domains in the tree)
-(Ex: 'webprod1' in webprod1.mycompany.com)
-An advantage of using sub-domains: Identifying where our server is located:
-(Ex: webprod1.ny.us.mycompany.com) [NOTE: Sub-Domains need not correspond to geography, can be anything]
-
-Viewing the Hostname:
-
-`hostname` 
+- `hostname` 
 (or)
-`uname -n`
+- `uname -n`
 (or)
-`hostname -f`
+- `hostname -f`
 
-Setting the Hostname:
-
-`hostname HOST_NAME` => sets the host name to specified argument(ex: `hostname webprod02`)
+#### Setting the Hostname:
+- `hostname HOST_NAME` => sets the host name to specified argument(ex: `hostname webprod02`)
 
 To persist the change, (permanently set the hostname btw sessions):
 1. UBUNTU AND REDHAT SYSTEMS:
@@ -2500,70 +2383,64 @@ To persist the change, (permanently set the hostname btw sessions):
 2. FOR EARLIER VERSIONS OF REDHAT:
 Save the line 'HOSTNAME=webprod02' in '/etc/sysconfig/network' file
 
-Resolving DNS Names:
+#### Resolving DNS Names:
 
 Get IP from Hostname and Hostname from IP:
-`host HOSTNAME` => Displays the IP for the hostname (Ex: for the hostname 'www.mycompany.com')
-`host IPADDRESS` => Displays the Hostname for the IP (Ex: for the IP '11.2.255.143')
+- `host HOSTNAME` => Displays the IP for the hostname (Ex: for the hostname 'www.mycompany.com')
+- `host IPADDRESS` => Displays the Hostname for the IP (Ex: for the IP '11.2.255.143')
 
-The '/etc/hosts' file:
+#### The '/etc/hosts' file:
 
-Contains a list of IP addresses and Hostnames.
-We can add hosts as an entry to the file:
-Format:
-'ipaddress FQDN alias(es)' => Maps IP address to hostname (or hostnames)
+Contains a list of IP addresses and Hostnames. We can add hosts as an entry to the file:
+
+Format: `ipaddress FQDN alias(es)` => Maps IP address to hostname (or hostnames)
+
 Ex:
-`10.11.12.13 webprod02.mycorp.com webprod02`
+- `10.11.12.13 webprod02.mycorp.com webprod02`
 
 Now, we can access the IP address using the specified Hostnames.
 
 Points:
-(THIS CAN BE USEFUL IF YOU WANT TO ACCESS COMPUTERS THAT DON'T HAVE DNS HOSTNAMES(for ex))
-(HOSTNAMES IN THE '/etc/hosts' IS USED TO OVERRIDE THE DNS HOSTNAMES FOR THE SYSTEM - Ex. you can have a private network for a cluster of web servers that you own that only they and no one else can access - Create private IP addresses for each of the servers in the '/etc/hosts' file thus forcing each of the servers to go through the private network to communicate with each other.)
+- (THIS CAN BE USEFUL IF YOU WANT TO ACCESS COMPUTERS THAT DON'T HAVE DNS HOSTNAMES(for ex))
+- (HOSTNAMES IN THE '/etc/hosts' IS USED TO OVERRIDE THE DNS HOSTNAMES FOR THE SYSTEM - Ex. you can have a private network for a cluster of web servers that you own that only they and no one else can access - Create private IP addresses for each of the servers in the '/etc/hosts' file thus forcing each of the servers to go through the private network to communicate with each other.)
 
-Note:: '/etc/hosts' file is LOCAL to your Linux System. It does NOT propagate to the Rest of the Network.
-`127.0.0.1 localhost` entry => Used by system as loopback address.
+Note: '/etc/hosts' file is LOCAL to your Linux System. It does NOT propagate to the Rest of the Network.
+- `127.0.0.1 localhost` entry => Used by system as loopback address.
 
-NOTE:: The '/etc/hosts' file is checked first before the DNS is queried.(for search resolutions)
-We can change this lookup/search resolution order in the '/etc/nsswitch.conf' file.(controls the search order for resolutions)
-`hosts: files dns`	=> (If IP address is found in /etc/hosts, it is used. Search stops. Else, check DNS)
-`hosts: files nis dns` => (First check in files, then NIS, then DNS)
+NOTE:: The '/etc/hosts' file is checked first before the DNS is queried.(for search resolutions). We can change this lookup/search resolution order in the '/etc/nsswitch.conf' file.(controls the search order for resolutions)
+- `hosts: files dns`	=> (If IP address is found in /etc/hosts, it is used. Search stops. Else, check DNS)
+- `hosts: files nis dns` => (First check in files, then NIS, then DNS)
 
+## NETWORKING: DHCP, STATIC AND DYNAMIC ADDRESSING:
 
-
-NETWORKING: DHCP, STATIC AND DYNAMIC ADDRESSING:
-
-
-PORTS:
+### PORTS:
 
 Ports identify a service on a host (while IP identifies a host).
-0 - 1023 are 'Well-Known'(system) Ports.
-Ex:Port No. 22 = SSH,
-25 = SMTP,
-80 = HTTP,
-143 = IMAP,
-389 = LDAP,
-443 = HTTPS (Ex: https://www.mybank.com)
+- 0 - 1023 are 'Well-Known'(system) Ports.
+- Ex:Port No. 22 = SSH,
+- 25 = SMTP,
+- 80 = HTTP,
+- 143 = IMAP,
+- 389 = LDAP,
+- 443 = HTTPS (Ex: https://www.mybank.com)
 
 It requires Superuser/Root privileges to open the Well Known Ports(0-1023). (Hence 'Privileged Ports')
 
-Ports above 1023(1024+) can be opened and used by normal users on the system(need not be root/superuser)
-[1024+ => Unprivileged Ports]
+Ports above 1023(1024+) can be opened and used by normal users on the system(need not be root/superuser) (1024+ => Unprivileged Ports)
 
-Port Names: '/etc/services'
-Maps port names to port numbers (Human readable port names)
+Port Names: '/etc/services'. Maps port names to port numbers (Human readable port names)
 Ex:
-`ssh 	22/tcp 		# SSH Remote Login Protocol`
-`smtp 	25/tcp 		# SMTP`
+- `ssh 	22/tcp 		# SSH Remote Login Protocol`
+- `smtp 	25/tcp 		# SMTP`
 
-Sometimes, when a third party service is installed, we can ADD a port number and name for the service it provides in the '/etc/services' file. 
-(Therefore, we can also set port numbers for the custom applications/services that we write)
+Sometimes, when a third party service is installed, we can ADD a port number and name for the service it provides in the '/etc/services' file. (Therefore, we can also set port numbers for the custom applications/services that we write)
 
-DHCP:
+### DHCP:
 
-[PRIMARY USE: TO ASSIGN IP ADDRESSES TO HOSTS ON A NETWORK.]
-Dynamic Host Control Protocol. When a DHCP (host) client wants an IP address to itself, it sends out a B/C msg looking for DHCP Servers to assign it an IP address.
-'DHCP Servers' assign IP address to DHCP Clients.
+PRIMARY USE: TO ASSIGN IP ADDRESSES TO HOSTS ON A NETWORK.
+
+Dynamic Host Control Protocol. When a DHCP (host) client wants an IP address to itself, it sends out a B/C msg looking for DHCP Servers to assign it an IP address. 'DHCP Servers' assign IP address to DHCP Clients.
+
 Format of Information provided by DHCP Server to Client:
 1. IP address
 2. netmask
@@ -2572,10 +2449,7 @@ Format of Information provided by DHCP Server to Client:
 
 The DHCP client then configures itself with this information and communicates with others using the given IP.
 
-Each IP is 'leased' from the pool of IP addresses that the DHCP server manages.
-(The lease expiration time is configurable on the DHCP server. 1hr, 1day, 1Weeks.
-The client must renew the Ip address if it wantsto continue using it. Otherwise, the IP address is available to other DHCP clients for use.
-)
+Each IP is 'leased' from the pool of IP addresses that the DHCP server manages.(The lease expiration time is configurable on the DHCP server. 1hr, 1day, 1Weeks. The client must renew the Ip address if it wantsto continue using it. Otherwise, the IP address is available to other DHCP clients for use.)
 
 Configuring a DHCP Client: For a RedHat Based System(RHEL)
 
