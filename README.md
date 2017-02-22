@@ -2451,36 +2451,31 @@ The DHCP client then configures itself with this information and communicates wi
 
 Each IP is 'leased' from the pool of IP addresses that the DHCP server manages.(The lease expiration time is configurable on the DHCP server. 1hr, 1day, 1Weeks. The client must renew the Ip address if it wantsto continue using it. Otherwise, the IP address is available to other DHCP clients for use.)
 
-Configuring a DHCP Client: For a RedHat Based System(RHEL)
+#### Configuring a DHCP Client: For a RedHat Based System(RHEL):
 
-To Edit a Red Hat based system as a DHCP Client, edit the configuration file located in:
-`/etc/sysconfig/network-scripts/ifcfg-DEVICE`
-(Ex: `/etc/sysconfig/network-scripts/ifcfg-eth0`,
-	`/etc/sysconfig/network-scripts/ifcfg-enp5s2`
-)
+To Edit a Red Hat based system as a DHCP Client, edit the configuration file located in: `/etc/sysconfig/network-scripts/ifcfg-DEVICE`. Ex: 
+- `/etc/sysconfig/network-scripts/ifcfg-eth0`,
+- `/etc/sysconfig/network-scripts/ifcfg-enp5s2`
+
 To get a list of Network Devices on the system, run:
-
-`ifconfig -a`
+- `ifconfig -a`
 (or)
-`ip link`
+- `ip link`
 
-Once you have identified the configuration file for the network device:
-Set the 'BOOTPROTO' variable to 'dhcp':
-`BOOTPROTO=dhcp`
+Once you have identified the configuration file for the network device: Set the 'BOOTPROTO' variable to 'dhcp':
+- `BOOTPROTO=dhcp`
 
-Configuring an Ubuntu Based System:
+#### Configuring an Ubuntu Based System:
 
-Edit the '/etc/network/interfaces' file.
-Set a network device as a DHCP Client:
-Add line `iface NETWORK_DEVICE inet dhcp`
+Edit the '/etc/network/interfaces' file. Set a network device as a DHCP Client: Add line `iface NETWORK_DEVICE inet dhcp`
 Ex:
-`iface eth0 inet dhcp`
+- `iface eth0 inet dhcp`
 
-Setting a STATIC IP address on REDHAT Based system(RHEL):
+1. Setting a STATIC IP address on REDHAT Based system(RHEL):
 
-Edit file: '/etc/sysconfig/network-scripts/ifcfg-NETWORKDEVICENAME'
-Ex:
-`	DEVICE=eth0
+Edit file: '/etc/sysconfig/network-scripts/ifcfg-NETWORKDEVICENAME'. Ex:
+```
+	DEVICE=eth0
 	BOOTPROTO=static 	(This is a MUST!!)
 	IPADDR=10.109.155.174	(Assign the IP, NW and BC)
 	NETMASK=255.255.255.0
@@ -2488,176 +2483,147 @@ Ex:
 	BROADCAST=10.109.155.255
 	GATEWAY=10.109.155.1
 	ONBOOT=yes				(To set the Ip address on boot? yes)
-`
+```
 
-Setting a STATIC IP address on UBUNTU Based system(RHEL):
+2. Setting a STATIC IP address on UBUNTU Based system(RHEL):
 
-Edit file: '/etc/network/interfaces'
+Edit file: '/etc/network/interfaces' Ex:
+```
+iface eth0 inet static 		(static keyword is a must!!)
+address 10.109.155.174
+netmask 255.255.255.0
+gateway 10.109.155.1
+```
+
+(OR)
+
+- MANUALLY assign an IP to a Network Device(interface): Use the `ip` command.
+	
+Format: `ip address add IP/[NETMASK] dev NETWORK_DEVICE`. Ex:
+- `ip address add 10.11.12.13 dev eth0`,
+- `ip address add 10.11.12.13/255.255.255.0 dev eth0`.
+
+NOTE:
+Bring the interface up(enabled with the given static ip): `ip link set NETWORK_DEVICE up` => Enables/sets up N/w Device with given IP (Ex: `ip link set eth0 up`)
+
+- Use the `ifconfig` command.
+
+Format: `ifconfig NETWORK_DEVICE IP_ADDRESS netmask SUBNET_MASK`
+
 Ex:
-`	iface eth0 inet static 		(static keyword is a must!!)
-		address 10.109.155.174
-		netmask 255.255.255.0
-		gateway 10.109.155.1
-`
+- `ifconfig eth0 10.11.12.13`
+- `ifconfig eth0 10.11.12.13 netmask 255.255.255.0`
 
-[OR =>]
-
-MANUALLY assign an IP to a Network Device(interface):
-
-1. Use the `ip` command.
-
-Format:
-`ip address add IP/[NETMASK] dev NETWORK_DEVICE`
-Ex:
-`ip address add 10.11.12.13 dev eth0`,
-`ip address add 10.11.12.13/255.255.255.0 dev eth0`
-[::NOTE:: 
-Bring the interface up(enabled with the given static ip):
-`ip link set NETWORK_DEVICE up` => Enables/sets up N/w Device with given IP 
-(Ex: `ip link set eth0 up`)
-]
-
-2. Use the `ifconfig` command.
-
-Format:
-`ifconfig NETWORK_DEVICE IP_ADDRESS netmask SUBNET_MASK`
-Ex:
-`ifconfig eth0 10.11.12.13`
-`ifconfig eth0 10.11.12.13 netmask 255.255.255.0`
-[::NOTE:: 
-Bring the interface up(enabled with the given static ip):
-`ifonfig NETWORK_DEVICE up` => Enables/sets up N/w Device with given IP 
-(Ex: `ifonfig eth0 up`)
-]
-
+NOTE: Bring the interface up(enabled with the given static ip): `ifonfig NETWORK_DEVICE up` => Enables/sets up N/w Device with given IP (Ex: `ifonfig eth0 up`)
 
 Alternatives to `ip` and `ifconfig`:
+- `ifup` and `ifdown` => Quick way to bring a NW device up or down. It takes the network specs(IP, mask, etc) for the NW Device from the "configuration files" and enables/disables it. (/etc/sysconfig/... etc)
 
-`ifup` and `ifdown` => Quick way to bring a NW device up or down.
-It takes the network specs(IP, mask, etc) for the NW Device from the "configuration files" and enables/disables it.
-(/etc/sysconfig/... etc)
 Ex:
-`ifup NW_DEVICE` => brings up the network device (Ex: `ifup eth0`)
-`ifdown NW_DEVICE` => brings down the network device (Ex: `ifup enp5s02`)
+- `ifup NW_DEVICE` => brings up the network device (Ex: `ifup eth0`)
+- `ifdown NW_DEVICE` => brings down the network device (Ex: `ifup enp5s02`)
 
-GUI/TUI Tools for Networking:
+### GUI/TUI Tools for Networking:
 
-RedHat => 'nmtui', 'system-config-network'
-SUSE => 'YaST'
-Ubuntu => No official tool available.
+- RedHat => 'nmtui', 'system-config-network'
+- SUSE => 'YaST'
+- Ubuntu => No official tool available.
 
-
-
-NETWORK TROUBLESHOOTING:
+## NETWORK TROUBLESHOOTING:
 
 Some of the common tools for network diagnostics. Cannot rely on only one tool/ use many tool.
 
-1. Test connectivity to a host with `ping`:
+### Test connectivity to a host with `ping`:
 
 Sends one or more ICMP packets to a host (Hostname (or) IP-ADDRESS) and waits for a reply
-`ping HOST` => Continuously pings the host until you stop program with <CTRL-C>
-(ex: `ping google.com`)
-`ping -c COUNT HOST` => Specifies the number of packets to send with ping (stops after sending these)
-(ex: `ping -c 3 google.com`,
-`ping -c 3 10.1.244.101`, .. etc)
+- `ping HOST` => Continuously pings the host until you stop program with `<CTRL-C>` (ex: `ping google.com`)
+- `ping -c COUNT HOST` => Specifies the number of packets to send with ping (stops after sending these) (Ex: `ping -c 3 google.com`, `ping -c 3 10.1.244.101`, .. etc.)
 
 Ping returns the no of packets sent and Round Trip time(RTT) for each packet( '/' separated ) - In case of no replies from host: `100% packet loss` is displayed in output.
 
-Note:: Ping also resolves the Hostname to IP address (If it cant => Unknown host error displayed - In that use IP address of system that you are trying to connect to.)
+Note: Ping also resolves the Hostname to IP address (If it cant => Unknown host error displayed - In that use IP address of system that you are trying to connect to.)
 
-NOTE::
+NOTE: If ping does NOT receive a repsonse from destination host:
+1. Check if ping works to a local host in the network. If that also does NOT work then maybe there is a problem with OUR SYSTEM(OUR HOST) itself. Ex: Network cables got disconnected, NW drivers didn't get upgraded when Server System was upgraded, ... etc.
+2. If we can successfully ping a host within our local network: Then the problem lies outside of our network and definitely not on our host(our computer). If we can successfully ping other external hosts, the problem might be with one particular host that w pinged initially. (Ex: google.com ping fails but youtube.com and facebook.com pings are successful). POSSIBLE REASON: The destination host has a 'firewall' that has blocked/discarded icmp requests and responses. In this case, it will require other diagnostic tools other than 'ping'.
 
-[If ping does NOT receive a repsonse from destination host:
-	1. Check if ping works to a local host in the network.
-	If that also does NOT work then maybe there is a problem with OUR SYSTEM(OUR HOST) itself.
-	Ex:
-	Network cables got disconnected,
-	NW drivers didn't get upgraded when Server System was upgraded, ... etc.
 
-	2. If we can successfully ping a host within our local network:
-	Then the problem lies outside of our network and definitely not on our host(our computer).
-		If we can successfully ping other external hosts, the problem might be with one particular host that w pinged initially. (Ex: google.com ping fails but youtube.com and facebook.com pings are successful)
-		POSSIBLE REASON: The destination host has a 'firewall' that has blocked/discarded icmp requests and responses. In this case, it will require other diagnostic tools other than 'ping'.
-]
-
-2. Testing connectivity over Hops(Routers):
+### Testing connectivity over Hops(Routers):
 
 Use the `traceroute` command. (`ping` only gives you the end to end connectivity info)
-`traceroute` will require ROOT/SUPERUSER permissions.
+- `traceroute` will require ROOT/SUPERUSER permissions.
 
-`traceroute IP_ADDRESS` => Goes to DNS and resolves to name(TIME taking)
+- `traceroute IP_ADDRESS` => Goes to DNS and resolves to name(TIME taking)
 
-`traceroute -n HOST_NAME` => Skips the DNS server and directly to IP of host
-(Ex:`traceroute -n google.com`)
-Advantages:
-skips DNS - If issue was with DNS server then we will know. Faster. 
+- `traceroute -n HOST_NAME` => Skips the DNS server and directly to IP of host (Ex:`traceroute -n google.com`)
 
-Output of traceroute:
-Lists all the router IPs along the way(route) along witht the milliseconds it took for the packets to cross that network.
-Too much time ? => Maybe problem is in that network.
-'*' for time => Either n/w not responding (or, router configured to not show traceroute - use other diagnostic tool)
+Advantages: 
+- skips DNS - If issue was with DNS server then we will know. 
+- Faster. 
 
-[`traceroute` Produces one line of output per HOP]
+#### Output of traceroute:
+Lists all the router IPs along the way(route) along witht the milliseconds it took for the packets to cross that network. Too much time? => Maybe problem is in that network. '*' for time => Either n/w not responding (or, router configured to not show traceroute - use other diagnostic tool)
 
-3. Alternative to `traceroute`:
+`traceroute` Produces one line of output per HOP.
+
+#### Alternative to `traceroute`:
  
 Use `tracepath`. Does NOT require root/superuser permissions
-Ex:
-`tracepath google.com` (or)
-`tracepath -n google.com` => Produces one line of output for Each Response it receives.(unlike traceroute)
 
-4. The `netstat` command:
+Ex:
+- `tracepath google.com` (or)
+- `tracepath -n google.com` => Produces one line of output for Each Response it receives.(unlike traceroute)
+
+### The `netstat` command:
 
 Used to collect a wide variety of network information.
 
 Options:
-`-n` => Display numerical addresses and ports
-`-i` => Display list of network interfaces
-`-r` => Display the route table (Ex: `netstat -rn`)
-`-p` => Display PID and Program used [Needs root/superuser privileges]
-`-l` => Display listening sockets(ex:`netstat -nlp`){What servers(nginx,apache) are listeningto what ports}
-`-t` => Limit output to TCP (ex: `netstat -nltp`)
-`-u` => Limit output to UDP (ex: `netstat -nulp`)
+- `-n` => Display numerical addresses and ports
+- `-i` => Display list of network interfaces
+- `-r` => Display the route table (Ex: `netstat -rn`)
+- `-p` => Display PID and Program used [Needs root/superuser privileges]
+- `-l` => Display listening sockets(ex:`netstat -nlp`){What servers(nginx,apache) are listeningto what ports}
+- `-t` => Limit output to TCP (ex: `netstat -nltp`)
+- `-u` => Limit output to UDP (ex: `netstat -nulp`)
 
 Ex:
-`netstat -i`
-`sudo netstat -nltp`
+- `netstat -i`
+- `sudo netstat -nltp`
 
-5. Packet Sniffing with `tcpdump`:
-`tcpdump` => Inspect contents of network packets to ensure payloads(data) are actually being delivered.
-[requires root/superuser privileges]
+### Packet Sniffing with `tcpdump`:
+
+`tcpdump` => Inspect contents of network packets to ensure payloads(data) are actually being delivered. (Requires root/superuser privileges)
 
 Options:
-`-n` => Display numerical addresses and ports (suppresses DNS queries as well)
-`-A` => Display ASCII(text) output.
-`-v` => Verbose mode. Produces more output
-`-vvv` => Even more verbose output.
+- `-n` => Display numerical addresses and ports (suppresses DNS queries as well)
+- `-A` => Display ASCII(text) output.
+- `-v` => Verbose mode. Produces more output
+- `-vvv` => Even more verbose output.
 
 (`tcpdump` output: timestamp, nw id, source id, portnos, pkt spec info. etc)
 
 Ex:
-`sudo tcpdump` => Produces output for all the packets from/to the network devices assoc. with the system.
+- `sudo tcpdump` => Produces output for all the packets from/to the network devices assoc. with the system.
 
-6. `telnet` command (OBSOLETE):
-It was originally intended to log onto 'remote systems` but is replaced with with better protocols such as SSH.
+### `telnet` command (OBSOLETE):
 
-'telnet' can still be used in N/W TROUBLE SHOOTING.
-(May or may not be installed by default on linux systems - bcoz it is obsolete for connectin to systems)
+It was originally intended to log onto 'remote systems' but is replaced with with better protocols such as SSH.
+
+'telnet' can still be used in N/W TROUBLE SHOOTING. (May or may not be installed by default on linux systems - bcoz it is obsolete for connectin to systems)
 
 Usage of telnet: Initiate a TCP Connection to a host (or ip) by specifying the port.
 
-Format:
-`telnet HOST_OR_IP PORT_NO`
+Format: `telnet HOST_OR_IP PORT_NO`
 
 Ex: Check if google.com is accepting requests at the HTTP port?:
-`telnet google.com 80` => If successfully connected - "Connected to google.com" or similar o/p.
-(if operation "timed out" - means connection could not be established - either port is not open on the host(firewall) [or] the connection to the host could not be made along the way/route)
+- `telnet google.com 80` => If successfully connected - "Connected to google.com" or similar o/p. (If operation "timed out" - means connection could not be established - either port is not open on the host(firewall) [or] the connection to the host could not be made along the way/route)
 
-Telnet command prompt: `telnet> `
-To put a 'GET' request to, say, root directory: `GET /`
+About `telnet`:
+- Telnet command prompt: `telnet> `
+- To put a 'GET' request to, say, root directory: `GET /`
 
-Quit telnet: telnet> `quit` 
-(output is: "closed")
+Quit telnet: Press `quit` at the telnet prompt. (Output is: "closed")
 
 
 ## Connecting(via SSH) to a Linux Virtual Machine (running on VirtualBox):
@@ -2666,15 +2632,13 @@ Quit telnet: telnet> `quit`
 2. Goto Settings for that machine in VBOX.
 3. Change network setting to 'bridge adapter' (from NAT) and save.
 4. Power on Virtual Machine -> Open Terminal -> `ip addr` -> Get the ip address of the Network Interface Device (Other than local/loopback address) (= VM_IP_ADDRESS)
-5. `whoami` => to know the username on the VMachine (= VM_USERNAME)
-(Sometimes, we cannot connect using the root username so switch to another user and get his/her username)
+5. `whoami` => to know the username on the VMachine (= VM_USERNAME) (Sometimes, we cannot connect using the root username so switch to another user and get his/her username)
 6. Open terminal on your Local Machine while your VMachine is running on VBOX.
 7. Type `ssh VM_USERNAME@VM_IP_ADDRESS` (Ex: `ssh adminuser@192.168.0.1`)
 8. You will prompted to accept the key(say 'yes') and type the password for that user on the virtual m/c/
 9. You are logged into the VMachine via SSH! :)
 
-
-
+**THE END**
 
 
 
