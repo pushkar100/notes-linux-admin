@@ -1698,7 +1698,8 @@ What type of program / what place in the system the message originated from.
 
 We can use local0 to local7 for our own purposes.
 
-Severities:
+### Severities:
+
 ```
 0 	Emergency	emerg(panic)	System is unusable
 1 	Alert 		alert 			Take action immediately
