@@ -2,6 +2,13 @@
 
 Source: http://linuxcommand.org/lts0060.php
 
+- [Redirection & Pipelining:](#redirection---pipelining-)
+  * [Redirection:](#redirection-)
+    + [Standard Output:](#standard-output-)
+    + [Standard Input:](#standard-input-)
+  * [Pipes:](#pipes-)
+  * [Filters: (Google each filter to learn more about them)](#filters---google-each-filter-to-learn-more-about-them-)
+
 ## Redirection:
 
 ### Standard Output:
