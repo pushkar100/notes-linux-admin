@@ -1,5 +1,13 @@
 # File Permissions & `sudo` Command:
 
+- [File Permissions & `sudo` Command:](#file-permissions----sudo--command-)
+    + [Checking Permissions:](#checking-permissions-)
+    + [Changing permissions:](#changing-permissions-)
+      - [chmod 'octal' mode:](#chmod--octal--mode-)
+    + [Changing Owner (of a file or directory):](#changing-owner--of-a-file-or-directory--)
+    + [Changing Owner & Group (of a file or directory):](#changing-owner---group--of-a-file-or-directory--)
+
+
 File Permissions set for 3 sets of users:
 1. User (current/owner)
 2. Group
