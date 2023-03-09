@@ -202,7 +202,7 @@ Linux Administration Notes &amp; Quick Reference
       - [Setting the hostname](#setting-the-hostname)
       - [Resolving DNS names](#resolving-dns-names)
       - [The hosts file](#the-hosts-file)
-  * [DHCP, static and dynamic addressing](#dhcp--static-and-dynamic-addressing)
+  * [DHCP static and dynamic addressing](#dhcp-static-and-dynamic-addressing)
     + [Ports](#ports)
     + [DHCP](#dhcp)
       - [Configuring a DHCP Client](#configuring-a-dhcp-client)
@@ -2783,7 +2783,7 @@ NOTE:: The '/etc/hosts' file is checked first before the DNS is queried.(for sea
 - `hosts: files dns`	=> (If IP address is found in /etc/hosts, it is used. Search stops. Else, check DNS)
 - `hosts: files nis dns` => (First check in files, then NIS, then DNS)
 
-## DHCP, static and dynamic addressing
+## DHCP static and dynamic addressing
 
 ### Ports
 
