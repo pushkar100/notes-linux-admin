@@ -1,5 +1,12 @@
 # SSH & SCP Notes/Reference:
 
+- [SSH & SCP Notes/Reference:](#ssh---scp-notes-reference-)
+  * [Secure Shell (SSH):](#secure-shell--ssh--)
+    + [Connecting:](#connecting-)
+  * [Secure Copying (SCP):](#secure-copying--scp--)
+    + [Coyping from Remote to Local:](#coyping-from-remote-to-local-)
+    + [Coyping from Local to Remote:](#coyping-from-local-to-remote-)
+
 ## Secure Shell (SSH):
 
 ### Connecting:
